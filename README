@@ -1,0 +1,112 @@
+Markdown
+# CrossTown
+
+A multi-modal spatial transit accessibility and equity analytics platform for Henrico County, VA. CrossTown analyzes walkability, transit access, and demographic coverage using PostGIS, FastAPI, and MapLibre GL JS.
+
+---
+
+## Prerequisites
+
+Before setting up the project locally, ensure you have installed:
+* [Python 3.10+](https://www.python.org/downloads/)
+* [PostgreSQL 15+](https://www.postgresql.org/download/) with the **PostGIS** extension installed
+* [Git](https://git-scm.com/)
+
+---
+
+## 1. Project Setup & Virtual Environment
+
+1. **Clone the Repository:**
+   ```powershell
+   git clone [https://github.com/virajkdrhs/CrossTown.git](https://github.com/virajkdrhs/CrossTown.git)
+   cd CrossTown
+Create and Activate a Python Virtual Environment (venv):
+
+Windows (PowerShell):
+
+PowerShell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+(If you get a script execution policy error, run Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process once).
+
+Mac / Linux:
+
+Bash
+python3 -m venv venv
+source venv/bin/activate
+Install Dependencies:
+
+PowerShell
+pip install -r requirements.txt
+2. Linking Data Files (Google Drive)
+To keep the repository lightweight, raw spatial data (.pbf, .zip, .shp) and intermediate processed datasets are hosted in our team Google Drive folder.
+
+Download the shared data folder from our Team Google Drive Link (Insert actual Drive link here).
+
+Extract the downloaded folder into the root directory of your local CrossTown project so your workspace looks like this:
+
+Plaintext
+CrossTown/
+├── backend/
+│   ├── main.py
+│   └── load_to_postgis.py
+├── frontend/
+│   ├── index.html
+│   └── app.js
+├── data/                       <-- Place downloaded Google Drive files here
+│   ├── virginia-latest.osm.pbf
+│   ├── Henrico_BlockGroups_CarFree.geojson
+│   └── County_Parks.geojson
+├── venv/                       (Ignored by Git)
+├── .gitignore
+├── README.md
+└── requirements.txt
+3. Database & Spatial Ingestion Setup
+Open pgAdmin or PostgreSQL terminal and create a database named crosstown:
+
+SQL
+CREATE DATABASE crosstown;
+\c crosstown;
+CREATE EXTENSION postgis;
+Update your local database password in backend/load_to_postgis.py and backend/main.py:
+
+Python
+DB_PASS = "YOUR_LOCAL_POSTGRES_PASSWORD"
+Run the ingestion script to populate PostgreSQL/PostGIS tables with spatial layers and access grid points:
+
+PowerShell
+python backend/load_to_postgis.py
+4. Running the Application
+A. Start the FastAPI Backend
+With (venv) active in your terminal, run:
+
+PowerShell
+uvicorn backend.main:app --reload
+The backend API will start at http://127.0.0.1:8000. You can view interactive API documentation at http://127.0.0.1:8000/docs.
+
+B. Launch the Frontend Map
+Open VS Code.
+
+Open frontend/index.html using the Live Server extension (or open the file directly in your web browser).
+
+The MapLibre map will load the 0–100 accessibility grid overlay and Census demographic layers directly from your local FastAPI backend.
+
+Team Workflow & Git Etiquette
+Always pull the latest changes before starting work:
+
+PowerShell
+git pull origin main
+Do not commit local .env files, large dataset downloads (.pbf, .zip), or the venv/ folder. They are automatically handled by .gitignore.
+
+
+---
+
+### Step to Push the README to GitHub:
+
+Once you save `README.md`, push it to GitHub with these commands in your PowerShell terminal:
+
+```powershell
+git add .
+git commit -m "Add README with team setup instructions and data linking guide"
+git push
+Your repository home page on GitHub will now display formatted setup instructions for your team.
