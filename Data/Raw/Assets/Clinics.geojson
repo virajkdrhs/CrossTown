@@ -1,0 +1,1377 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-07-16T17:57:00Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/225757985",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3370",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Pump Road",
+        "amenity": "clinic",
+        "building": "commercial",
+        "healthcare": "clinic",
+        "healthcare:speciality": "emergency",
+        "name": "Patient First",
+        "opening_hours": "Mo-Su 08:00-20:00",
+        "operator": "Patient First",
+        "operator:type": "private",
+        "operator:wikidata": "Q7144966",
+        "phone": "+1 804-360-8061",
+        "urgent_care": "yes",
+        "website": "https://www.patientfirst.com/locations/richmond/short-pump",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6136393,
+          37.6497156
+        ]
+      },
+      "id": "way/225757985"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/236327357",
+        "addr:housenumber": "9851",
+        "addr:postcode": "23059",
+        "addr:street": "Brook Road",
+        "amenity": "clinic",
+        "building": "yes",
+        "check_date": "2025-02-01",
+        "contact:phone": "+1 804-893-8702",
+        "contact:website": "https://www.bonsecours.com/locations/walk-in-urgent-care/richmond/good-health-express-urgent-care-center",
+        "healthcare": "clinic",
+        "name": "Bon Secours Urgent Care",
+        "opening_hours": "08:00-20:00",
+        "opening_hours:signed": "yes",
+        "source:opening_hours": "entrance; website",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.460347,
+          37.6678724
+        ]
+      },
+      "id": "way/236327357"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/302308753",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Bon Secours St. Joseph's Outreach Clinic",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.459356,
+          37.6304243
+        ]
+      },
+      "id": "way/302308753"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304248772",
+        "addr:housenumber": "7650",
+        "addr:postcode": "23228",
+        "addr:street": "East Parham Road",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Parham Surgery Center",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5236314,
+          37.6305856
+        ]
+      },
+      "id": "way/304248772"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/365934558",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1901",
+        "addr:postcode": "23226",
+        "addr:state": "VA",
+        "addr:street": "Libbie Avenue",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Glenburnie Rehabilitation and Nursing Center",
+        "website": "https://glenburniehc.com/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5043375,
+          37.5882253
+        ]
+      },
+      "id": "way/365934558"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/365945505",
+        "addr:housenumber": "5922",
+        "addr:postcode": "23230",
+        "addr:street": "West Broad Street",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Physical Medical Center",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.506568,
+          37.5927029
+        ]
+      },
+      "id": "way/365945505"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/369194382",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2300",
+        "addr:postcode": "23228",
+        "addr:state": "VA",
+        "addr:street": "East Parham Road",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Patient First",
+        "operator": "Patient First",
+        "operator:wikidata": "Q7144966",
+        "phone": "+1 804-264-7808",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4921669,
+          37.639921
+        ]
+      },
+      "id": "way/369194382"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/427475068",
+        "addr:city": "Richmond",
+        "addr:housenumber": "11958",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "amenity": "clinic",
+        "building": "yes",
+        "building:levels": "5",
+        "healthcare": "clinic",
+        "name": "VCU Health Short Pump Pavilion",
+        "opening_hours": "Mo-Fr 07:30-17:30",
+        "phone": "+1 804-360-4669",
+        "website": "https://www.vcuhealth.org/locations/location-details/?id=36",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6260896,
+          37.6573754
+        ]
+      },
+      "id": "way/427475068"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/427490042",
+        "addr:city": "Richmond",
+        "addr:housenumber": "9600",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "Patterson Avenue",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Bon Secours Patterson Patient Center",
+        "phone": "+1 804-741-6200",
+        "website": "goodhelpdocs.com",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5918315,
+          37.5967432
+        ]
+      },
+      "id": "way/427490042"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/704289089",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7001",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "A",
+        "amenity": "clinic",
+        "building": "yes",
+        "ele": "68",
+        "gnis:feature_id": "2465450",
+        "healthcare": "clinic",
+        "healthcare:speciality": "nephrology",
+        "name": "Richmond Nephrology Associates - West Broad",
+        "phone": "+1-804-673-2722",
+        "website": "https://richmondnephrologyassociates.com",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5188705,
+          37.6085477
+        ]
+      },
+      "id": "way/704289089"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707504020",
+        "addr:housenumber": "10410",
+        "addr:postcode": "23233",
+        "addr:street": "Ridgefield Parkway",
+        "amenity": "doctors",
+        "building": "yes",
+        "healthcare": "doctor",
+        "name": "RVA Pediatrics",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6122452,
+          37.6199146
+        ]
+      },
+      "id": "way/707504020"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710605285",
+        "addr:housenumber": "7598",
+        "addr:postcode": "23228",
+        "addr:street": "West Broad Street",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Hanger Clinic",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5230504,
+          37.6199276
+        ]
+      },
+      "id": "way/710605285"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710608904",
+        "addr:housenumber": "4008",
+        "addr:postcode": "23228",
+        "addr:street": "East Parham Road",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Fresenus Kidney Care",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5097866,
+          37.6325709
+        ]
+      },
+      "id": "way/710608904"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710609084",
+        "addr:housenumber": "8600",
+        "addr:postcode": "23228",
+        "addr:street": "Dixon Powers Drive",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Henrico County Health Clinic",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5103496,
+          37.6278001
+        ]
+      },
+      "id": "way/710609084"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710609544",
+        "addr:housenumber": "7813",
+        "addr:postcode": "23294",
+        "addr:street": "Shrader Road",
+        "amenity": "clinic",
+        "building": "yes",
+        "check_date": "2025-11-17",
+        "healthcare": "clinic",
+        "healthcare:speciality": "dermatology",
+        "name": "Elevate Dermatology & Plastic Surgery",
+        "opening_hours": "Mo-Fr 08:00-17:00; Sa-Su off",
+        "phone": "+1-804-264-4545",
+        "website": "https://www.elevatedermrva.com/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5259803,
+          37.6239497
+        ]
+      },
+      "id": "way/710609544"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710609866",
+        "addr:housenumber": "8040",
+        "addr:postcode": "23294",
+        "addr:street": "West Broad Street",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "operator": "MedExpress",
+        "operator:wikidata": "Q102183820",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5305978,
+          37.6262555
+        ]
+      },
+      "id": "way/710609866"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710859331",
+        "addr:housenumber": "4620",
+        "addr:postcode": "23231",
+        "addr:street": "South Laburnum Avenue",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "Laburnum Medical Center",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3554008,
+          37.52564
+        ]
+      },
+      "id": "way/710859331"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/752079301",
+        "amenity": "clinic",
+        "building": "yes",
+        "healthcare": "clinic",
+        "name": "MedExpress",
+        "operator": "MedExpress",
+        "operator:wikidata": "Q102183820",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3674939,
+          37.5449807
+        ]
+      },
+      "id": "way/752079301"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/975554494",
+        "addr:city": "Henrico",
+        "addr:housenumber": "130",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Towne Center West Boulevard",
+        "amenity": "doctors",
+        "building": "yes",
+        "healthcare": "doctor",
+        "healthcare:speciality": "dental_oral_maxillo_facial_surgery",
+        "name": "Virginia Oral & Facial Surgery",
+        "opening_hours": "Mo-Th 08:30-17:00; Fr 08:00-15:00",
+        "phone": "+1-804-270-5028",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6275707,
+          37.6581712
+        ]
+      },
+      "id": "way/975554494"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1198806895",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "healthcare:speciality": "plastic_surgery",
+        "indoor": "room",
+        "level": "1",
+        "name": "Kitto Plastic Surgery",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.619582,
+          37.6563761
+        ]
+      },
+      "id": "way/1198806895"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2630737221",
+        "amenity": "doctors",
+        "check_date": "2025-11-08",
+        "healthcare": "doctor",
+        "name": "Zelazny Family Dentistry"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.46274,
+          37.6746257
+        ]
+      },
+      "id": "node/2630737221"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2987594337",
+        "addr:city": "glen Allen",
+        "addr:housenumber": "4114",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Innslake Drive",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "name": "Drs. LeRoux, Daylor, Poling, Michaels and Matsko--Optometrists",
+        "note": "Eye Exams, Glasses, Contact Lenses, Emergency Care",
+        "phone": "+1 804-217-9883",
+        "website": "www.FamilyVisionCareOfRichmond.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5777678,
+          37.6495725
+        ]
+      },
+      "id": "node/2987594337"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3085237070",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "name": "Dominion Health Education"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.353066,
+          37.5189129
+        ]
+      },
+      "id": "node/3085237070"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3085339632",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Home Care Assistance"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5920587,
+          37.6050836
+        ]
+      },
+      "id": "node/3085339632"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3087866733",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Pediatric Center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6225358,
+          37.6235292
+        ]
+      },
+      "id": "node/3087866733"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3093019256",
+        "amenity": "doctors",
+        "brand": "The Little Clinic",
+        "brand:wikidata": "Q64138262",
+        "healthcare": "doctor",
+        "healthcare:speciality": "community",
+        "name": "The Little Clinic"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.514188,
+          37.6375248
+        ]
+      },
+      "id": "node/3093019256"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3103202849",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Humana"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3965475,
+          37.5791948
+        ]
+      },
+      "id": "node/3103202849"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3165950045",
+        "addr:city": "Richmond",
+        "addr:housenumber": "8536",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "Patterson Avenue",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Spinal Correction Center of Richmond"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5654943,
+          37.5952798
+        ]
+      },
+      "id": "node/3165950045"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4588419595",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "BetterMed",
+        "name:en": "BetterMed"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4988122,
+          37.5854316
+        ]
+      },
+      "id": "node/4588419595"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5167620721",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "9980",
+        "addr:postcode": "23059",
+        "addr:state": "VA",
+        "addr:street": "Brook Road",
+        "addr:unit": "16",
+        "amenity": "doctors",
+        "check_date": "2025-03-22",
+        "contact:phone": "+1 804-550-5730",
+        "contact:website": "https://www.pivotphysicaltherapy.com/locations/glen-allen-va-the-creeks/",
+        "healthcare": "doctor",
+        "name": "Pivot Physical Therapy",
+        "opening_hours": "Mo-Th 07:00-18:30; Fr 07:00-17:00; Sa-Su off",
+        "opening_hours:signed": "no",
+        "source:opening_hours": "website"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4619144,
+          37.6710101
+        ]
+      },
+      "id": "node/5167620721"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5239622331",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "5310",
+        "addr:postcode": "23059",
+        "addr:state": "VA",
+        "addr:street": "Twin Hickory Road",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "name": "APEX MD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5875823,
+          37.6814996
+        ]
+      },
+      "id": "node/5239622331"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5305210626",
+        "addr:city": "Henrico",
+        "addr:housenumber": "3811",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Gaskins Road",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "healthcare:speciality": "dermatology",
+        "name": "West End Dermatology",
+        "opening_hours": "Mo-Tu,Th 07:45-17:00; We,Fr 08:00-14:00",
+        "phone": "+1-804-270-6100",
+        "website": "https://www.betterfaces.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.569834,
+          37.6413091
+        ]
+      },
+      "id": "node/5305210626"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5305220021",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "9900",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "C",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Concentra Urgent Care",
+        "opening_hours": "Mo-Fr 08:00-17:00",
+        "operator": "Concentra",
+        "operator:type": "private",
+        "operator:wikidata": "Q5158304",
+        "operator:wikipedia": "en:Concentra",
+        "phone": "+1-804-358-0361",
+        "website": "http://www.concentra.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5674382,
+          37.6452782
+        ]
+      },
+      "id": "node/5305220021"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5851204036",
+        "addr:housenumber": "7113",
+        "addr:state": "VA",
+        "addr:street": "Three Chopt Road",
+        "addr:unit": "101",
+        "amenity": "doctors",
+        "fax": "+1-804-673-6432",
+        "healthcare": "doctor",
+        "name": "Pediatric Associates of Richmond",
+        "opening_hours": "Mo-Fr 07:30-19:30; Sa 09:00-12:00",
+        "phone": "+1 804-282-4205",
+        "website": "https://parpeds.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5322273,
+          37.5927979
+        ]
+      },
+      "id": "node/5851204036"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6026485314",
+        "addr:city": "Henrico",
+        "addr:housenumber": "8639",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "Mayland Drive",
+        "addr:unit": "105",
+        "amenity": "doctors",
+        "email": "info@chroniccareofrichmond.com",
+        "healthcare": "doctor",
+        "name": "Chronic Care of Richmond & Regenerative Medicine",
+        "phone": "+1 804-740-7105",
+        "website": "https://chroniccareofrichmond.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5527877,
+          37.6272553
+        ]
+      },
+      "id": "node/6026485314"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6158011685",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "name": "Pulmonary Associates of Richmond"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5134702,
+          37.6012449
+        ]
+      },
+      "id": "node/6158011685"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6522689853",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "4101",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Dominion Boulevard",
+        "addr:unit": "300",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "healthcare:speciality": "urgent",
+        "name": "American Family Care",
+        "opening_hours": "Mo-Fr 08:00-20:00; Sa-Su 08:00-17:00",
+        "phone": "+1-804-747-5555",
+        "website": "https://www.afcurgentcare.com/short-pump/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5856268,
+          37.6479037
+        ]
+      },
+      "id": "node/6522689853"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6525580182",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "name": "Tuckahoe Orthopaedics"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6368987,
+          37.6581982
+        ]
+      },
+      "id": "node/6525580182"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6525634199",
+        "addr:city": "Henrico",
+        "addr:housenumber": "12216",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "name": "OrthoVirginia",
+        "opening_hours": "Mo-Fr 08:00-20:00; Sa-Su 09:00-17:00",
+        "phone": "+1-804-440-4878",
+        "website": "https://www.orthovirginia.com/locations/short-pump/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6375748,
+          37.66143
+        ]
+      },
+      "id": "node/6525634199"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6525634206",
+        "addr:city": "Henrico",
+        "addr:housenumber": "12214",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "CareNow Urgent Care",
+        "opening_hours": "Mo-Su 08:00-20:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6383007,
+          37.6609512
+        ]
+      },
+      "id": "node/6525634206"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6526111592",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4352",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "amenity": "clinic",
+        "brand": "DaVita Dialysis",
+        "brand:wikidata": "Q5207184",
+        "check_date": "2025-04-02",
+        "contact:phone": "+1 800-424-6589",
+        "contact:website": "https://www.davita.com/locations/va/henrico/4352-s-laburnum-ave--11347",
+        "healthcare": "dialysis",
+        "healthcare:speciality": "nephrology",
+        "name": "DaVita Dialysis",
+        "opening_hours:signed": "no",
+        "operator": "DaVita Dialysis",
+        "operator:type": "private",
+        "operator:wikidata": "Q5207184"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3604374,
+          37.5285415
+        ]
+      },
+      "id": "node/6526111592"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6618127562",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Glenside Medical Association"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4981299,
+          37.6146893
+        ]
+      },
+      "id": "node/6618127562"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6648621252",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "11341",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "180",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Vera Whole Health - Short Pump",
+        "opening_hours": "Mo-We,Fr 08:00-17:00; Th 09:00-18:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6073361,
+          37.6495117
+        ]
+      },
+      "id": "node/6648621252"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6655231874",
+        "addr:city": "Henrico County",
+        "addr:housenumber": "1380",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "North Parham Road",
+        "amenity": "clinic",
+        "check_date": "2025-05-17",
+        "contact:phone": "+1 804-821-0010",
+        "contact:website": "https://www.carenow.com/locations/richmond/regency-square",
+        "healthcare": "clinic",
+        "name": "CareNow Urgent Care",
+        "opening_hours": "08:00-20:00",
+        "opening_hours:signed": "yes",
+        "source": "esri_USDOT_Virgina",
+        "source:opening_hours": "entrance; website"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5648274,
+          37.6000446
+        ]
+      },
+      "id": "node/6655231874"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6669474941",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "3900",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Springfield Road",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "healthcare:speciality": "acupuncture",
+        "name": "WEN Acupuncture & Wellness",
+        "opening_hours": "Mo-Fr 09:00-18:00; Su 09:00-17:00",
+        "phone": "+1-804-774-7118",
+        "website": "https://www.wenacupunctureva.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5597035,
+          37.6433316
+        ]
+      },
+      "id": "node/6669474941"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6690313370",
+        "addr:city": "Henrico",
+        "addr:housenumber": "11823",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "LightRx",
+        "opening_hours": "Mo-Fr 10:00-19:00; Sa 10:00-15:00",
+        "phone": "+1-804-206-9699",
+        "website": "https://www.lightrx.com/locations/richmond/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6220581,
+          37.652797
+        ]
+      },
+      "id": "node/6690313370"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6690313415",
+        "addr:city": "Richmond",
+        "addr:housenumber": "11739",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "DWH Health & Wellness Med Spa",
+        "opening_hours": "Mo-Th 09:00-18:00; Fr 09:00-16:30; Sa 09:00-13:00",
+        "phone": "+1-804-447-2303",
+        "website": "https://dwhmedspa.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6209307,
+          37.65207
+        ]
+      },
+      "id": "node/6690313415"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6696590701",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "4028",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Cox Road",
+        "addr:unit": "L",
+        "amenity": "doctors",
+        "check_date": "2026-04-11",
+        "contact:phone": "+1 804-251-2960",
+        "contact:website": "https://mylocalinfusion.com/location/glen-allen-virginia/",
+        "healthcare": "doctor",
+        "name": "Local Infusion",
+        "opening_hours": "Mo-Su 09:00-20:00 \"By appointment only\"",
+        "opening_hours:signed": "no",
+        "payment:american_express": "yes",
+        "payment:discover_card": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "source:opening_hours": "website"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5842599,
+          37.6478508
+        ]
+      },
+      "id": "node/6696590701"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6818255893",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7001",
+        "addr:postcode": "23230",
+        "addr:state": "VA",
+        "addr:street": "Forest Avenue",
+        "addr:unit": "400",
+        "healthcare": "doctor",
+        "healthcare:speciality": "dermatology",
+        "level": "3",
+        "name": "Commonwealth Dermatology",
+        "opening_hours": "Mo-Th 08:00-17:00; Fr 08:00-12:00",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5267731,
+          37.6021624
+        ]
+      },
+      "id": "node/6818255893"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10301653810",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "name": "Hear Virginia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4956933,
+          37.5838039
+        ]
+      },
+      "id": "node/10301653810"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11907287728",
+        "addr:city": "Richmond",
+        "addr:housenumber": "8600",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "Quioccasin Road",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "CrossOver Healthcare Ministry",
+        "website": "https://www.crossoverministry.org/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5652485,
+          37.6025544
+        ]
+      },
+      "id": "node/11907287728"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12576901655",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2812",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "Emerywood Parkway",
+        "addr:unit": "160",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "healthcare:speciality": "travel_clinic;vaccination",
+        "name": "Passport Health Richmond Travel Clinic",
+        "operator": "Passport Health",
+        "operator:type": "private",
+        "operator:wikidata": "Q30270336"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5243918,
+          37.609238
+        ]
+      },
+      "id": "node/12576901655"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13414185636",
+        "amenity": "doctors",
+        "check_date": "2025-12-28",
+        "healthcare": "doctor",
+        "name": "Commonwealth Primary Care"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6070266,
+          37.6224487
+        ]
+      },
+      "id": "node/13414185636"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13414204507",
+        "amenity": "doctors",
+        "check_date": "2025-12-28",
+        "healthcare": "doctor",
+        "name": "Acorn Pediatrics"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5781081,
+          37.6308194
+        ]
+      },
+      "id": "node/13414204507"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13697034345",
+        "addr:city": "Henrico",
+        "addr:housenumber": "4200",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Greybull Drive",
+        "addr:unit": "300",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "healthcare:speciality": "cardiology",
+        "name": "Henrico Cardiology Associates - Short Pump",
+        "opening_hours": "Mo-Fr 08:30-16:30",
+        "phone": "+1-804-560-8880",
+        "website": "https://hcavirginiaphysicians.com/locations/henrico-cardiology-associates-short-pump/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.642982,
+          37.6609918
+        ]
+      },
+      "id": "node/13697034345"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13697034346",
+        "addr:city": "Henrico",
+        "addr:housenumber": "12320",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "100",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "healthcare:speciality": "emergency",
+        "name": "Bon Secours Short Pump Emergency Center",
+        "opening_hours": "24/7",
+        "phone": "+1-804-923-1400",
+        "website": "https://www.bonsecours.com/locations/emergency-rooms/richmond/bon-secours-short-pump-emergency-center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6430767,
+          37.6620613
+        ]
+      },
+      "id": "node/13697034346"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13717414736",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "4300",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Pouncey Tract Road",
+        "amenity": "doctors",
+        "healthcare": "doctor",
+        "healthcare:speciality": "paediatrics",
+        "name": "Pediatric Associates of Richmond",
+        "opening_hours": "Mo-Fr 08:30-17:00",
+        "phone": "+1-804-282-4205"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6125685,
+          37.6547398
+        ]
+      },
+      "id": "node/13717414736"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13879297663",
+        "addr:city": "Henrico",
+        "addr:housenumber": "3652",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Mayland Court",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "EOS AgeWell Center",
+        "opening_hours": "Mo-Fr 09:00-17:00",
+        "phone": "+1-804-496-2200"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5704607,
+          37.640048
+        ]
+      },
+      "id": "node/13879297663"
+    }
+  ]
+}

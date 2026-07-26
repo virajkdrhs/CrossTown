@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "Libraries",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "OBJECTID": 2, "BRANCH": "Fairfield Area Library", "ADDRESS": "1401 N. Laburnum Ave.", "PHONE": "501-1930" }, "geometry": { "type": "Point", "coordinates": [ -77.376627670454127, 37.56515874733671 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 3, "BRANCH": "Gayton Branch Library", "ADDRESS": "10600 Gayton Rd.", "PHONE": "501-1960" }, "geometry": { "type": "Point", "coordinates": [ -77.607330260545808, 37.608041552974768 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 4, "BRANCH": "Glen Allen Branch Library", "ADDRESS": "10501 Staples Mill Rd.", "PHONE": "501-1950" }, "geometry": { "type": "Point", "coordinates": [ -77.52763312260511, 37.663654940522207 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 5, "BRANCH": "North Park Branch Library", "ADDRESS": "8508 Franconia Rd.", "PHONE": "501-1970" }, "geometry": { "type": "Point", "coordinates": [ -77.440242261326887, 37.641170368449536 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 6, "BRANCH": "Sandston Branch Library", "ADDRESS": "23 E. Williamsburg Rd.", "PHONE": "501-1990" }, "geometry": { "type": "Point", "coordinates": [ -77.312411660542153, 37.522495442339668 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 7, "BRANCH": "Tuckahoe Area Library", "ADDRESS": "1901 Starling Dr.", "PHONE": "501-1910" }, "geometry": { "type": "Point", "coordinates": [ -77.567047468642642, 37.610323472198552 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 10, "BRANCH": "Twin Hickory Area Library", "ADDRESS": "5001 Twin Hickory Rd.", "PHONE": "501-1920" }, "geometry": { "type": "Point", "coordinates": [ -77.595082612386207, 37.675896019439278 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 11, "BRANCH": "Libbie Mill Library", "ADDRESS": "2100 Libbie Lake East St.", "PHONE": "501-1940" }, "geometry": { "type": "Point", "coordinates": [ -77.496558645024578, 37.590256901010399 ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 12, "BRANCH": "Varina Area Library", "ADDRESS": "1875 New Market Rd.", "PHONE": "501-1980" }, "geometry": { "type": "Point", "coordinates": [ -77.380370143328761, 37.459126727399656 ] } }
+]
+}

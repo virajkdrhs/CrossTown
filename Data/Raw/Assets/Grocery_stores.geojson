@@ -1,0 +1,7349 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-07-16T17:50:26Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20276521",
+        "highway": "residential",
+        "name": "Freshet Court",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.394356,
+          37.5020263
+        ]
+      },
+      "id": "way/20276521"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20282987",
+        "highway": "residential",
+        "name": "Saint Martins Trail",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5500295,
+          37.631183
+        ]
+      },
+      "id": "way/20282987"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20282992",
+        "highway": "residential",
+        "name": "Saint Martins Trail",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.550386,
+          37.631536
+        ]
+      },
+      "id": "way/20282992"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20283380",
+        "highway": "residential",
+        "name": "Saint Martin Lane",
+        "name_1": "St Martins Lane",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5486904,
+          37.6322628
+        ]
+      },
+      "id": "way/20283380"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20290798",
+        "highway": "primary",
+        "lanes": "1",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "yes",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A35",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3410395,
+          37.4397607
+        ]
+      },
+      "id": "way/20290798"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20290846",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.2868294,
+          37.416666
+        ]
+      },
+      "id": "way/20290846"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20292154",
+        "highway": "residential",
+        "name": "New Market Heights Lane",
+        "tiger:cfcc": "A41",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market Heights",
+        "tiger:name_type": "Ln",
+        "tiger:reviewed": "no",
+        "tiger:zip_left": "23231",
+        "tiger:zip_right": "23231",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3164075,
+          37.4347791
+        ]
+      },
+      "id": "way/20292154"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20292550",
+        "highway": "residential",
+        "name": "Martin Avenue",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4047935,
+          37.5764465
+        ]
+      },
+      "id": "way/20292550"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/20292551",
+        "highway": "residential",
+        "name": "Martin Street",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4734203,
+          37.6093899
+        ]
+      },
+      "id": "way/20292551"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/38003082",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "ref": "VA 5;VA 156",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.2544751,
+          37.3982148
+        ]
+      },
+      "id": "way/38003082"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/38003083",
+        "highway": "primary",
+        "lanes": "1",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "yes",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3272177,
+          37.43324
+        ]
+      },
+      "id": "way/38003083"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/38003084",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3435188,
+          37.4410681
+        ]
+      },
+      "id": "way/38003084"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/38003090",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3925198,
+          37.4776014
+        ]
+      },
+      "id": "way/38003090"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/38003091",
+        "bridge": "yes",
+        "highway": "primary",
+        "lanes": "2",
+        "layer": "1",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "paved",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3790096,
+          37.4614902
+        ]
+      },
+      "id": "way/38003091"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/130437726",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "yes",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3334734,
+          37.4362749
+        ]
+      },
+      "id": "way/130437726"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/130437727",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "yes",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A35",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3347764,
+          37.4367644
+        ]
+      },
+      "id": "way/130437727"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/130437728",
+        "highway": "primary",
+        "lanes": "1",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "yes",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.340751,
+          37.4396847
+        ]
+      },
+      "id": "way/130437728"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/130437729",
+        "highway": "primary",
+        "lanes": "1",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "yes",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A35",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3278726,
+          37.4335142
+        ]
+      },
+      "id": "way/130437729"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/154253086",
+        "addr:city": "Glen Allen",
+        "addr:country": "US",
+        "addr:housenumber": "11400",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Walmart",
+        "brand:wikidata": "Q483551",
+        "building": "retail",
+        "name": "Walmart Supercenter",
+        "opening_hours": "Mo-Su 06:00-23:00",
+        "operator": "Walmart",
+        "operator:wikidata": "Q483551",
+        "payment:app:walmart": "yes",
+        "payment:apple_pay": "no",
+        "payment:google_pay": "no",
+        "payment:samsung_pay": "no",
+        "phone": "+1 804-360-9777",
+        "ref": "1523",
+        "ref:walmart": "1523",
+        "sensory_friendly:accommodation": "dimmed_light;static_screens;no_pa",
+        "sensory_friendly:conditional": "yes @ 08:00-10:00",
+        "shop": "supermarket",
+        "website": "https://www.walmart.com/store/1523-glen-allen-va",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6079783,
+          37.6519993
+        ]
+      },
+      "id": "way/154253086"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/182714351",
+        "addr:city": "Richmond",
+        "addr:housenumber": "11895",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "branch": "Short Pump",
+        "brand": "Kroger",
+        "brand:wikidata": "Q153417",
+        "building": "yes",
+        "name": "Kroger",
+        "opening_hours": "Mo-Su 06:00-23:00",
+        "phone": "+1 804-364-6275",
+        "ref": "0290051709",
+        "shop": "supermarket",
+        "website": "https://www.kroger.com/stores/grocery/va/richmond/short-pump/029/00517",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6257904,
+          37.6528796
+        ]
+      },
+      "id": "way/182714351"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/208639824",
+        "highway": "residential",
+        "name": "New Market Village Parkway",
+        "source": "bing",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3636245,
+          37.4835226
+        ]
+      },
+      "id": "way/208639824"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/208639825",
+        "highway": "residential",
+        "name": "New Market Village Boulevard",
+        "oneway": "yes",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3619112,
+          37.4839015
+        ]
+      },
+      "id": "way/208639825"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/208639827",
+        "highway": "residential",
+        "name": "New Market Village Boulevard",
+        "oneway": "yes",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3617841,
+          37.4838645
+        ]
+      },
+      "id": "way/208639827"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/208639843",
+        "highway": "residential",
+        "name": "New Market Village Boulevard",
+        "source": "bing",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.363073,
+          37.4823082
+        ]
+      },
+      "id": "way/208639843"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/208639844",
+        "highway": "residential",
+        "name": "New Market Village Lane",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3630914,
+          37.484488
+        ]
+      },
+      "id": "way/208639844"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/225757895",
+        "addr:housenumber": "11194",
+        "addr:postcode": "23060",
+        "addr:street": "West Broad Street",
+        "brand": "World Market",
+        "brand:wikidata": "Q5174750",
+        "building": "yes",
+        "name": "World Market",
+        "official_name": "Cost Plus World Market",
+        "opening_hours": "Mo-Fr 10:00-20:00; Sa 09:00-20:00; Su 10:00-19:00",
+        "phone": "+1-804-364-7000",
+        "shop": "interior_decoration",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6003891,
+          37.6505838
+        ]
+      },
+      "id": "way/225757895"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/225757909",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "11173",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "branch": "Short Pump",
+        "brand": "Whole Foods Market",
+        "brand:wikidata": "Q1809448",
+        "building": "yes",
+        "check_date": "2026-04-09",
+        "check_date:opening_hours": "2024-10-03",
+        "name": "Whole Foods Market",
+        "opening_hours": "Mo-Su 08:00-21:00",
+        "phone": "+1 804-364-4050",
+        "ref": "shortpump",
+        "shop": "supermarket",
+        "website": "https://www.wholefoodsmarket.com/stores/shortpump",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5997327,
+          37.6477658
+        ]
+      },
+      "id": "way/225757909"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/225757979",
+        "addr:city": "Henrico",
+        "addr:housenumber": "3460",
+        "addr:postcode": "23233-1111",
+        "addr:state": "VA",
+        "addr:street": "Pump Road",
+        "branch": "Short Pump Crossing Shopping Center",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "building": "yes",
+        "name": "Publix",
+        "opening_hours": "Mo-Su 07:00-21:00",
+        "payment:american_express": "yes",
+        "payment:apple_pay": "yes",
+        "payment:cash": "yes",
+        "payment:coins": "yes",
+        "payment:contactless": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "payment:google_pay": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "payment:visa_debit": "yes",
+        "phone": "+1 804-364-6314",
+        "ref": "1587",
+        "shop": "supermarket",
+        "website": "https://www.publix.com/locations/1587",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6158726,
+          37.6490256
+        ]
+      },
+      "id": "way/225757979"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/225760699",
+        "addr:city": "Richmond",
+        "addr:housenumber": "11740",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "A",
+        "brand": "PetSmart",
+        "brand:wikidata": "Q3307147",
+        "building": "yes",
+        "name": "PetSmart",
+        "opening_hours": "Mo-Sa 09:00-21:00; Su 10:00-19:00",
+        "phone": "+1 804-364-2570",
+        "ref": "1354",
+        "shop": "pet",
+        "website": "https://www.petsmart.com/stores/us/va/richmond-store1354.html",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6143933,
+          37.6568585
+        ]
+      },
+      "id": "way/225760699"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/234353789",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "4150",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Tom Leonard Drive",
+        "building": "yes",
+        "name": "Tom Leonard's Farmers Market",
+        "opening_hours": "Mo-Su 08:00-20:00",
+        "phone": "+1-804-364-5800",
+        "shop": "supermarket",
+        "website": "https://tomleonardsfarmersmarket.com/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5992117,
+          37.6517781
+        ]
+      },
+      "id": "way/234353789"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/236290647",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "9870",
+        "addr:postcode": "23059",
+        "addr:state": "VA",
+        "addr:street": "Brook Road",
+        "brand": "PetSmart",
+        "brand:wikidata": "Q3307147",
+        "building": "yes",
+        "check_date": "2025-03-22",
+        "name": "PetSmart",
+        "opening_hours": "Mo-Sa 09:00-21:00; Su 10:00-19:00",
+        "opening_hours:signed": "yes",
+        "phone": "+1 804-266-1476",
+        "ref": "1051",
+        "shop": "pet",
+        "source:opening_hours": "entrance; website",
+        "website": "https://www.petsmart.com/stores/us/va/glen-allen-store1051.html",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4631132,
+          37.6685579
+        ]
+      },
+      "id": "way/236290647"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/236327321",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "10150",
+        "addr:postcode": "23059",
+        "addr:state": "VA",
+        "addr:street": "Brook Road",
+        "branch": "Virginia Center Marketplace",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "building": "retail",
+        "disused:shop": "supermarket",
+        "internet_access": "wlan",
+        "name": "Publix",
+        "opening_hours": "Mo-Su 07:00-22:00",
+        "phone": "+1 804-262-8190",
+        "ref": "1591",
+        "shop": "supermarket",
+        "website": "https://www.publix.com/locations/1591",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4632117,
+          37.675106
+        ]
+      },
+      "id": "way/236327321"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/236327341",
+        "addr:housenumber": "9999",
+        "addr:postcode": "23059",
+        "addr:street": "Brook Road",
+        "building": "yes",
+        "check_date": "2025-02-01",
+        "name": "Food Mart",
+        "opening_hours": "Mo-Th 06:00-21:00; Fr-Sa 06:00-22:00; Su 07:00-21:00",
+        "opening_hours:signed": "yes",
+        "shop": "convenience",
+        "source:opening_hours": "entrance",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4601657,
+          37.6709662
+        ]
+      },
+      "id": "way/236327341"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/253134337",
+        "addr:housenumber": "10201",
+        "addr:postcode": "23060",
+        "addr:street": "Staples Mill Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5221336,
+          37.6558627
+        ]
+      },
+      "id": "way/253134337"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/253134339",
+        "addr:city": "Henrico",
+        "addr:housenumber": "9000",
+        "addr:postcode": "23228",
+        "addr:street": "Staples Mill Road",
+        "branch": "Staples Mill",
+        "brand": "Kroger",
+        "brand:wikidata": "Q153417",
+        "building": "yes",
+        "name": "Kroger Marketplace",
+        "operator": "The Kroger Co.",
+        "shop": "supermarket",
+        "website": "https://www.kroger.com/stores/grocery/va/henrico/staples-mill-marketplace/029/00519",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5143685,
+          37.6372018
+        ]
+      },
+      "id": "way/253134339"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/253134346",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "name": "Food Lion",
+        "shop": "supermarket",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5142704,
+          37.6416418
+        ]
+      },
+      "id": "way/253134346"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/253134358",
+        "addr:city": "Henrico",
+        "addr:housenumber": "8851",
+        "addr:postcode": "23228",
+        "addr:state": "VA",
+        "addr:street": "Staples Mill Road",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "yes",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "ref": "682",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/682",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5087277,
+          37.6352513
+        ]
+      },
+      "id": "way/253134358"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/253555343",
+        "addr:housenumber": "4475",
+        "addr:postcode": "23231",
+        "addr:street": "South Laburnum Avenue",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "retail",
+        "building:levels": "1",
+        "check_date": "2024-11-30",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/4475-s-laburnum-ave-34136",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.353195,
+          37.5256583
+        ]
+      },
+      "id": "way/253555343"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/253555358",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4591",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "branch": "White Oak Village",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "building": "retail",
+        "check_date": "2024-11-30",
+        "name": "Publix",
+        "opening_hours": "Mo-Su 07:00-22:00",
+        "opening_hours:pharmacy": "Mo-Fr 09:00-21:00; Sa 09:19:00; Su 11:00-18:00",
+        "opening_hours:signed": "yes",
+        "phone": "+1 804-226-1915",
+        "phone:pharmacy": "+1 804-591-4321",
+        "ref": "1596",
+        "shop": "supermarket",
+        "source:opening_hours": "entrance;website",
+        "website": "https://www.publix.com/locations/1596",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3518322,
+          37.525517
+        ]
+      },
+      "id": "way/253555358"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/253555989",
+        "addr:city": "Richmond",
+        "addr:country": "US",
+        "addr:housenumber": "1504",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "North Parham Road",
+        "brand": "Walmart",
+        "brand:wikidata": "Q483551",
+        "building": "retail",
+        "check_date": "2026-01-24",
+        "name": "Walmart Supercenter",
+        "opening_hours": "06:00-23:00",
+        "operator": "Walmart",
+        "operator:wikidata": "Q483551",
+        "payment:app:walmart": "yes",
+        "payment:apple_pay": "no",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "payment:google_pay": "no",
+        "payment:samsung_pay": "no",
+        "phone": "+1 804-270-6034",
+        "ref": "3869",
+        "ref:walmart": "3869",
+        "sensory_friendly:accommodation": "dimmed_light;static_screens;no_pa",
+        "sensory_friendly:conditional": "yes @ 08:00-10:00",
+        "shop": "supermarket",
+        "source:opening_hours": "entrance",
+        "website": "https://www.walmart.com/store/3869-richmond-va",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5661449,
+          37.604041
+        ]
+      },
+      "id": "way/253555989"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/257581353",
+        "addr:housenumber": "8750",
+        "addr:postcode": "23227",
+        "addr:street": "Park Central Drive",
+        "building": "commercial",
+        "name": "Kraft Foods",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4422858,
+          37.6430348
+        ]
+      },
+      "id": "way/257581353"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/263148667",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "11052",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "retail",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "phone": "+1-804-527-8302",
+        "ref": "8615",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/8615",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5899422,
+          37.6485608
+        ]
+      },
+      "id": "way/263148667"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/263149935",
+        "addr:city": "Henrico",
+        "addr:housenumber": "9480",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "branch": "West Broad",
+        "brand": "Kroger",
+        "brand:wikidata": "Q153417",
+        "building": "yes",
+        "name": "Kroger",
+        "opening_hours": "Mo-Su 06:00-23:00",
+        "phone": "+1 804-270-5896",
+        "ref": "02900500",
+        "shop": "supermarket",
+        "website": "https://www.kroger.com/stores/grocery/va/henrico/west-broad/029/00500",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5551598,
+          37.6410864
+        ]
+      },
+      "id": "way/263149935"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/263149945",
+        "addr:city": "Richmond",
+        "addr:housenumber": "9525",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "retail",
+        "check_date": "2026-05-24",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/9525-w-broad-st-36963",
+        "name": "7-Eleven",
+        "opening_hours": "24/7",
+        "phone": "+1-804-273-1716",
+        "shop": "convenience",
+        "source:opening_hours": "website",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5605664,
+          37.6400415
+        ]
+      },
+      "id": "way/263149945"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/269728476",
+        "addr:city": "Richmond",
+        "addr:housenumber": "10601",
+        "addr:postcode": "23238",
+        "addr:state": "VA",
+        "addr:street": "Patterson Avenue",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "phone": "+1 804-741-1051",
+        "ref": "36093",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/richmond/10601-patterson-rd-36093",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6075639,
+          37.5965252
+        ]
+      },
+      "id": "way/269728476"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/294874967",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.317694,
+          37.4304923
+        ]
+      },
+      "id": "way/294874967"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/294874968",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3646452,
+          37.450561
+        ]
+      },
+      "id": "way/294874968"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/301430207",
+        "addr:housenumber": "11301",
+        "addr:postcode": "23059",
+        "addr:street": "Nuckols Road",
+        "building": "yes",
+        "name": "Miller's",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5900296,
+          37.6823036
+        ]
+      },
+      "id": "way/301430207"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/302299527",
+        "addr:housenumber": "900",
+        "addr:postcode": "23228",
+        "addr:street": "East Parham Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/900-e-parham-rd-32970",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4599679,
+          37.635598
+        ]
+      },
+      "id": "way/302299527"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/302303184",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "8800",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Brook Road",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "yes",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "phone": "+1 804-264-4698",
+        "ref": "677",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/677",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4610627,
+          37.642978
+        ]
+      },
+      "id": "way/302303184"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304008550",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4816",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "branch": "Laburnum",
+        "brand": "Kroger",
+        "brand:wikidata": "Q153417",
+        "building": "yes",
+        "name": "Kroger",
+        "opening_hours": "Mo-Fr 08:00-20:00;Sa 09:00-18:00;Su 10:00-17:00",
+        "phone": "+1 804-222-0240",
+        "ref": "0290050209",
+        "shop": "supermarket",
+        "website": "https://www.kroger.com/stores/grocery/va/richmond/laburnum/029/00502",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3519495,
+          37.5197899
+        ]
+      },
+      "id": "way/304008550"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304016115",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1334",
+        "addr:postcode": "23238",
+        "addr:state": "VA",
+        "addr:street": "Gaskins Road",
+        "branch": "Gayton Crossing",
+        "brand": "Kroger",
+        "brand:wikidata": "Q153417",
+        "building": "yes",
+        "name": "Kroger",
+        "opening_hours": "Mo-Fr 09:00-20:00;Sa 09:00-18:00;Su 10:00-17:00",
+        "phone": "+1 804-740-0011",
+        "ref": "0290050309",
+        "shop": "supermarket",
+        "website": "https://www.kroger.com/stores/grocery/va/richmond/gayton-crossing/029/00503",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5921683,
+          37.6065999
+        ]
+      },
+      "id": "way/304016115"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304028940",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1510",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "Eastridge Road",
+        "branch": "Eastridge",
+        "brand": "Kroger",
+        "brand:wikidata": "Q153417",
+        "building": "yes",
+        "name": "Kroger",
+        "opening_hours": "Mo-Fr 09:00-20:00;Sa 09:00-18:00;Su 10:00-17:00",
+        "phone": "+1 804-288-2730",
+        "ref": "0290052509",
+        "shop": "supermarket",
+        "website": "https://www.kroger.com/stores/grocery/va/richmond/eastridge/029/00525",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5618271,
+          37.6036596
+        ]
+      },
+      "id": "way/304028940"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304028943",
+        "addr:housenumber": "1504",
+        "addr:postcode": "23229",
+        "addr:street": "Eastridge Road",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.562657,
+          37.6022244
+        ]
+      },
+      "id": "way/304028943"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304133055",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2949",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "building": "retail",
+        "name": "Food Lion",
+        "shop": "supermarket",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3757715,
+          37.5165928
+        ]
+      },
+      "id": "way/304133055"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304253139",
+        "addr:city": "Henrico",
+        "addr:housenumber": "2250",
+        "addr:postcode": "23233-6913",
+        "addr:state": "VA",
+        "addr:street": "John Rolfe Parkway",
+        "branch": "John Rolfe Commons",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "building": "yes",
+        "check_date": "2025-11-17",
+        "name": "Publix",
+        "opening_hours": "07:00-21:00",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1 804-360-4920",
+        "ref": "1590",
+        "shop": "supermarket",
+        "website": "https://www.publix.com/locations/1590",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6241602,
+          37.6225954
+        ]
+      },
+      "id": "way/304253139"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304708305",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "9645",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "branch": "Westpark Shopping Center",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "building": "yes",
+        "check_date": "2026-04-27",
+        "name": "Publix",
+        "opening_hours": "Mo-Su 07:00-21:00",
+        "opening_hours:signed": "yes",
+        "phone": "+1 804-965-6303",
+        "ref": "1595",
+        "shop": "supermarket",
+        "source:opening_hours": "entrance; website",
+        "website": "https://www.publix.com/locations/1595-westpark-shopping-center",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5632644,
+          37.6399535
+        ]
+      },
+      "id": "way/304708305"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/304729157",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "10250",
+        "addr:postcode": "23060-3064",
+        "addr:state": "VA",
+        "addr:street": "Staples Mill Road",
+        "branch": "The Shoppes at Crossridge",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "building": "yes",
+        "name": "Publix",
+        "opening_hours": "Mo-Su 07:00-22:00",
+        "phone": "+1 804-755-2360",
+        "ref": "1589",
+        "shop": "supermarket",
+        "website": "https://www.publix.com/locations/1589",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5258257,
+          37.6567867
+        ]
+      },
+      "id": "way/304729157"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/305645495",
+        "addr:housenumber": "3101",
+        "addr:postcode": "23233",
+        "addr:street": "Lauderdale Drive",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/3101-lauderdale-dr-40018",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6316138,
+          37.6388291
+        ]
+      },
+      "id": "way/305645495"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/314799461",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4050",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Spring Oak Drive",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "name": "7-Eleven",
+        "opening_hours": "24/7",
+        "phone": "+1-804-364-4930",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6167094,
+          37.6516405
+        ]
+      },
+      "id": "way/314799461"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/316225979",
+        "leisure": "nature_reserve",
+        "name": "New Market Park",
+        "owner": "Henrico County",
+        "website": "http://www.co.henrico.va.us/rec/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3263224,
+          37.4282884
+        ]
+      },
+      "id": "way/316225979"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/365801794",
+        "addr:housenumber": "5",
+        "addr:postcode": "23223",
+        "addr:street": "Kenway Avenue",
+        "building": "yes",
+        "name": "Kenway Express",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3665271,
+          37.5465842
+        ]
+      },
+      "id": "way/365801794"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/365801804",
+        "addr:city": "Richmond",
+        "addr:country": "US",
+        "addr:housenumber": "5001",
+        "addr:postcode": "23223",
+        "addr:state": "VA",
+        "addr:street": "Nine Mile Road",
+        "brand": "Walmart",
+        "brand:wikidata": "Q483551",
+        "building": "retail",
+        "name": "Walmart Supercenter",
+        "opening_hours": "Mo-Su 06:00-24:00",
+        "operator": "Walmart",
+        "operator:wikidata": "Q483551",
+        "payment:app:walmart": "yes",
+        "payment:apple_pay": "no",
+        "payment:google_pay": "no",
+        "payment:samsung_pay": "no",
+        "phone": "+1 804-253-1528",
+        "ref": "7032",
+        "ref:walmart": "7032",
+        "sensory_friendly:accommodation": "dimmed_light;static_screens;no_pa",
+        "sensory_friendly:conditional": "yes @ 08:00-10:00",
+        "shop": "supermarket",
+        "website": "https://www.walmart.com/store/7032-henrico-va",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3639627,
+          37.5445939
+        ]
+      },
+      "id": "way/365801804"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/365801806",
+        "addr:housenumber": "5051",
+        "addr:postcode": "23223",
+        "addr:street": "Nine Mile Road",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3632183,
+          37.5463792
+        ]
+      },
+      "id": "way/365801806"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/365945504",
+        "addr:housenumber": "5900",
+        "addr:postcode": "23230",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "demolished:building": "yes",
+        "name": "Wawa",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5052994,
+          37.591777
+        ]
+      },
+      "id": "way/365945504"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/365945511",
+        "addr:housenumber": "6221",
+        "addr:postcode": "23226",
+        "addr:street": "West Broad Street",
+        "building": "yes",
+        "name": "Tan A Supermarket",
+        "shop": "supermarket",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5106712,
+          37.5949179
+        ]
+      },
+      "id": "way/365945511"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/369196119",
+        "addr:housenumber": "5401",
+        "addr:postcode": "23230",
+        "addr:street": "Glenside Drive",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5138022,
+          37.6099476
+        ]
+      },
+      "id": "way/369196119"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/391958172",
+        "addr:city": "Henrico",
+        "addr:housenumber": "12200",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Wegmans Boulevard",
+        "branch": "Short Pump",
+        "brand": "Wegmans",
+        "brand:wikidata": "Q11288478",
+        "building": "yes",
+        "name": "Wegmans",
+        "opening_hours": "Mo-Su 06:00-00:00",
+        "phone": "+1 804-377-4100",
+        "ref": "130",
+        "shop": "supermarket",
+        "website": "https://www.wegmans.com/stores/short-pump-va",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.63524,
+          37.6632417
+        ]
+      },
+      "id": "way/391958172"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/427474986",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "5400",
+        "addr:postcode": "23059",
+        "addr:state": "VA",
+        "addr:street": "Wyndham Forest Drive",
+        "air_conditioning": "yes",
+        "branch": "Nuckols Place",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "building": "yes",
+        "currency:USD": "yes",
+        "name": "Publix",
+        "opening_hours": "Mo-Su 07:00-22:00",
+        "phone": "+1 804-527-5334",
+        "ref": "1566",
+        "shop": "supermarket",
+        "toilets": "yes",
+        "website": "https://www.publix.com/locations/1566",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5865194,
+          37.6839596
+        ]
+      },
+      "id": "way/427474986"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/465954799",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2415",
+        "addr:postcode": "23230",
+        "addr:state": "VA",
+        "addr:street": "Staples Mill Road",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "retail",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "ref": "8630",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/8630",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4926415,
+          37.5916971
+        ]
+      },
+      "id": "way/465954799"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/465954813",
+        "addr:city": "Henrico",
+        "addr:county": "Henrico, VA",
+        "addr:housenumber": "8951",
+        "addr:postcode": "23228-2020",
+        "addr:state": "VA",
+        "addr:street": "Staples Mill Road",
+        "brand": "ALDI",
+        "brand:wikidata": "Q41171672",
+        "building": "retail",
+        "delivery": "yes",
+        "drink:beer": "bottled",
+        "drink:wine": "bottled",
+        "drive_through": "yes",
+        "name": "ALDI",
+        "opening_hours": "Mo-Su 08:00-21:00",
+        "payment:american_express": "yes",
+        "payment:apple_pay": "yes",
+        "payment:cheque": "no",
+        "payment:coins": "yes",
+        "payment:debit_cards": "yes",
+        "payment:discover_card": "yes",
+        "payment:ebt": "yes",
+        "payment:google_pay": "yes",
+        "payment:mastercard": "yes",
+        "payment:notes": "yes",
+        "payment:snap": "yes",
+        "payment:visa": "yes",
+        "payment:wic": "no",
+        "phone": "+1 833-480-1002",
+        "shop": "supermarket",
+        "website": "https://stores.aldi.us/va/henrico/8951-staples-mill-road",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5109514,
+          37.6375805
+        ]
+      },
+      "id": "way/465954813"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/465973285",
+        "addr:city": "Richmond",
+        "addr:country": "US",
+        "addr:housenumber": "6920",
+        "addr:postcode": "23226",
+        "addr:state": "VA",
+        "addr:street": "Forest Avenue",
+        "brand": "Walmart",
+        "brand:wikidata": "Q483551",
+        "building": "retail",
+        "check_date": "2025-05-17",
+        "name": "Walmart Supercenter",
+        "opening_hours": "06:00-23:00",
+        "opening_hours:signed": "yes",
+        "operator": "Walmart",
+        "operator:wikidata": "Q483551",
+        "payment:app:walmart": "yes",
+        "payment:apple_pay": "no",
+        "payment:google_pay": "no",
+        "payment:samsung_pay": "no",
+        "phone": "+1 804-774-2236",
+        "ref": "4191",
+        "ref:walmart": "4191",
+        "sensory_friendly:accommodation": "dimmed_light;static_screens;no_pa",
+        "sensory_friendly:conditional": "yes @ 08:00-10:00",
+        "shop": "supermarket",
+        "source:opening_hours": "entrance; website",
+        "website": "https://www.walmart.com/store/4191-richmond-va",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5220782,
+          37.6029578
+        ]
+      },
+      "id": "way/465973285"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/466247842",
+        "name": "New Grand Mart",
+        "shop": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5490282,
+          37.6343176
+        ]
+      },
+      "id": "node/466247842"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/530421863",
+        "landuse": "retail",
+        "name": "West Broad Marketplace",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6373618,
+          37.6630208
+        ]
+      },
+      "id": "way/530421863"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/530422829",
+        "addr:city": "Henrico",
+        "addr:county": "Henrico, VA",
+        "addr:housenumber": "12390",
+        "addr:postcode": "23233-7606",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Aldi",
+        "brand:wikidata": "Q41171672",
+        "building": "retail",
+        "delivery": "yes",
+        "drink:beer": "bottled",
+        "drink:wine": "bottled",
+        "drive_through": "yes",
+        "name": "Aldi",
+        "opening_hours": "Mo-Su 09:00-20:00",
+        "payment:american_express": "yes",
+        "payment:apple_pay": "yes",
+        "payment:cheque": "no",
+        "payment:coins": "yes",
+        "payment:debit_cards": "yes",
+        "payment:discover_card": "yes",
+        "payment:ebt": "yes",
+        "payment:google_pay": "yes",
+        "payment:mastercard": "yes",
+        "payment:notes": "yes",
+        "payment:snap": "yes",
+        "payment:visa": "yes",
+        "payment:wic": "no",
+        "phone": "+1 855-480-1010",
+        "shop": "supermarket",
+        "website": "https://stores.aldi.us/va/henrico/12390-west-broad-street",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6439012,
+          37.6621756
+        ]
+      },
+      "id": "way/530422829"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/541906204",
+        "addr:housenumber": "11390",
+        "addr:postcode": "23059",
+        "addr:street": "Nuckols Road",
+        "building": "yes",
+        "name": "Fas Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5885678,
+          37.6836558
+        ]
+      },
+      "id": "way/541906204"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/541906231",
+        "addr:housenumber": "11163",
+        "addr:postcode": "23059",
+        "addr:street": "Nuckols Road",
+        "amenity": "bank",
+        "atm": "yes",
+        "building": "commercial",
+        "building:levels": "1",
+        "drive_through": "yes",
+        "name": "Union First Market",
+        "operator": "Union First Market",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5858154,
+          37.6775216
+        ]
+      },
+      "id": "way/541906231"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/558369536",
+        "addr:housenumber": "9000",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "Street Martins Lane",
+        "amenity": "place_of_worship",
+        "building": "yes",
+        "ele": "97",
+        "gnis:feature_id": "1760223",
+        "name": "Saint Martins Episcopal Church",
+        "religion": "christian",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5470561,
+          37.6320879
+        ]
+      },
+      "id": "way/558369536"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/605753006",
+        "addr:housenumber": "5101",
+        "addr:postcode": "23227",
+        "addr:street": "Richmond Henrico Turnpike",
+        "building": "yes",
+        "name": "Fas Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4233517,
+          37.6018895
+        ]
+      },
+      "id": "way/605753006"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/619142683",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7250",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "Patterson Avenue",
+        "amenity": "restaurant",
+        "building": "church",
+        "cuisine": "american",
+        "name": "Ukrop's Market Hall",
+        "opening_hours": "Tu-Sa 07:00-20:00",
+        "outdoor_seating": "yes",
+        "phone": "+1 804-340-3040",
+        "shop": "food",
+        "website": "https://ukropshomestylefoods.com/ukrops-market-hall/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5339538,
+          37.5929529
+        ]
+      },
+      "id": "way/619142683"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/619142701",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7100",
+        "addr:postcode": "23226",
+        "addr:street": "Patterson Avenue",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5322138,
+          37.5920954
+        ]
+      },
+      "id": "way/619142701"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/623771243",
+        "addr:housenumber": "2750",
+        "addr:postcode": "23294",
+        "addr:street": "Hungary Spring Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/7901-w-broad-st-37757",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5284384,
+          37.6217076
+        ]
+      },
+      "id": "way/623771243"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/680040233",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.375477,
+          37.458048
+        ]
+      },
+      "id": "way/680040233"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/688505139",
+        "addr:housenumber": "4110",
+        "addr:postcode": "23231",
+        "addr:street": "Darbytown Road",
+        "building": "yes",
+        "name": "Varina Market",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.2997922,
+          37.4517353
+        ]
+      },
+      "id": "way/688505139"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/688785387",
+        "addr:housenumber": "6141",
+        "addr:postcode": "23231",
+        "addr:street": "Charles City Road",
+        "building": "yes",
+        "name": "Horizon Food Store",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.231051,
+          37.4455555
+        ]
+      },
+      "id": "way/688785387"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/695985226",
+        "landuse": "retail",
+        "name": "Parkside Marketplace",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5825551,
+          37.6457178
+        ]
+      },
+      "id": "way/695985226"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/697914418",
+        "landuse": "retail",
+        "name": "Staples Mill Marketplace",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5151118,
+          37.6385073
+        ]
+      },
+      "id": "way/697914418"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/698373106",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4700",
+        "addr:postcode": "23230",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Lidl",
+        "brand:wikidata": "Q151954",
+        "building": "yes",
+        "name": "Lidl",
+        "opening_hours": "08:00-21:00",
+        "phone": "+1 844-747-5435",
+        "ref": "1199",
+        "shop": "supermarket",
+        "website": "https://www.lidl.com/stores/US01199",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4897621,
+          37.5803772
+        ]
+      },
+      "id": "way/698373106"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/703584333",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "check_date": "2026-01-04",
+        "name": "Food Lion",
+        "opening_hours": "07:00-23:00",
+        "payment:apple_pay": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "payment:google_pay": "yes",
+        "payment:samsung_pay": "yes",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6220617,
+          37.598952
+        ]
+      },
+      "id": "node/703584333"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/703584335",
+        "addr:housenumber": "3081",
+        "addr:postcode": "23233",
+        "addr:street": "Lauderdale Drive",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "name": "Food Lion",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6322437,
+          37.6379156
+        ]
+      },
+      "id": "node/703584335"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/704287425",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7035",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "atm": "yes",
+        "brand": "Sheetz",
+        "brand:wikidata": "Q7492551",
+        "building": "yes",
+        "car_wash": "yes",
+        "delivery": "yes",
+        "internet_access": "wlan",
+        "name": "Sheetz",
+        "phone": "+1 804-755-6042",
+        "ref": "350",
+        "shop": "convenience",
+        "website": "https://orders.sheetz.com/findasheetz/store/350",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.52006,
+          37.6098732
+        ]
+      },
+      "id": "way/704287425"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/704614990",
+        "addr:housenumber": "8401",
+        "addr:postcode": "23228",
+        "addr:street": "Staples Mill Road",
+        "building": "retail",
+        "name": "Lucky Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5046218,
+          37.6270077
+        ]
+      },
+      "id": "way/704614990"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/704614991",
+        "addr:city": "Henrico",
+        "addr:housenumber": "9101",
+        "addr:postcode": "23228",
+        "addr:state": "VA",
+        "addr:street": "Hermitage Road",
+        "brand": "Lidl",
+        "brand:wikidata": "Q151954",
+        "building": "retail",
+        "name": "Lidl",
+        "phone": "+1 844-747-5435",
+        "ref": "1117",
+        "shop": "supermarket",
+        "website": "https://www.lidl.com",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5031291,
+          37.6260767
+        ]
+      },
+      "id": "way/704614991"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/704722724",
+        "addr:housenumber": "7605",
+        "addr:postcode": "23228",
+        "addr:street": "Staples Mill Road",
+        "building": "retail",
+        "name": "Roy's Express Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4996001,
+          37.6191824
+        ]
+      },
+      "id": "way/704722724"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/706871541",
+        "addr:housenumber": "4690",
+        "addr:postcode": "23059",
+        "addr:street": "Pouncey Tract Road",
+        "building": "yes",
+        "name": "Fas Mart",
+        "name:en": "Fas Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6143766,
+          37.6656879
+        ]
+      },
+      "id": "way/706871541"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707184084",
+        "addr:housenumber": "3600",
+        "addr:postcode": "23222",
+        "addr:street": "Mechanicsville Turnpike",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/3600-mechanicsville-pike-22719",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3982664,
+          37.5746406
+        ]
+      },
+      "id": "way/707184084"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707187698",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2400",
+        "addr:postcode": "23223",
+        "addr:state": "VA",
+        "addr:street": "Mechanicsville Turnpike",
+        "building": "yes",
+        "name": "Stuart's Fresh Catch",
+        "phone": "+1 804-643-3474",
+        "shop": "seafood",
+        "website": "https://stuartsfreshcatch.com/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4084897,
+          37.5590812
+        ]
+      },
+      "id": "way/707187698"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707187699",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4078219,
+          37.5580394
+        ]
+      },
+      "id": "way/707187699"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707187813",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2001",
+        "addr:postcode": "23223",
+        "addr:street": "Mechanicsville Turnpike",
+        "building": "yes",
+        "name": "River City Market",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4109014,
+          37.5537805
+        ]
+      },
+      "id": "way/707187813"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707503912",
+        "addr:housenumber": "10400",
+        "addr:postcode": "23233",
+        "addr:street": "Ridgefield Parkway",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6112523,
+          37.6203642
+        ]
+      },
+      "id": "way/707503912"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707525630",
+        "addr:housenumber": "6308",
+        "addr:postcode": "23226",
+        "addr:street": "Horsepen Road",
+        "brand": "Valero",
+        "brand:wikidata": "Q1283291",
+        "building": "yes",
+        "name": "Valero",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5138772,
+          37.59553
+        ]
+      },
+      "id": "way/707525630"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707525631",
+        "addr:city": "Richmond",
+        "addr:housenumber": "6310",
+        "addr:postcode": "23226",
+        "addr:state": "VA",
+        "addr:street": "Horsepen Road",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "delivery": "yes",
+        "fast_food": "yes",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "opening_hours": "24/7",
+        "phone": "+1 804-285-1559",
+        "ref": "11095",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/richmond/6310-horsepen-rd-11095",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5142733,
+          37.5955224
+        ]
+      },
+      "id": "way/707525631"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707525744",
+        "addr:housenumber": "6404",
+        "addr:postcode": "23226",
+        "addr:street": "Horsepen Road",
+        "amenity": "restaurant",
+        "building": "yes",
+        "name": "Queen Tea New Orleans Seafood",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5155295,
+          37.5952075
+        ]
+      },
+      "id": "way/707525744"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/707979446",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.56693,
+          37.5942237
+        ]
+      },
+      "id": "way/707979446"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708066325",
+        "addr:housenumber": "9230",
+        "addr:postcode": "23229",
+        "addr:street": "Quioccasin Road",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5781291,
+          37.6078266
+        ]
+      },
+      "id": "way/708066325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708067412",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1107",
+        "addr:postcode": "23238",
+        "addr:state": "VA",
+        "addr:street": "Gaskins Road",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "fast_food": "yes",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "note": "No gas, but air available to fill tires",
+        "phone": "+1 804-740-3359",
+        "ref": "16220",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/richmond/1107-gaskins-rd-16220",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5937279,
+          37.5969057
+        ]
+      },
+      "id": "way/708067412"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708257650",
+        "addr:city": "Henrico",
+        "addr:county": "Henrico, VA",
+        "addr:housenumber": "1776",
+        "addr:postcode": "23229-4654",
+        "addr:state": "VA",
+        "addr:street": "North Parham Road",
+        "brand": "Aldi",
+        "brand:wikidata": "Q41171672",
+        "building": "retail",
+        "check_date": "2026-01-22",
+        "delivery": "yes",
+        "drink:beer": "bottled",
+        "drink:wine": "bottled",
+        "name": "Aldi",
+        "opening_hours": "09:00-20:00",
+        "payment:american_express": "yes",
+        "payment:apple_pay": "yes",
+        "payment:cheque": "no",
+        "payment:coins": "yes",
+        "payment:debit_cards": "yes",
+        "payment:discover_card": "yes",
+        "payment:ebt": "yes",
+        "payment:google_pay": "yes",
+        "payment:mastercard": "yes",
+        "payment:notes": "yes",
+        "payment:snap": "yes",
+        "payment:visa": "yes",
+        "payment:wic": "no",
+        "phone": "+1 833-480-1057",
+        "shop": "supermarket",
+        "source:opening_hours": "entrance",
+        "website": "https://stores.aldi.us/va/henrico/1776-north-parham-road",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5647096,
+          37.6098095
+        ]
+      },
+      "id": "way/708257650"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708264838",
+        "addr:housenumber": "2111",
+        "addr:postcode": "23228",
+        "addr:street": "Hilliard Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "retail",
+        "check_date": "2024-12-07",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4712404,
+          37.6164197
+        ]
+      },
+      "id": "way/708264838"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708266738",
+        "addr:housenumber": "5600",
+        "addr:postcode": "23228",
+        "addr:street": "Lakeside Avenue",
+        "building": "yes",
+        "check_date": "2025-01-03",
+        "name": "Fas Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4682282,
+          37.6060345
+        ]
+      },
+      "id": "way/708266738"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708267202",
+        "addr:city": "Henrico",
+        "addr:housenumber": "5301",
+        "addr:postcode": "23228",
+        "addr:state": "VA",
+        "addr:street": "Lakeside Avenue",
+        "building": "retail",
+        "name": "Lakeside Corner Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4665978,
+          37.6010075
+        ]
+      },
+      "id": "way/708267202"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708686156",
+        "addr:city": "Henrico",
+        "addr:housenumber": "9500",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/9500-west-broad-street-34015",
+        "name": "7-Eleven",
+        "opening_hours": "24/7",
+        "phone": "+1-804-270-4345",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5583497,
+          37.6402166
+        ]
+      },
+      "id": "way/708686156"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708690069",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3302",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "building": "yes",
+        "name": "Supreme Flea Market",
+        "shop": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.366378,
+          37.5213572
+        ]
+      },
+      "id": "way/708690069"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708694832",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1130",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "New Market Road",
+        "building": "yes",
+        "name": "New Market Deli",
+        "opening_hours": "Mo-Fr 05:00-00:00; Sa 06:00-00:00; Su 07:00-00:00",
+        "phone": "+1-804-222-7767",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4023814,
+          37.4896407
+        ]
+      },
+      "id": "way/708694832"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708697941",
+        "addr:city": "Sandston",
+        "addr:housenumber": "389",
+        "addr:postcode": "23150",
+        "addr:state": "VA",
+        "addr:street": "East Williamsburg Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "check_date": "2024-12-01",
+        "contact:website": "https://www.7-eleven.com/locations/va/sandston/389-e-williamsburg-11092",
+        "name": "7-Eleven",
+        "opening_hours": "24/7",
+        "shop": "convenience",
+        "wheelchair": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3031024,
+          37.5197923
+        ]
+      },
+      "id": "way/708697941"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708731050",
+        "addr:housenumber": "4105",
+        "addr:postcode": "23231",
+        "addr:street": "South Laburnum Avenue",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3624937,
+          37.533727
+        ]
+      },
+      "id": "way/708731050"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708738325",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1300",
+        "addr:postcode": "23223",
+        "addr:state": "VA",
+        "addr:street": "North Laburnum Avenue",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "yes",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "phone": "+1 804-225-8104",
+        "ref": "8635",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/8635",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3768027,
+          37.5619443
+        ]
+      },
+      "id": "way/708738325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708739196",
+        "addr:city": "Richmond",
+        "addr:housenumber": "5146",
+        "addr:postcode": "23223",
+        "addr:state": "VA",
+        "addr:street": "Nine Mile Road",
+        "amenity": "fast_food",
+        "building": "retail",
+        "cuisine": "chinese",
+        "drive_through": "no",
+        "name": "Fresh Wok",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.35964,
+          37.5482059
+        ]
+      },
+      "id": "way/708739196"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708743993",
+        "addr:housenumber": "211",
+        "addr:postcode": "23227",
+        "addr:street": "Azalea Avenue",
+        "building": "yes",
+        "name": "Azalea Food Market & Deli",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.425047,
+          37.6025794
+        ]
+      },
+      "id": "way/708743993"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708744556",
+        "addr:housenumber": "5602",
+        "addr:postcode": "23227",
+        "addr:street": "Chamberlayne Road",
+        "building": "yes",
+        "name": "International Market and Bakery",
+        "shop": "supermarket",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4484041,
+          37.6089606
+        ]
+      },
+      "id": "way/708744556"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708744564",
+        "addr:city": "Richmond",
+        "addr:housenumber": "5615",
+        "addr:postcode": "23227",
+        "addr:state": "VA",
+        "addr:street": "Chamberlayne Road",
+        "branch": "Richmond/Chamberlayne Road",
+        "brand": "Super 8",
+        "brand:wikidata": "Q5364003",
+        "building": "yes",
+        "name": "Super 8",
+        "phone": "+1 804-262-8880",
+        "ref": "03822",
+        "tourism": "motel",
+        "website": "https://www.wyndhamhotels.com/super-8/richmond-virginia/super-8-richmond-chamberlayne-rd/overview",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4459993,
+          37.609756
+        ]
+      },
+      "id": "way/708744564"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708744580",
+        "addr:housenumber": "5604",
+        "addr:postcode": "23227",
+        "addr:street": "Chamberlayne Road",
+        "building": "yes",
+        "check_date": "2025-12-29",
+        "name": "Express",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4482796,
+          37.6092587
+        ]
+      },
+      "id": "way/708744580"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708746590",
+        "addr:housenumber": "625",
+        "addr:postcode": "23222",
+        "addr:street": "East Laburnum Avenue",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4213682,
+          37.5851493
+        ]
+      },
+      "id": "way/708746590"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708746907",
+        "addr:housenumber": "201",
+        "addr:postcode": "23222",
+        "addr:street": "East Laburnum Avenue",
+        "building": "yes",
+        "name": "Royal Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4304536,
+          37.5849839
+        ]
+      },
+      "id": "way/708746907"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708747302",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1",
+        "addr:postcode": "23222",
+        "addr:state": "VA",
+        "addr:street": "East Laburnum Avenue",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/1-e-laburnum-ave-25240",
+        "delivery": "yes",
+        "fast_food": "yes",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "phone": "+1 804-329-8184",
+        "ref": "25240",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/richmond/1-e.-laburnum-ave-25240",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4350036,
+          37.5844735
+        ]
+      },
+      "id": "way/708747302"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708747425",
+        "addr:housenumber": "5206",
+        "addr:postcode": "23227",
+        "addr:street": "West Seminary Avenue",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4530848,
+          37.6024144
+        ]
+      },
+      "id": "way/708747425"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708747429",
+        "addr:city": "Richmond",
+        "addr:housenumber": "5231",
+        "addr:postcode": "23227",
+        "addr:state": "VA",
+        "addr:street": "Brook Road",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "retail",
+        "building:levels": "1",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "ref": "655",
+        "roof:levels": "1",
+        "roof:shape": "flat",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/655",
+        "wheelchair": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4538994,
+          37.6046092
+        ]
+      },
+      "id": "way/708747429"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/708753066",
+        "addr:housenumber": "9024",
+        "addr:postcode": "23228",
+        "addr:street": "Woodman Road",
+        "building": "yes",
+        "name": "Tracs",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4935131,
+          37.6414565
+        ]
+      },
+      "id": "way/708753066"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/709504552",
+        "addr:housenumber": "1611",
+        "addr:postcode": "23060",
+        "addr:street": "Mountain Road",
+        "building": "yes",
+        "name": "Mega Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4692029,
+          37.6502165
+        ]
+      },
+      "id": "way/709504552"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/709504770",
+        "addr:housenumber": "1680",
+        "addr:postcode": "23060",
+        "addr:street": "Mountain Road",
+        "building": "yes",
+        "name": "Mountain Express",
+        "phone": "+1-804-515-0600",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4684989,
+          37.6511073
+        ]
+      },
+      "id": "way/709504770"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/709505762",
+        "addr:housenumber": "9085",
+        "addr:postcode": "23228",
+        "addr:street": "Woodman Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/9085-woodman-rd-23883",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4932357,
+          37.6422631
+        ]
+      },
+      "id": "way/709505762"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/709857345",
+        "addr:city": "Richmond",
+        "addr:housenumber": "6001",
+        "addr:postcode": "23228",
+        "addr:state": "VA",
+        "addr:street": "Staples Mill Road",
+        "brand": "Dash In",
+        "brand:wikidata": "Q108809024",
+        "building": "yes",
+        "name": "Dash In",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4943296,
+          37.6078986
+        ]
+      },
+      "id": "way/709857345"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710440911",
+        "addr:city": "Sandston",
+        "addr:housenumber": "501",
+        "addr:postcode": "23150",
+        "addr:state": "VA",
+        "addr:street": "South Airport Drive",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "fast_food": "yes",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "phone": "+1 804-737-0266",
+        "ref": "39727",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/sandston/501-s-airport-dr-39727",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3275129,
+          37.5243951
+        ]
+      },
+      "id": "way/710440911"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710442287",
+        "addr:city": "Sandston",
+        "addr:housenumber": "338",
+        "addr:postcode": "23150",
+        "addr:state": "VA",
+        "addr:street": "East Williamsburg Road",
+        "building": "retail",
+        "check_date": "2024-11-29",
+        "name": "Fas Mart",
+        "note": "I think this convenience store is changing to a different operator, possibly something like \"EZ Mart.\" When I visited on Black Friday '24, the store was open but all the usual signage above the entrance had been removed.",
+        "phone": "+1 804-328-2754",
+        "shop": "convenience",
+        "website": "http://www.fasmart.com/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3048113,
+          37.5213734
+        ]
+      },
+      "id": "way/710442287"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710442369",
+        "addr:city": "Sandston",
+        "addr:housenumber": "200",
+        "addr:postcode": "23150",
+        "addr:state": "VA",
+        "addr:street": "East Williamsburg Road",
+        "building": "yes",
+        "name": "Lucky Mart",
+        "phone": "+1 804-737-7717",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3089765,
+          37.5221438
+        ]
+      },
+      "id": "way/710442369"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710448390",
+        "addr:housenumber": "601",
+        "addr:postcode": "23075",
+        "addr:street": "North Airport Drive",
+        "building": "yes",
+        "name": "Fas Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3089019,
+          37.5438386
+        ]
+      },
+      "id": "way/710448390"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710449165",
+        "addr:city": "East",
+        "addr:housenumber": "1300",
+        "addr:postcode": "23075",
+        "addr:state": "VA",
+        "addr:street": "East Nine Mile Road",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "phone": "+1 804-737-7790",
+        "ref": "14863",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/highland-springs/1300-nine-mile-rd-east-14863",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3188961,
+          37.5373458
+        ]
+      },
+      "id": "way/710449165"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710450102",
+        "addr:city": "Henrico",
+        "addr:housenumber": "1125",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "New Market Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/richmond/1125-new-market-rd-11104",
+        "name": "7-Eleven",
+        "opening_hours": "24/7",
+        "phone": "+1-804-222-6096",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4033055,
+          37.4891221
+        ]
+      },
+      "id": "way/710450102"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710455216",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2458",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "New Market Road",
+        "amenity": "veterinary",
+        "building": "yes",
+        "name": "New Market Veterinary Clinic",
+        "opening_hours": "Mo-Fr 08:00-18:00; Sa 09:00-12:00",
+        "phone": "+1-804-795-4350",
+        "website": "https://www.newmarketvetclinic.com/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3570818,
+          37.4473854
+        ]
+      },
+      "id": "way/710455216"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710463366",
+        "addr:housenumber": "7580",
+        "addr:postcode": "23231",
+        "addr:street": "Laurel Hill Lane",
+        "building": "service",
+        "man_made": "pumping_station",
+        "name": "New Market Sewer Pumping Station",
+        "operator": "Henrico County",
+        "operator:wikidata": "Q341639",
+        "utility": "sewerage",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3793694,
+          37.4582414
+        ]
+      },
+      "id": "way/710463366"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710606088",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7200",
+        "addr:postcode": "23228",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "branch": "Richmond/Broad Street",
+        "brand": "Super 8",
+        "brand:wikidata": "Q5364003",
+        "building": "yes",
+        "name": "Super 8",
+        "phone": "+1 804-201-9015",
+        "ref": "03794",
+        "tourism": "motel",
+        "website": "https://www.wyndhamhotels.com/super-8/richmond-virginia/super-8-richmond-broad-street/overview",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5202836,
+          37.6128387
+        ]
+      },
+      "id": "way/710606088"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710610148",
+        "addr:housenumber": "8046",
+        "addr:postcode": "23294",
+        "addr:street": "West Broad Street",
+        "building": "yes",
+        "check_date": "2024-12-28",
+        "disused:shop": "supermarket",
+        "name": "El Jardin Latino Market",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5317269,
+          37.6271047
+        ]
+      },
+      "id": "way/710610148"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710856947",
+        "addr:housenumber": "3990",
+        "addr:postcode": "23150",
+        "addr:street": "East Williamsburg Road",
+        "building": "yes",
+        "name": "Shell",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.2412936,
+          37.5106
+        ]
+      },
+      "id": "way/710856947"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710857026",
+        "addr:housenumber": "4001",
+        "addr:postcode": "23150",
+        "addr:street": "East Williamsburg Road",
+        "building": "yes",
+        "name": "Fas-Mart",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.2396369,
+          37.5093856
+        ]
+      },
+      "id": "way/710857026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710865138",
+        "addr:housenumber": "5710",
+        "addr:postcode": "23150",
+        "addr:street": "Williamsburg Road",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3315473,
+          37.5204284
+        ]
+      },
+      "id": "way/710865138"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710865266",
+        "addr:housenumber": "5200",
+        "addr:postcode": "23150",
+        "addr:street": "Williamsburg Road",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3424507,
+          37.5184621
+        ]
+      },
+      "id": "way/710865266"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710865571",
+        "addr:housenumber": "5114",
+        "addr:postcode": "23231",
+        "addr:street": "Williamsburg Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "contact:website": "https://www.7-eleven.com/locations/va/sandston/5200-williamsburg-rd-36889",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3432337,
+          37.5184357
+        ]
+      },
+      "id": "way/710865571"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710865572",
+        "addr:city": "Richmond",
+        "addr:housenumber": "5110",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "branch": "Richmond Airport VA",
+        "brand": "Super 8",
+        "brand:wikidata": "Q5364003",
+        "building": "yes",
+        "name": "Super 8",
+        "phone": "+1 804-222-8008",
+        "ref": "03790",
+        "tourism": "motel",
+        "website": "https://www.wyndhamhotels.com/super-8/richmond-virginia/super-8-richmond-airport-va/overview",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3436223,
+          37.5182013
+        ]
+      },
+      "id": "way/710865572"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710868572",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3275",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "New Market Road",
+        "building": "yes",
+        "name": "Varina Corner Mart & Vape Shop",
+        "opening_hours": "Mo-Sa 05:00-00:00; Su 06:00-23:00",
+        "phone": "+1-804-795-4213",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3301764,
+          37.4336778
+        ]
+      },
+      "id": "way/710868572"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710875598",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3301",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "building": "yes",
+        "name": "Danco Mini-Mart",
+        "phone": "+1 804-226-2151",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3682853,
+          37.518402
+        ]
+      },
+      "id": "way/710875598"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710875931",
+        "addr:housenumber": "4611",
+        "addr:postcode": "23231",
+        "addr:street": "Williamsburg Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3517162,
+          37.5171809
+        ]
+      },
+      "id": "way/710875931"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710875976",
+        "addr:city": "Richmond",
+        "addr:housenumber": "5110",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "brand": "Lidl",
+        "brand:wikidata": "Q151954",
+        "building": "yes",
+        "check_date": "2024-01-03",
+        "name": "Lidl",
+        "opening_hours": "08:00-21:00",
+        "phone": "+1 844-747-5435",
+        "ref": "1019",
+        "shop": "supermarket",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3503649,
+          37.5153514
+        ]
+      },
+      "id": "way/710875976"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710876066",
+        "addr:city": "Henrico",
+        "addr:housenumber": "5301",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "yes",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "ref": "8626",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/8626",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3489129,
+          37.5121044
+        ]
+      },
+      "id": "way/710876066"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710876333",
+        "addr:housenumber": "3109",
+        "addr:postcode": "23231",
+        "addr:street": "Williamsburg Road",
+        "brand": "Citgo",
+        "brand:wikidata": "Q2974437",
+        "building": "yes",
+        "name": "Citgo",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3729199,
+          37.5179929
+        ]
+      },
+      "id": "way/710876333"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/710880817",
+        "addr:city": "Richmond",
+        "addr:country": "US",
+        "addr:housenumber": "7901",
+        "addr:postcode": "23227",
+        "addr:state": "VA",
+        "addr:street": "Brooks Road",
+        "brand": "Walmart",
+        "brand:wikidata": "Q483551",
+        "building": "retail",
+        "building:levels": "2",
+        "name": "Walmart Supercenter",
+        "opening_hours": "24/7",
+        "operator": "Walmart",
+        "operator:wikidata": "Q483551",
+        "payment:app:walmart": "yes",
+        "payment:apple_pay": "no",
+        "payment:google_pay": "no",
+        "payment:samsung_pay": "no",
+        "phone": "+1 804-553-8432",
+        "ref": "2295",
+        "ref:walmart": "2295",
+        "roof:levels": "1",
+        "roof:shape": "flat",
+        "sensory_friendly:accommodation": "dimmed_light;static_screens;no_pa",
+        "sensory_friendly:conditional": "yes @ 08:00-10:00",
+        "shop": "supermarket",
+        "website": "https://www.walmart.com/store/2295-richmond-va",
+        "wheelchair": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4566976,
+          37.6311323
+        ]
+      },
+      "id": "way/710880817"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/711588474",
+        "addr:city": "Sandston",
+        "addr:housenumber": "500",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Airport Drive",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "retail",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "ref": "8605",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/8605",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3292331,
+          37.5245861
+        ]
+      },
+      "id": "way/711588474"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/711588666",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2707",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "building": "yes",
+        "name": "Corner Mart",
+        "phone": "+1 804-222-4486",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3787363,
+          37.5180457
+        ]
+      },
+      "id": "way/711588666"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/711597319",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "9830",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "building": "yes",
+        "name": "Generator Supercenter of Richmond",
+        "opening_hours": "Mo-Fr 09:00-17:00",
+        "phone": "+1-804-302-4200",
+        "shop": "hardware",
+        "website": "https://generatorsupercenterofrichmondva.com/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5663253,
+          37.6436379
+        ]
+      },
+      "id": "way/711597319"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/712171572",
+        "addr:city": "Henrico",
+        "addr:housenumber": "9927",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Mayland Drive",
+        "brand": "Sheetz",
+        "brand:wikidata": "Q7492551",
+        "building": "yes",
+        "name": "Sheetz",
+        "opening_hours": "24/7",
+        "phone": "+1-804-660-8036",
+        "self_service": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5718796,
+          37.6406
+        ]
+      },
+      "id": "way/712171572"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/764125999",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3694249,
+          37.4535139
+        ]
+      },
+      "id": "way/764125999"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/791435606",
+        "highway": "residential",
+        "name": "Saint Martins Trail",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5500401,
+          37.6319865
+        ]
+      },
+      "id": "way/791435606"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1084118893",
+        "addr:housenumber": "2756",
+        "addr:postcode": "23294",
+        "addr:street": "Hungary Spring Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "check_date": "2024-12-28",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5275998,
+          37.6220253
+        ]
+      },
+      "id": "way/1084118893"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1084474379",
+        "landuse": "retail",
+        "name": "Virginia Center Marketplace",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4628426,
+          37.6738399
+        ]
+      },
+      "id": "way/1084474379"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1088461494",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "ref": "VA 5;VA 156",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.2652475,
+          37.4054973
+        ]
+      },
+      "id": "way/1088461494"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1113256906",
+        "brand": "Sheetz",
+        "brand:wikidata": "Q7492551",
+        "building": "yes",
+        "name": "Sheetz",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3293573,
+          37.5232826
+        ]
+      },
+      "id": "way/1113256906"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1121476144",
+        "addr:city": "Henrico",
+        "addr:housenumber": "9100",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "Three Chopt Road",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "building": "yes",
+        "name": "Wawa",
+        "opening_hours": "05:00-00:00",
+        "phone": "+1 804-459-8828",
+        "ref": "8647",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/8647",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5638407,
+          37.6126307
+        ]
+      },
+      "id": "way/1121476144"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1132045375",
+        "landuse": "residential",
+        "name": "New Market Village",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3618898,
+          37.4829635
+        ]
+      },
+      "id": "way/1132045375"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1132498706",
+        "addr:city": "Henrico",
+        "addr:housenumber": "2999",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Darbytown Road",
+        "amenity": "marketplace",
+        "name": "Dorey Farmer's Market",
+        "opening_hours": "Jun-Oct: Sa 09:00-12:00",
+        "operator": "Dorey Farmers Market, Inc.",
+        "organic": "yes",
+        "website": "https://doreyparkfarmersmarket.org",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3367662,
+          37.4684076
+        ]
+      },
+      "id": "way/1132498706"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1132498707",
+        "building": "yes",
+        "name": "Farmer's Market Pavilion",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3366939,
+          37.4686555
+        ]
+      },
+      "id": "way/1132498707"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1134158584",
+        "addr:housenumber": "3606",
+        "addr:postcode": "23223",
+        "addr:street": "Nine Mile Road",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3890798,
+          37.544266
+        ]
+      },
+      "id": "way/1134158584"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1197454141",
+        "highway": "residential",
+        "name": "Freshet Court",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3948947,
+          37.5024129
+        ]
+      },
+      "id": "way/1197454141"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1213073384",
+        "bridge": "yes",
+        "highway": "primary",
+        "lanes": "2",
+        "layer": "1",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "ref": "VA 5;VA 156",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.2438473,
+          37.3909206
+        ]
+      },
+      "id": "way/1213073384"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1233478506",
+        "industrial": "snacks",
+        "landuse": "industrial",
+        "man_made": "works",
+        "name": "Red River Foods",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3434391,
+          37.4963453
+        ]
+      },
+      "id": "way/1233478506"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1233478533",
+        "industrial": "metal_processing",
+        "landuse": "industrial",
+        "man_made": "works",
+        "name": "Martin Metalfab",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3401798,
+          37.5036053
+        ]
+      },
+      "id": "way/1233478533"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1233478541",
+        "industrial": "dairy",
+        "landuse": "industrial",
+        "man_made": "works",
+        "name": "Dean Foods Company",
+        "product": "margarine",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3085401,
+          37.5302372
+        ]
+      },
+      "id": "way/1233478541"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1234006669",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "yes",
+        "name": "7-Eleven",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3749572,
+          37.5621173
+        ]
+      },
+      "id": "way/1234006669"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1283666785",
+        "access": "customers",
+        "addr:city": "Richmond",
+        "addr:country": "US",
+        "addr:housenumber": "4441",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "amenity": "charging_station",
+        "authentication:app": "yes",
+        "bicycle": "no",
+        "brand": "Tesla Supercharger",
+        "brand:website": "https://www.tesla.com/supercharger",
+        "brand:wikidata": "Q17089620",
+        "bus": "no",
+        "capacity": "18",
+        "description": "Currently, only Tesla vehicles can charge here. Posts do not have either MagicDock (CCS1 adapter) or non-Tesla NACS port/adapter support.",
+        "ele": "46",
+        "fee": "yes",
+        "frequency": "0",
+        "hgv": "no",
+        "maxstay": "no",
+        "motorcar": "designated",
+        "name": "Tesla Supercharger",
+        "network": "Supercharger",
+        "network:website": "https://www.tesla.com/supercharger",
+        "network:wikidata": "Q17089620",
+        "note": "Despite iD prompting to \"upgrade\" operator from \"Tesla, Inc.\" to \"Tesla\", the correct value is in fact \"Tesla, Inc.\" Work is in progress to stop iD from flagging this.",
+        "opening_hours": "24/7",
+        "operator": "Tesla",
+        "operator:wikidata": "Q478214",
+        "parking:fee": "no",
+        "payment:app:tesla": "yes",
+        "ref:plugshare": "138493",
+        "ref:supercharge_info": "1334",
+        "ref:tesla": "richmondvasupercharger",
+        "reservation": "no",
+        "scooter": "no",
+        "socket:nacs": "18",
+        "socket:nacs:output": "150",
+        "start_date": "2017-12-25",
+        "website": "https://www.tesla.com/findus/location/supercharger/richmondvasupercharger",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3538791,
+          37.5298213
+        ]
+      },
+      "id": "way/1283666785"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1364424424",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3811481,
+          37.4637547
+        ]
+      },
+      "id": "way/1364424424"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1364424425",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "2",
+        "lanes:forward": "1",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:backward": "left|none",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3853764,
+          37.4679783
+        ]
+      },
+      "id": "way/1364424425"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1364451066",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3858977,
+          37.4684134
+        ]
+      },
+      "id": "way/1364451066"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1364451067",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "1",
+        "lanes:forward": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "tiger:reviewed": "no",
+        "turn:lanes:forward": "left|",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3873067,
+          37.4695868
+        ]
+      },
+      "id": "way/1364451067"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1364669425",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3869635,
+          37.4692938
+        ]
+      },
+      "id": "way/1364669425"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1364669426",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "2",
+        "lanes:forward": "1",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "tiger:reviewed": "no",
+        "turn:lanes:backward": "|right",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3865848,
+          37.4689819
+        ]
+      },
+      "id": "way/1364669426"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1365892174",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "1",
+        "lanes:forward": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:forward": "left|",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3461848,
+          37.4424042
+        ]
+      },
+      "id": "way/1365892174"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1365892810",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "2",
+        "lanes:forward": "1",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:backward": "left|none",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3467535,
+          37.4426075
+        ]
+      },
+      "id": "way/1365892810"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1366473954",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3495906,
+          37.4436308
+        ]
+      },
+      "id": "way/1366473954"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1366473955",
+        "highway": "primary",
+        "lanes": "5",
+        "lanes:backward": "2",
+        "lanes:forward": "3",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:forward": "left|none|right",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3524664,
+          37.4446854
+        ]
+      },
+      "id": "way/1366473955"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1366473956",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3522034,
+          37.4445822
+        ]
+      },
+      "id": "way/1366473956"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1388319534",
+        "brand": "Royal Farms",
+        "brand:wikidata": "Q7374169",
+        "building": "yes",
+        "name": "Royal Farms",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4072754,
+          37.5592953
+        ]
+      },
+      "id": "way/1388319534"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1415860595",
+        "highway": "primary",
+        "lanes": "1",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "yes",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3399935,
+          37.4393852
+        ]
+      },
+      "id": "way/1415860595"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1415860601",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3568298,
+          37.4464417
+        ]
+      },
+      "id": "way/1415860601"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1415860602",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3841294,
+          37.466798
+        ]
+      },
+      "id": "way/1415860602"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1420115516",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4010513,
+          37.4885273
+        ]
+      },
+      "id": "way/1420115516"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1420115517",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "1",
+        "lanes:forward": "2",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "turn:lanes:forward": "none|right",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3977749,
+          37.4856123
+        ]
+      },
+      "id": "way/1420115517"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1426833348",
+        "highway": "primary",
+        "lanes": "2",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3720692,
+          37.4548298
+        ]
+      },
+      "id": "way/1426833348"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1426833349",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "2",
+        "lanes:forward": "1",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:backward": "none|right",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3717058,
+          37.454648
+        ]
+      },
+      "id": "way/1426833349"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1426833350",
+        "highway": "primary",
+        "lanes": "4",
+        "lanes:backward": "3",
+        "lanes:forward": "1",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:backward": "left|none|right",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3711812,
+          37.4543969
+        ]
+      },
+      "id": "way/1426833350"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1426836851",
+        "highway": "primary",
+        "lanes": "4",
+        "lanes:backward": "1",
+        "lanes:forward": "3",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:forward": "left|none|right",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3704867,
+          37.4540566
+        ]
+      },
+      "id": "way/1426836851"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1426836852",
+        "highway": "primary",
+        "lanes": "4",
+        "lanes:backward": "1",
+        "lanes:forward": "3",
+        "maxspeed": "55 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:forward": "left|none|none",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3700486,
+          37.4538361
+        ]
+      },
+      "id": "way/1426836852"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1427037582",
+        "highway": "primary",
+        "lanes": "3",
+        "lanes:backward": "2",
+        "lanes:forward": "1",
+        "maxspeed": "45 mph",
+        "name": "New Market Road",
+        "oneway": "no",
+        "ref": "VA 5",
+        "surface": "asphalt",
+        "tiger:cfcc": "A39",
+        "tiger:county": "Henrico, VA",
+        "tiger:name_base": "New Market",
+        "tiger:name_base_1": "State Route 156",
+        "tiger:name_base_2": "State Route 5",
+        "tiger:name_type": "Rd",
+        "turn:lanes:backward": "none|right",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3529638,
+          37.4448802
+        ]
+      },
+      "id": "way/1427037582"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1429609022",
+        "addr:housenumber": "1401",
+        "addr:postcode": "23229",
+        "addr:street": "North Parham Road",
+        "brand": "Sheetz",
+        "brand:wikidata": "Q7492551",
+        "building": "yes",
+        "name": "Sheetz",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5689863,
+          37.6038534
+        ]
+      },
+      "id": "way/1429609022"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1448257673",
+        "building": "yes",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3671648,
+          37.5461969
+        ]
+      },
+      "id": "way/1448257673"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1463938261",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3830",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Gaskins Road",
+        "brand": "Shell",
+        "brand:wikidata": "Q110716465",
+        "building": "yes",
+        "name": "Shell",
+        "opening_hours": "Mo-Sa 05:30-23:00; Su 07:00-22:00",
+        "phone": "+1-804-346-3040",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5708286,
+          37.6418404
+        ]
+      },
+      "id": "way/1463938261"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1498418677",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "11480",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "building": "commercial",
+        "contact:website": "https://www.7-eleven.com/locations/va/glen-allen/11480-w-broad-st-32603",
+        "name": "7-Eleven",
+        "name:en": "7-Eleven",
+        "opening_hours": "24/7",
+        "phone": "+1-804-364-4108",
+        "shop": "convenience",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.610905,
+          37.6519955
+        ]
+      },
+      "id": "way/1498418677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2129586168",
+        "addr:city": "Richmond",
+        "addr:housenumber": "805",
+        "addr:postcode": "23227",
+        "addr:state": "VA",
+        "addr:street": "East Parham Road",
+        "brand": "Dash In",
+        "brand:wikidata": "Q108809024",
+        "check_date": "2023-08-19",
+        "contact:phone": "+1 804-266-4407",
+        "name": "Dash In",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "shop": "convenience",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.456111,
+          37.6348529
+        ]
+      },
+      "id": "node/2129586168"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2129586173",
+        "addr:city": "Richmond",
+        "addr:housenumber": "807",
+        "addr:postcode": "23227-1107",
+        "addr:state": "VA",
+        "addr:street": "East Parham Road",
+        "contact:phone": "+1 804-261-6960",
+        "opening_hours": "24/7",
+        "shop": "convenience",
+        "website": "https://pitstopva.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4567327,
+          37.6346973
+        ]
+      },
+      "id": "node/2129586173"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2563991471",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3517262,
+          37.4793496
+        ]
+      },
+      "id": "node/2563991471"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2563991475",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2610",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Darbytown Road",
+        "amenity": "fuel",
+        "brand": "Marathon",
+        "brand:wikidata": "Q458363",
+        "name": "Super Stop"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3520856,
+          37.4793454
+        ]
+      },
+      "id": "node/2563991475"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2564051063",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2650",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "New Market Road",
+        "name": "Fas Mart",
+        "opening_hours": "Su-Th 06:00-23:00; Fr-Sa 06:00-00:00",
+        "phone": "+1-804-795-1082",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.351949,
+          37.4450545
+        ]
+      },
+      "id": "node/2564051063"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2609013304",
+        "access": "customers",
+        "addr:city": "Glen Allen",
+        "addr:country": "US",
+        "addr:housenumber": "9956",
+        "addr:postcode": "23059",
+        "addr:state": "VA",
+        "addr:street": "Brook Road",
+        "amenity": "charging_station",
+        "authentication:app": "yes",
+        "bicycle": "no",
+        "brand": "Tesla Supercharger",
+        "brand:en": "Tesla Supercharger",
+        "brand:website": "https://www.tesla.com/supercharger",
+        "brand:wikidata": "Q17089620",
+        "bus": "no",
+        "capacity": "20",
+        "ele": "49",
+        "fee": "yes",
+        "frequency": "0",
+        "hgv": "no",
+        "maxstay": "no",
+        "motorcar": "designated",
+        "name": "Tesla Supercharger",
+        "network": "Supercharger",
+        "network:website": "https://www.tesla.com/supercharger",
+        "network:wikidata": "Q17089620",
+        "note": "This Tesla Supercharger was edited or added by the June 2025 import from supercharge.info... if you have any questions, comments, or concerns, please reach out to the US Slack / Forum",
+        "opening_hours": "24/7",
+        "operator": "Tesla",
+        "operator:wikidata": "Q478214",
+        "operator:wikipedia": "en:Tesla, Inc.",
+        "payment:app:tesla": "yes",
+        "ref:plugshare": "20064",
+        "ref:supercharge_info": "193",
+        "ref:tesla": "glenallensupercharger",
+        "reservation": "no",
+        "scooter": "no",
+        "socket:nacs": "8",
+        "socket:nacs:output": "150",
+        "source": "https://supercharge.info",
+        "start_date": "2013-10-24",
+        "website": "https://www.tesla.com/findus/location/supercharger/glenallensupercharger"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.46142,
+          37.66983
+        ]
+      },
+      "id": "node/2609013304"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2666403616",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "11371",
+        "addr:postcode": "23059",
+        "addr:state": "VA",
+        "addr:street": "Nuckols Road",
+        "air_conditioning": "yes",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "currency:USD": "yes",
+        "name": "Food Lion",
+        "shop": "supermarket",
+        "toilets": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5910002,
+          37.681928
+        ]
+      },
+      "id": "node/2666403616"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2697234685",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "4040",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Cox Road",
+        "addr:unit": "G",
+        "check_date": "2026-04-11",
+        "name": "Paradise Market",
+        "shop": "vacant"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5852347,
+          37.648665
+        ]
+      },
+      "id": "node/2697234685"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2697244625",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "10160",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "name": "Adnan Halal Meat & Grocery",
+        "opening_hours": "Mo-Su 10:00-21:00",
+        "phone": "+1-804-249-4665",
+        "shop": "butcher"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5743062,
+          37.6461064
+        ]
+      },
+      "id": "node/2697244625"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2699101429",
+        "addr:city": "Henrico",
+        "addr:housenumber": "11643",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Eyemart Express",
+        "brand:wikidata": "Q5422776",
+        "name": "Eyemart Express",
+        "opening_hours": "Mo-Sa 09:00-17:00",
+        "phone": "+1-804-433-3949",
+        "shop": "optician"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6180664,
+          37.6520102
+        ]
+      },
+      "id": "node/2699101429"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3023695318",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1601",
+        "addr:postcode": "23230",
+        "addr:state": "VA",
+        "addr:street": "Willow Lawn Drive",
+        "branch": "Willow Lawn",
+        "brand": "Kroger",
+        "brand:wikidata": "Q153417",
+        "check_date:opening_hours": "2025-03-17",
+        "internet_access": "wlan",
+        "name": "Kroger",
+        "opening_hours": "Mo-Su 07:00-23:00",
+        "phone": "+1 804-288-2885",
+        "ref": "0290050909",
+        "shop": "supermarket",
+        "website": "https://www.kroger.com/stores/grocery/va/richmond/willow-lawn/029/00509"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.499168,
+          37.5801603
+        ]
+      },
+      "id": "node/3023695318"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3049033222",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "11331",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "161",
+        "branch": "Richmond/Short Pump",
+        "brand": "Trader Joe's",
+        "brand:wikidata": "Q688825",
+        "name": "Trader Joe's",
+        "opening_hours": "Mo-Su 08:00-21:00",
+        "phone": "+1 804-360-4098",
+        "ref": "659",
+        "shop": "supermarket",
+        "website": "https://locations.traderjoes.com/va/glen-allen/659/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6071544,
+          37.6490044
+        ]
+      },
+      "id": "node/3049033222"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3065574969",
+        "addr:housenumber": "1288",
+        "addr:postcode": "23228",
+        "addr:street": "Concord Avenue",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "name": "Food Lion",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.462161,
+          37.636963
+        ]
+      },
+      "id": "node/3065574969"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3075691493",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1527",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "North Parham Road",
+        "brand": "The Fresh Market",
+        "brand:wikidata": "Q7735265",
+        "name": "The Fresh Market",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5631608,
+          37.6040731
+        ]
+      },
+      "id": "node/3075691493"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3075830175",
+        "addr:housenumber": "9018",
+        "addr:postcode": "23294",
+        "addr:street": "West Broad Street",
+        "amenity": "restaurant",
+        "cuisine": "seafood",
+        "name": "Live Crawfish & Seafood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5477251,
+          37.6372828
+        ]
+      },
+      "id": "node/3075830175"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3085282981",
+        "brand": "Supercuts",
+        "brand:wikidata": "Q7643239",
+        "name": "Supercuts",
+        "shop": "hairdresser"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5128169,
+          37.640806
+        ]
+      },
+      "id": "node/3085282981"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3086464157",
+        "name": "Danny's Flower Market",
+        "shop": "florist"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5592387,
+          37.6026822
+        ]
+      },
+      "id": "node/3086464157"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3093202616",
+        "name": "El Parasio Latino Market",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4990093,
+          37.6152984
+        ]
+      },
+      "id": "node/3093202616"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3093272271",
+        "addr:city": "Richmond",
+        "addr:housenumber": "5515",
+        "addr:postcode": "23230",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "PetSmart",
+        "brand:wikidata": "Q3307147",
+        "check_date": "2024-11-24",
+        "name": "PetSmart",
+        "opening_hours": "Mo-Sa 09:00-21:00; Su 10:00-19:00",
+        "phone": "+1 804-282-6455",
+        "ref": "1011",
+        "shop": "pet",
+        "website": "https://www.petsmart.com/stores/us/va/richmond-store1011.html"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5027233,
+          37.5878783
+        ]
+      },
+      "id": "node/3093272271"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3101271107",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "name": "Food Lion",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4522741,
+          37.6046076
+        ]
+      },
+      "id": "node/3101271107"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3103200602",
+        "name": "Tony's Market",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.396981,
+          37.576732
+        ]
+      },
+      "id": "node/3103200602"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3103202851",
+        "brand": "Save-A-Lot",
+        "brand:wikidata": "Q7427972",
+        "name": "Save-A-Lot",
+        "shop": "supermarket",
+        "website": "https://savealot.com/grocery-stores/richmond-23223-21679/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3961908,
+          37.5792884
+        ]
+      },
+      "id": "node/3103202851"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3103220732",
+        "addr:housenumber": "3089",
+        "addr:postcode": "23223",
+        "addr:street": "Mechanicsville Turnpike",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "name": "Food Lion",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3999759,
+          37.5679158
+        ]
+      },
+      "id": "node/3103220732"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3110375363",
+        "addr:city": "Richmond",
+        "addr:housenumber": "11256",
+        "addr:postcode": "23238",
+        "addr:state": "VA",
+        "addr:street": "Patterson Avenue",
+        "amenity": "restaurant",
+        "cuisine": "chinese",
+        "name": "West Lake Chinese & Seafood",
+        "website": "https://www.westlakerichmond.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6211831,
+          37.5987948
+        ]
+      },
+      "id": "node/3110375363"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3113784722",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7504",
+        "addr:postcode": "23294-3608",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "disused:shop": "craft",
+        "name": "Food Lion",
+        "old_name": "JOANN",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5220615,
+          37.6188777
+        ]
+      },
+      "id": "node/3113784722"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3165928239",
+        "name": "Tuckahoe Seafood",
+        "shop": "seafood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5751063,
+          37.595783
+        ]
+      },
+      "id": "node/3165928239"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3165947428",
+        "name": "Blessings Global Market",
+        "shop": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.57354,
+          37.5947119
+        ]
+      },
+      "id": "node/3165947428"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3165968817",
+        "addr:city": "Richmond",
+        "addr:housenumber": "12395",
+        "addr:postcode": "23238",
+        "addr:state": "VA",
+        "addr:street": "Gayton Road",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "delivery": "yes",
+        "fast_food": "yes",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "phone": "+1 804-740-3421",
+        "ref": "19623",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/richmond/12395-gayton-rd-19623"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6383193,
+          37.6191224
+        ]
+      },
+      "id": "node/3165968817"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3165980144",
+        "name": "Smart Tax",
+        "office": "tax_advisor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6233331,
+          37.5991651
+        ]
+      },
+      "id": "node/3165980144"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3165980158",
+        "name": "Patterson Food Mart",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6235667,
+          37.5982157
+        ]
+      },
+      "id": "node/3165980158"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3208445519",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5749279,
+          37.666623
+        ]
+      },
+      "id": "node/3208445519"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3208453536",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6145956,
+          37.6329378
+        ]
+      },
+      "id": "node/3208453536"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3696368706",
+        "bus": "yes",
+        "highway": "bus_stop",
+        "name": "Nine Mile & Martin",
+        "operator": "Greater Richmond Transit Company",
+        "public_transport": "platform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.374368,
+          37.541222
+        ]
+      },
+      "id": "node/3696368706"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3697320145",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1",
+        "addr:postcode": "23250",
+        "addr:state": "VA",
+        "addr:street": "Richard E Byrd Terminal Drive",
+        "brand": "Hudson",
+        "brand:wikidata": "Q111534515",
+        "name": "Hudson",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3313468,
+          37.5082495
+        ]
+      },
+      "id": "node/3697320145"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4193000589",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1419",
+        "addr:postcode": "23229",
+        "addr:state": "VA",
+        "addr:street": "Eastridge Road",
+        "atm": "yes",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "fuel:propane": "yes",
+        "name": "7-Eleven",
+        "phone": "+1 804-285-1564",
+        "ref": "11097",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/richmond/1419-east-ridge-rd-11097"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5624957,
+          37.6013672
+        ]
+      },
+      "id": "node/4193000589"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4586288201",
+        "leisure": "fitness_centre",
+        "name": "Martial Arts",
+        "name:en": "Martial Arts"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6120612,
+          37.621024
+        ]
+      },
+      "id": "node/4586288201"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4588416493",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4956454,
+          37.610304
+        ]
+      },
+      "id": "node/4588416493"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4588416495",
+        "brand": "APlus",
+        "brand:wikidata": "Q4646934",
+        "name": "APlus",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4969568,
+          37.6131267
+        ]
+      },
+      "id": "node/4588416495"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5316021037",
+        "check_date": "2023-12-27",
+        "name": "Joe's",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3950902,
+          37.5778161
+        ]
+      },
+      "id": "node/5316021037"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5316021054",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3758118,
+          37.5609094
+        ]
+      },
+      "id": "node/5316021054"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5381041723",
+        "check_date": "2025-11-09",
+        "name": "Food Mart",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.320317,
+          37.5374843
+        ]
+      },
+      "id": "node/5381041723"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5381044422",
+        "name": "MartinAir",
+        "office": "company"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3305474,
+          37.517658
+        ]
+      },
+      "id": "node/5381044422"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5383515521",
+        "brand": "Hudson",
+        "brand:wikidata": "Q111534515",
+        "check_date": "2025-11-09",
+        "name": "Hudson",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3306598,
+          37.5089099
+        ]
+      },
+      "id": "node/5383515521"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5918533185",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "9864",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "name": "Ummah Market",
+        "opening_hours": "Mo-Sa 09:00-21:00; Su 09:00-20:00",
+        "phone": "+1-804-217-7191",
+        "shop": "grocery",
+        "website": "https://ummah.market/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5657788,
+          37.6443655
+        ]
+      },
+      "id": "node/5918533185"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6016124638",
+        "addr:city": "Henrico",
+        "addr:housenumber": "2610",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "Tuckernuck Drive",
+        "amenity": "restaurant",
+        "cuisine": "indian",
+        "name": "Desi Street Food",
+        "phone": "+1-804-525-5530",
+        "website": "http://www.desistreetfood.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5488857,
+          37.6390653
+        ]
+      },
+      "id": "node/6016124638"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6016138501",
+        "addr:city": "Henrico",
+        "addr:housenumber": "2600",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "Tuckernuck Drive",
+        "name": "Royal Bazaar",
+        "phone": "+1-804-308-8837",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5492773,
+          37.6392012
+        ]
+      },
+      "id": "node/6016138501"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6158006187",
+        "addr:city": "Richmond",
+        "addr:county": "Henrico, VA",
+        "addr:housenumber": "6295",
+        "addr:postcode": "23230-2204",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Aldi",
+        "brand:wikidata": "Q41171672",
+        "building": "retail",
+        "delivery": "yes",
+        "drink:beer": "bottled",
+        "drink:wine": "bottled",
+        "name": "Aldi",
+        "opening_hours": "Mo-Su 08:00-21:00",
+        "payment:american_express": "yes",
+        "payment:apple_pay": "yes",
+        "payment:cheque": "no",
+        "payment:coins": "yes",
+        "payment:debit_cards": "yes",
+        "payment:discover_card": "yes",
+        "payment:ebt": "yes",
+        "payment:google_pay": "yes",
+        "payment:mastercard": "yes",
+        "payment:notes": "yes",
+        "payment:snap": "yes",
+        "payment:visa": "yes",
+        "payment:wic": "no",
+        "phone": "+1 833-480-1004",
+        "shop": "supermarket",
+        "website": "https://stores.aldi.us/va/richmond/6295-west-broad-street"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5130028,
+          37.5961594
+        ]
+      },
+      "id": "node/6158006187"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6158011787",
+        "addr:county": "Henrico County",
+        "addr:housenumber": "6317",
+        "addr:state": "VA",
+        "addr:street": "Rigsby Road",
+        "contact:facebook": "https://www.facebook.com/fareastorientalgrocerystore/",
+        "name": "Far East Oriental Grocery Store",
+        "shop": "supermarket",
+        "source": "esri/Virginia_address"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5148332,
+          37.5958809
+        ]
+      },
+      "id": "node/6158011787"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6525080947",
+        "addr:city": "Richmond",
+        "addr:housenumber": "11800",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "2118",
+        "brand": "White House Black Market",
+        "brand:wikidata": "Q7994858",
+        "level": "1",
+        "name": "White House Black Market",
+        "opening_hours": "Mo-Sa 10:00-20:00; Su 11:00-18:00",
+        "phone": "+1-804-364-9404",
+        "shop": "clothes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6191006,
+          37.656089
+        ]
+      },
+      "id": "node/6525080947"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6525763694",
+        "amenity": "dojo",
+        "name": "Bushin Martial Arts Academy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4577224,
+          37.6141329
+        ]
+      },
+      "id": "node/6525763694"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6526104379",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4531",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "addr:unit": "740",
+        "brand": "PetSmart",
+        "brand:wikidata": "Q3307147",
+        "check_date": "2024-11-29",
+        "name": "PetSmart",
+        "opening_hours": "Mo-Sa 09:00-21:00; Su 10:00-19:00",
+        "opening_hours:signed": "yes",
+        "phone": "+1 804-236-3245",
+        "ref": "1773",
+        "shop": "pet",
+        "source:opening_hours": "entrance;website",
+        "website": "https://www.petsmart.com/stores/us/va/richmond-store1773.html"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3539233,
+          37.5312253
+        ]
+      },
+      "id": "node/6526104379"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6526104381",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4531",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "South Laburnum Avenue",
+        "addr:unit": "720",
+        "check_date": "2024-11-29",
+        "name": "K&G Fashion Superstore",
+        "opening_hours": "Mo-Sa 10:00-21:00; Su 11:00-19:00",
+        "opening_hours:signed": "yes",
+        "shop": "clothes",
+        "source:opening_hours": "entrance"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3547398,
+          37.5312839
+        ]
+      },
+      "id": "node/6526104381"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6527816794",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "name": "Food Lion",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3421972,
+          37.5500293
+        ]
+      },
+      "id": "node/6527816794"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6534662693",
+        "addr:housenumber": "3101",
+        "addr:postcode": "23223",
+        "addr:street": "Mechanicsville Turnpike",
+        "name": "Martha’s Beauty",
+        "shop": "beauty"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.399841,
+          37.5686727
+        ]
+      },
+      "id": "node/6534662693"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6535436284",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "10941",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "PGA Tour Superstore",
+        "brand:wikidata": "Q125705404",
+        "name": "PGA Tour Superstore",
+        "opening_hours": "Mo-Fr 10:00-20:00; Sa 09:00-20:00; Su 10:00-18:00",
+        "phone": "+1-804-800-6297",
+        "shop": "sports",
+        "sport": "golf"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5851606,
+          37.6453872
+        ]
+      },
+      "id": "node/6535436284"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6648727364",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7035",
+        "addr:postcode": "23226",
+        "addr:state": "VA",
+        "addr:street": "Three Chopt Road",
+        "branch": "The Village Shopping Center",
+        "brand": "Publix",
+        "brand:wikidata": "Q672170",
+        "check_date": "2026-01-23",
+        "name": "Publix",
+        "opening_hours": "07:00-21:00",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1 804-288-1070",
+        "ref": "1593",
+        "shop": "supermarket",
+        "website": "https://www.publix.com/locations/1593"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5326533,
+          37.5909593
+        ]
+      },
+      "id": "node/6648727364"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6655293020",
+        "addr:housenumber": "6223",
+        "addr:postcode": "23228",
+        "addr:street": "Lakeside Avenue",
+        "amenity": "bar",
+        "name": "Revel Market & Bar",
+        "website": "https://revelrva.net/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4695932,
+          37.6136426
+        ]
+      },
+      "id": "node/6655293020"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6679731193",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2599",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "New Market Road",
+        "brand": "Food Lion",
+        "brand:wikidata": "Q1435950",
+        "name": "Food Lion",
+        "opening_hours": "Mo-Su 07:00-23:00",
+        "phone": "+1-804-795-6009",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3532153,
+          37.4429186
+        ]
+      },
+      "id": "node/6679731193"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6679740794",
+        "addr:city": "Richmond",
+        "addr:housenumber": "4845",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Old Main Street",
+        "name": "Rocketts Market Cafe",
+        "opening_hours": "Mo-Su 07:00-24:00",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4149777,
+          37.5164854
+        ]
+      },
+      "id": "node/6679740794"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6680998140",
+        "addr:housenumber": "7510",
+        "addr:postcode": "23228",
+        "addr:street": "West Broad Street",
+        "name": "The Mantu Market",
+        "shop": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5212616,
+          37.619459
+        ]
+      },
+      "id": "node/6680998140"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6681041975",
+        "addr:housenumber": "8129",
+        "addr:postcode": "23228",
+        "addr:street": "Staples Mill Road",
+        "brand": "La Michoacana Meat Market",
+        "brand:en": "La Michoacana Meat Market",
+        "brand:es": "La Michoacana",
+        "brand:wikidata": "Q6463872",
+        "cuisine": "latin_american",
+        "name": "La Michoacana Meat Market",
+        "name:en": "La Michoacana Meat Market",
+        "name:es": "La Michoacana",
+        "shop": "supermarket",
+        "short_name": "La Michoacana"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5031652,
+          37.6241609
+        ]
+      },
+      "id": "node/6681041975"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6683271465",
+        "addr:housenumber": "4846",
+        "addr:postcode": "23231",
+        "addr:street": "South Laburnum Avenue",
+        "name": "Sistar Seafood",
+        "shop": "seafood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3517361,
+          37.5185062
+        ]
+      },
+      "id": "node/6683271465"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6696129782",
+        "addr:city": "Henrico",
+        "addr:housenumber": "3957",
+        "addr:postcode": "23233",
+        "addr:state": "VA",
+        "addr:street": "Deep Rock Road",
+        "email": "train@phoenixfma.com",
+        "leisure": "fitness_centre",
+        "name": "Phoenix Fitness & Martial Arts",
+        "opening_hours": "Mo, We, Fr 05:30-20:00; Tu, Th 06:30-20:00; Sa 08:00-12:00",
+        "phone": "+1 804-346-5150",
+        "sport": "fitness",
+        "website": "https://www.phoenixfma.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5717693,
+          37.6435302
+        ]
+      },
+      "id": "node/6696129782"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7089036593",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5888494,
+          37.6398297
+        ]
+      },
+      "id": "node/7089036593"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7089039397",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "4051",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Cox Road",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "check_date": "2026-04-12",
+        "contact:website": "https://www.7-eleven.com/locations/va/glen-allen/4051-cox-road-32396",
+        "name": "7-Eleven",
+        "opening_hours": "24/7",
+        "phone": "+1-804-747-7512",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5817263,
+          37.6481528
+        ]
+      },
+      "id": "node/7089039397"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7092179785",
+        "name": "Kroger Convenience",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6241201,
+          37.6532755
+        ]
+      },
+      "id": "node/7092179785"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7112856247",
+        "addr:housenumber": "5014",
+        "addr:postcode": "23231",
+        "addr:street": "Williamsburg Road",
+        "name": "Richmond Superbike",
+        "shop": "motorcycle",
+        "website": "https://www.richmondsuperbike.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3465093,
+          37.5176693
+        ]
+      },
+      "id": "node/7112856247"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7895245680",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5666738,
+          37.5950558
+        ]
+      },
+      "id": "node/7895245680"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7955774184",
+        "addr:city": "Henrico",
+        "addr:housenumber": "8017",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "Wawa",
+        "brand:wikidata": "Q5936320",
+        "name": "Wawa",
+        "opening_hours": "24/7",
+        "phone": "+1 804-290-4374",
+        "ref": "8603",
+        "shop": "convenience",
+        "website": "https://www.wawa.com/locations/8603"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5316079,
+          37.6253179
+        ]
+      },
+      "id": "node/7955774184"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9156521277",
+        "name": "Gulfstream Seafood",
+        "shop": "seafood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4347742,
+          37.5856345
+        ]
+      },
+      "id": "node/9156521277"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9342088430",
+        "amenity": "restaurant",
+        "cuisine": "seafood",
+        "name": "Crafty Crab Seafood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3651711,
+          37.5441489
+        ]
+      },
+      "id": "node/9342088430"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9373265618",
+        "name": "Glen Allen Supermarket",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5060359,
+          37.665707
+        ]
+      },
+      "id": "node/9373265618"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9934606073",
+        "name": "Bosna Market & Deli",
+        "shop": "deli"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5300477,
+          37.6268711
+        ]
+      },
+      "id": "node/9934606073"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9934613421",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5461389,
+          37.6353755
+        ]
+      },
+      "id": "node/9934613421"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9937905779",
+        "amenity": "dojo",
+        "name": "Martial Arts World"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3530343,
+          37.5190104
+        ]
+      },
+      "id": "node/9937905779"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10050951077",
+        "addr:city": "Richmond",
+        "addr:housenumber": "2706",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "name": "Rosie's Kitchen & Convenience Store",
+        "phone": "+1 804-447-4123",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3786985,
+          37.518662
+        ]
+      },
+      "id": "node/10050951077"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10050981139",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3050",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "brand": "Valero",
+        "brand:wikidata": "Q1283291",
+        "name": "Valero",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.373414,
+          37.5187692
+        ]
+      },
+      "id": "node/10050981139"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10051020008",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3312",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Williamsburg Road",
+        "name": "B & B Seafood",
+        "phone": "+1 804-222-2357",
+        "shop": "seafood",
+        "website": "https://runinout.com/B&B-seafood-Richmond-VA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3665518,
+          37.5189409
+        ]
+      },
+      "id": "node/10051020008"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10268583071",
+        "brand": "Hudson",
+        "brand:wikidata": "Q111534515",
+        "name": "Hudson",
+        "opening_hours": "PH,Mo-Su 04:30-22:00+",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3313084,
+          37.506949
+        ]
+      },
+      "id": "node/10268583071"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10301502511",
+        "name": "RVA Vapes",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5095653,
+          37.5953465
+        ]
+      },
+      "id": "node/10301502511"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10301880461",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4112605,
+          37.5527799
+        ]
+      },
+      "id": "node/10301880461"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10301880462",
+        "addr:city": "Richmond",
+        "addr:housenumber": "1915",
+        "addr:postcode": "23223",
+        "addr:state": "VA",
+        "addr:street": "Mechanicsville Turnpike",
+        "name": "Community Supermarket",
+        "opening_hours": "Mo-Su 07:00-21:00",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4109491,
+          37.5529613
+        ]
+      },
+      "id": "node/10301880462"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10573699646",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3754591,
+          37.5413979
+        ]
+      },
+      "id": "node/10573699646"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11435630402",
+        "addr:city": "Richmond",
+        "addr:housenumber": "8208",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "brand": "7-Eleven",
+        "brand:wikidata": "Q259340",
+        "delivery": "yes",
+        "name": "7-Eleven",
+        "phone": "+1 804-965-9082",
+        "ref": "40027",
+        "shop": "convenience",
+        "website": "https://www.7-eleven.com/locations/va/richmond/8208-w-broad-street-40027"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5347293,
+          37.6298704
+        ]
+      },
+      "id": "node/11435630402"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11460323399",
+        "check_date": "2023-12-27",
+        "name": "Race Track Marketplace",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4233608,
+          37.5847404
+        ]
+      },
+      "id": "node/11460323399"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11460323400",
+        "check_date": "2023-12-27",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4246889,
+          37.586167
+        ]
+      },
+      "id": "node/11460323400"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11460323402",
+        "check_date": "2026-04-23",
+        "check_date:opening_hours": "2026-04-23",
+        "name": "S&M Deli Convenience",
+        "opening_hours:signed": "no",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4283854,
+          37.5852099
+        ]
+      },
+      "id": "node/11460323402"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11460978754",
+        "check_date": "2023-12-27",
+        "name": "Gulfstream Seafood",
+        "shop": "seafood"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4344905,
+          37.585483
+        ]
+      },
+      "id": "node/11460978754"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11460978755",
+        "check_date": "2023-12-27",
+        "name": "Loansmart",
+        "shop": "money_lender"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4255118,
+          37.5853872
+        ]
+      },
+      "id": "node/11460978755"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12041582418",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7607",
+        "addr:postcode": "23227",
+        "addr:state": "VA",
+        "addr:street": "Brook Road",
+        "name": "Quick N Easy",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4579082,
+          37.6274673
+        ]
+      },
+      "id": "node/12041582418"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12058039872",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3200",
+        "addr:postcode": "23231",
+        "addr:state": "VA",
+        "addr:street": "Darbytown Road",
+        "name": "Quick Stop",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3317081,
+          37.4702851
+        ]
+      },
+      "id": "node/12058039872"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12230784978",
+        "addr:city": "Richmond",
+        "addr:housenumber": "3708",
+        "addr:postcode": "23222",
+        "addr:state": "VA",
+        "addr:street": "Meadowbridge Road",
+        "amenity": "restaurant",
+        "contact:instagram": "https://www.instagram.com/pinchssoulfoodcatering/",
+        "cuisine": "southern",
+        "name": "Pinch's Soul Food & Catering",
+        "source": "esri/USA_NAD_Addresses"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4235742,
+          37.5824944
+        ]
+      },
+      "id": "node/12230784978"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12380981213",
+        "addr:city": "Henrico",
+        "addr:housenumber": "9503",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "addr:unit": "A",
+        "check_date": "2026-05-24",
+        "name": "Asia Market",
+        "opening_hours": "Mo-Sa 09:00-20:00",
+        "opening_hours:signed": "yes",
+        "phone": "+1-804-346-0301",
+        "shop": "supermarket",
+        "source:opening_hours": "entrance"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5586874,
+          37.6395369
+        ]
+      },
+      "id": "node/12380981213"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12459835769",
+        "check_date": "2024-12-28",
+        "name": "Snack Shop",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5496947,
+          37.6358774
+        ]
+      },
+      "id": "node/12459835769"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13051063377",
+        "addr:city": "Richmond",
+        "addr:housenumber": "7801",
+        "addr:postcode": "23294",
+        "addr:state": "VA",
+        "addr:street": "West Broad Street",
+        "name": "Lotte Plaza Market",
+        "opening_hours": "Mo-Su 09:00-22:00",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "phone": "+1-804-716-8461",
+        "shop": "supermarket",
+        "website": "https://www.lotteplaza.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5273793,
+          37.6199802
+        ]
+      },
+      "id": "node/13051063377"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13051063378",
+        "amenity": "food_court",
+        "name": "Lotte Food Court"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5273242,
+          37.6197771
+        ]
+      },
+      "id": "node/13051063378"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13104511794",
+        "name": "Halal Market",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.5476181,
+          37.6371358
+        ]
+      },
+      "id": "node/13104511794"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13418697118",
+        "check_date": "2025-12-29",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.4468123,
+          37.6093027
+        ]
+      },
+      "id": "node/13418697118"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13717414745",
+        "addr:city": "Glen Allen",
+        "addr:housenumber": "4386",
+        "addr:postcode": "23060",
+        "addr:state": "VA",
+        "addr:street": "Pouncey Tract Road",
+        "fee": "yes",
+        "leisure": "sports_centre",
+        "name": "Master Cho's Martial Arts",
+        "opening_hours": "Mo-Fr 11:30-20:00; Sa 09:00-13:00",
+        "phone": "+1-804-364-0101",
+        "website": "https://masterchotkd.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.6121072,
+          37.655702
+        ]
+      },
+      "id": "node/13717414745"
+    }
+  ]
+}

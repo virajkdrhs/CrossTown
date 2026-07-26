@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrossTown | Spatial Transit Accessibility Engine</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- MapLibre GL JS CSS & JS -->
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans h-screen overflow-hidden flex flex-col">
+
+  <!-- Header Navigation -->
+  <header class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between z-10 shadow-md">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-gray-900 text-lg">CT</div>
+      <div>
+        <h1 class="text-xl font-bold tracking-wide text-white">CrossTown</h1>
+        <p class="text-xs text-gray-400">Henrico County Transit Access Engine</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <label class="inline-flex items-center cursor-pointer text-sm text-gray-300">
+        <input type="checkbox" id="toggle-census" class="sr-only peer">
+        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+        <span class="ml-3 font-medium">Overlay Car-Free Census Data</span>
+      </label>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="flex flex-1 h-full relative overflow-hidden">
+    
+    <!-- Sidebar Panel -->
+    <aside class="w-96 bg-gray-800 border-r border-gray-700 p-6 flex flex-col justify-between overflow-y-auto z-10 shadow-2xl">
+      <div class="space-y-6">
+        
+        <!-- Search Form -->
+        <div>
+          <label class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">Location Query</label>
+          <div class="relative">
+            <input type="text" id="address-input" placeholder="e.g., 4301 E Parham Rd" 
+                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
+            <button id="search-btn" class="mt-3 w-full bg-emerald-500 hover:bg-emerald-600 text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
+              Calculate Reachability
+            </button>
+          </div>
+          <p id="search-error" class="text-red-400 text-xs mt-2 hidden"></p>
+        </div>
+
+        <hr class="border-gray-700">
+
+        <!-- Access Summary Card -->
+        <div id="results-panel">
+          <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">Reachable Amenities (45-Min Transit)</h2>
+          
+          <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 mb-4 text-center">
+            <p class="text-xs text-gray-400">Composite Access Score</p>
+            <div id="score-overall" class="text-4xl font-extrabold text-emerald-400 my-1">--</div>
+            <p id="score-subtitle" class="text-xs text-gray-500">Select an address or map point</p>
+          </div>
+
+          <!-- Category Grid -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-gray-900/60 border border-gray-700/60 p-3 rounded-lg text-center">
+              <span class="text-xs text-gray-400 block">🍎 Food</span>
+              <span id="score-food" class="text-xl font-bold text-gray-100">--</span>
+            </div>
+            <div class="bg-gray-900/60 border border-gray-700/60 p-3 rounded-lg text-center">
+              <span class="text-xs text-gray-400 block">🏥 Health</span>
+              <span id="score-health" class="text-xl font-bold text-gray-100">--</span>
+            </div>
+            <div class="bg-gray-900/60 border border-gray-700/60 p-3 rounded-lg text-center">
+              <span class="text-xs text-gray-400 block">📚 Education</span>
+              <span id="score-education" class="text-xl font-bold text-gray-100">--</span>
+            </div>
+            <div class="bg-gray-900/60 border border-gray-700/60 p-3 rounded-lg text-center">
+              <span class="text-xs text-gray-400 block">🏛️ Civic</span>
+              <span id="score-civic" class="text-xl font-bold text-gray-100">--</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Info -->
+      <div class="pt-6 border-t border-gray-700 text-xs text-gray-500">
+        Engine powered by <span class="text-emerald-400 font-semibold">r5py</span>, <span class="text-blue-400 font-semibold">PostGIS</span> & <span class="text-purple-400 font-semibold">FastAPI</span>.
+      </div>
+    </aside>
+
+    <!-- Map Canvas Container -->
+    <main id="map" class="flex-1 h-full w-full bg-gray-950"></main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

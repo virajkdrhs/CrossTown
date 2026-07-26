@@ -1,0 +1,34 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Large Spatial Datasets & Raw Downloads
+*.pbf
+*.zip
+*.shp
+*.dbf
+*.shx
+*.prj
+*.cpg
+*.gpkg
+*.geoparquet
+
+# Raw Data CSVs & GeoJSONs
+travel_time_matrix.csv
+Henrico_BlockGroups_CarFree.geojson
+County_Parks.geojson
+
+# Databases & Cache
+*.sqlite
+*.sqlite3
+*.db
+__pycache__/
+*.py[cod]
+
+# OS & IDE Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.env

@@ -1,0 +1,25 @@
+/* Custom scrollbar for sidebar */
+aside::-webkit-scrollbar {
+  width: 6px;
+}
+aside::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+aside::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+
+/* MapLibre Canvas Adjustments */
+.maplibregl-popup-content {
+  background-color: #111827 !important;
+  color: #f3f4f6 !important;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 10px 14px;
+}
+.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-bottom-color: #111827 !important;
+  border-top-color: #111827 !important;
+}
