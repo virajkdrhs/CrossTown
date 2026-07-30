@@ -1,0 +1,173 @@
+"""Generate a synthetic employee roster for the employer gap dashboard demo.
+
+This is FABRICATED DATA and the output file says so. No real person's home
+address is involved, and none should ever be: employees are placed at access
+grid nodes (a ~800 m lattice), never at street addresses, which is the same
+privacy rule the live product follows.
+
+What is real is the *distribution*. Employees are sampled across grid nodes in
+proportion to the number of car-free households ACS table B25044 reports nearby,
+so the roster concentrates where people genuinely lack a car. That makes the
+dashboard's headline number meaningful rather than decorative.
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import random
+import sys
+
+from . import config
+
+SEED = 20260729  # fixed so the demo is reproducible
+
+# (label, start, end, share of workforce) - a spread of shifts, because the
+# evening and overnight ones are where transit fails hardest.
+SHIFTS = [
+    ("day", "09:00", "17:00", 0.40),
+    ("early", "06:00", "14:00", 0.25),
+    ("evening", "15:00", "23:00", 0.25),
+    ("overnight", "23:00", "07:00", 0.10),
+]
+
+ROSTER_SIZE = 60
+OUTPUT = config.DATA_DIR / "Demo" / "roster_synthetic.csv"
+
+
+def _polygon_centroid(coordinates):
+    rings = []
+
+    def collect(node):
+        if not isinstance(node, list) or not node:
+            return
+        first = node[0]
+        if isinstance(first, (int, float)):
+            return
+        if isinstance(first, list) and first and isinstance(first[0], (int, float)):
+            rings.append(node)
+            return
+        for child in node:
+            collect(child)
+
+    collect(coordinates)
+    if not rings:
+        return None
+    points = [point for ring in rings for point in ring]
+    return (
+        sum(p[0] for p in points) / len(points),
+        sum(p[1] for p in points) / len(points),
+    )
+
+
+def load_nodes() -> list[dict]:
+    with config.ACCESS_GRID_GEOJSON.open(encoding="utf-8") as handle:
+        collection = json.load(handle)
+    nodes = []
+    for feature in collection.get("features", []):
+        props = feature.get("properties") or {}
+        coords = (feature.get("geometry") or {}).get("coordinates") or []
+        if len(coords) < 2:
+            continue
+        nodes.append({"id": int(props["id"]), "lon": float(coords[0]), "lat": float(coords[1])})
+    return nodes
+
+
+def carfree_weights(nodes: list[dict]) -> dict[int, float]:
+    """Car-free household count attributed to each grid node."""
+    weights = {node["id"]: 0.0 for node in nodes}
+    if not config.CENSUS_GEOJSON.exists():
+        return {node["id"]: 1.0 for node in nodes}
+
+    with config.CENSUS_GEOJSON.open(encoding="utf-8") as handle:
+        census = json.load(handle)
+
+    for feature in census.get("features", []):
+        props = feature.get("properties") or {}
+        centroid = _polygon_centroid((feature.get("geometry") or {}).get("coordinates"))
+        if centroid is None:
+            continue
+        try:
+            carfree = float(props.get("carfree_units") or 0)
+        except (TypeError, ValueError):
+            continue
+        if carfree <= 0:
+            continue
+        nearest = min(
+            nodes,
+            key=lambda node: (node["lon"] - centroid[0]) ** 2 + (node["lat"] - centroid[1]) ** 2,
+        )
+        weights[nearest["id"]] += carfree
+
+    if not any(weights.values()):
+        return {node["id"]: 1.0 for node in nodes}
+    return weights
+
+
+def main() -> int:
+    print("--- Generating synthetic employee roster ---")
+    nodes = load_nodes()
+    if not nodes:
+        print("ERROR: no grid nodes found; run the pipeline first.")
+        return 1
+
+    weights = carfree_weights(nodes)
+    population = [node for node in nodes if weights[node["id"]] > 0]
+    if not population:
+        population = nodes
+    node_weights = [max(weights[node["id"]], 0.01) for node in population]
+
+    rng = random.Random(SEED)
+    shift_labels = [shift[0] for shift in SHIFTS]
+    shift_shares = [shift[3] for shift in SHIFTS]
+    shift_by_label = {shift[0]: shift for shift in SHIFTS}
+
+    rows = []
+    for index in range(1, ROSTER_SIZE + 1):
+        node = rng.choices(population, weights=node_weights, k=1)[0]
+        label = rng.choices(shift_labels, weights=shift_shares, k=1)[0]
+        _, start, end, _ = shift_by_label[label]
+        rows.append(
+            {
+                "employee_ref": f"EMP-{index:03d}",
+                "origin_zone_id": node["id"],
+                "shift_label": label,
+                "shift_start": start,
+                "shift_end": end,
+                "has_vehicle": "yes" if rng.random() < 0.55 else "no",
+            }
+        )
+
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    with OUTPUT.open("w", encoding="utf-8", newline="") as handle:
+        handle.write(
+            "# SYNTHETIC DEMO DATA - not real employees. Origins are access grid\n"
+            "# zone ids, never street addresses. Generated by Backend/make_demo_roster.py\n"
+        )
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "employee_ref",
+                "origin_zone_id",
+                "shift_label",
+                "shift_start",
+                "shift_end",
+                "has_vehicle",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+    distribution: dict[str, int] = {}
+    for row in rows:
+        distribution[row["shift_label"]] = distribution.get(row["shift_label"], 0) + 1
+    no_vehicle = sum(1 for row in rows if row["has_vehicle"] == "no")
+    print(f"  {len(rows)} employees across {len({r['origin_zone_id'] for r in rows})} zones")
+    print(f"  shifts: {distribution}")
+    print(f"  without a vehicle: {no_vehicle}")
+    print(f"--- Wrote {OUTPUT.relative_to(config.ROOT_DIR)} ---")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

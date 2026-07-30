@@ -1,15 +1,42 @@
 # CrossTown
 
-A multi-modal spatial transit accessibility and equity analytics platform for
-**Henrico County, VA**. CrossTown measures how many everyday destinations —
-groceries, clinics, schools, libraries — a resident can reach on foot and by
-transit within a fixed travel-time budget, and cross-references that against
-Census data on households without a car.
+A transportation access platform for **Henrico County, VA**.
 
-- **Backend:** FastAPI, optionally PostgreSQL/PostGIS
-- **Routing:** r5py (R5) over OpenStreetMap + GTFS
-- **Frontend:** MapLibre GL JS + Tailwind CSS
-- **Coverage:** 130 origin grid nodes, 437 destinations, 243 Census block groups
+The problem: people without a car are cut off from work. Not because the county
+has no bus system, but because the bus system does not reach the places and hours
+that jobs actually exist in. CrossTown measures that gap precisely, then treats
+it as the starting point for organising rides rather than the end of the story.
+
+Three layers, each building on the one below:
+
+| Layer | Question it answers | Status |
+| --- | --- | --- |
+| **Access map** | Where does transit reach across the county at all? | Built |
+| **Commute check** | Can *this* person reach *this* job for *this* shift? | Built |
+| **Carpool hub** | Who else is stranded, and can they ride together? | Designed — see [Roadmap](#roadmap) |
+
+The bus network is one input, not the product. The map's job is to prove the gap;
+the gap's job is to justify the ride.
+
+- **Backend:** FastAPI + a pure-Python GTFS transit router (no JVM, no OSM extract)
+- **Spatial:** optional PostgreSQL/PostGIS, falls back to committed GeoJSON
+- **Frontend:** MapLibre GL JS + Tailwind CSS, ES modules
+- **Data:** live GRTC GTFS feed, ACS table B25044, 130 grid nodes, 437 destinations,
+  243 Census block groups
+
+### What the data shows
+
+Measured with the code in this repository, against the GRTC schedule published
+2026-07-01:
+
+- **Innsbrook office park** — one of the county's largest employment centres — has
+  **no bus stop within 1.4 km**. No shift is reachable by transit, at any hour.
+- A **6am shift in the Short Pump retail corridor** is unreachable from downtown
+  Richmond: stops serve both ends, but no bus runs early enough.
+- Of a 60-person roster distributed by where car-free households actually live,
+  **59 cannot reach Short Pump on transit**; 26 of them own no car.
+- County-wide, **26.2% of car-free households** sit in the lowest-access areas,
+  and 85% of grid nodes cannot reach a library within 45 minutes.
 
 ---
 
@@ -70,6 +97,8 @@ read from the environment only — never hard-code them in source.
 
 ## API
 
+`/api/v1` describes the county. `/api/v2` answers questions about specific trips.
+
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
 | `GET` | `/api/v1/health` | Active data backend and score calibration |
@@ -79,6 +108,50 @@ read from the environment only — never hard-code them in source.
 | `GET` | `/api/v1/stats` | County summary + car-free equity crosstab |
 | `GET` | `/api/v1/node/{id}` | Scores for one grid node |
 | `POST` | `/api/v1/reachability` | Geocode an address → nearest node scores |
+| `GET` | `/api/v2/transit/health` | GTFS feed window, size, routing assumptions |
+| `GET` | `/api/v2/transit/stops` | All bus stops as GeoJSON |
+| `POST` | `/api/v2/commute` | One trip: itinerary both ways + gap verdict |
+| `POST` | `/api/v2/roster/gaps` | A whole roster vs one worksite + carpool clusters |
+| `GET` | `/api/v2/demo/roster` | The synthetic roster used by the demo |
+
+### How the transit router works
+
+`Backend/transit_router.py` implements the Connection Scan Algorithm directly over
+the GTFS feed, in about 300 lines of standard-library Python. Two single-pass
+scans:
+
+- **Backward** — "to arrive by 08:00, how late can I leave each stop?" One scan
+  answers this for all 1,596 stops simultaneously, which is why a 60-person roster
+  analysis costs roughly the same as two individual lookups.
+- **Forward** — "leaving at 06:42, when do I arrive?" Used to reconstruct the
+  leg-by-leg itinerary once the departure time is known.
+
+`transfers.txt` is empty in the GRTC feed, so walking transfers between stops
+within 250 m are generated at load time. Without them almost every cross-town
+journey would look impossible.
+
+This deliberately replaces r5py for trip-level routing. r5py needs a JVM and a
+400 MB Virginia OSM extract; the GTFS feed is 4 MB and indexes in about a second,
+which is what makes live queries practical. r5py is still used to build the
+county-wide accessibility grid, where its street-network routing earns its cost.
+
+**Stated approximations.** Walking uses straight-line distance × 1.35 at 4.8 km/h
+— there is no pedestrian network, so a walk crossing a highway or river is
+underestimated. Bus-to-bus transfers assume 3 minutes. Schedules are as published;
+real-time delays are not modelled.
+
+### Gap thresholds
+
+| Verdict | Meaning |
+| --- | --- |
+| `viable` | Under 45 min each way, at most 1 transfer |
+| `marginal` | 45–60 min, or exactly 2 transfers |
+| `gap` | Over 60 min, 3+ transfers, departure before 05:00, or no way home |
+| `no_service` | No route at all — distinguishing *no stop nearby* from *no bus at that hour* |
+
+That last distinction matters: a worksite with no stop within a mile is a land-use
+problem only a carpool or shuttle fixes, whereas a worksite with stops but no
+early bus is a scheduling problem worth raising with GRTC.
 
 ### How scores work
 
@@ -94,8 +167,20 @@ of zero scores zero — the score is never back-filled from a category average.
 Raw inputs live in `Data/Raw`. The two large files are gitignored and must be
 downloaded separately into `Data/Raw/`:
 
-- `virginia-latest.osm.pbf` — [Geofabrik](https://download.geofabrik.de/north-america/us/virginia.html)
-- `gtfs.zip` — GRTC transit feed
+- `gtfs.zip` — the GRTC feed, **required** for the commute check and employer
+  dashboard. Fetch it with:
+
+  ```bash
+  curl -L -o Data/Raw/gtfs.zip https://www.ridegrtc.com/wp-content/uploads/2025/02/gtfs.zip
+  ```
+
+  The URL comes from GRTC via [Transitland](https://www.transit.land/feeds/f-grtc~va).
+  `GET /api/v2/transit/health` reports the loaded feed's validity window; when it
+  expires, re-download.
+
+- `virginia-latest.osm.pbf` — [Geofabrik](https://download.geofabrik.de/north-america/us/virginia.html).
+  Only needed to *rebuild* the accessibility grid with r5py; the committed grid
+  works without it.
 
 Run in order from the repository root:
 
@@ -140,22 +225,67 @@ CrossTown/
 │   ├── config.py              # paths + env-based settings
 │   ├── scoring.py             # 0-100 normalisation (single source of truth)
 │   ├── datasource.py          # PostGIS or GeoJSON-file backend
-│   ├── main.py                # FastAPI app
+│   ├── main.py                # FastAPI app (/api/v1)
+│   ├── api_transit.py         # commute + roster endpoints (/api/v2)
+│   ├── gtfs.py                # GTFS feed loader and indexer
+│   ├── transit_router.py      # Connection Scan Algorithm journey planner
+│   ├── commute.py             # gap classification and verdicts
 │   ├── build_destinations.py  # raw assets -> destinations.csv
 │   ├── routing_engine.py      # r5py travel-time matrix
 │   ├── calculate_scores.py    # matrix -> scored access grid
 │   ├── load_to_postgis.py     # GeoJSON -> PostGIS
-│   └── process_census.py      # ACS B25044 -> car-free layer
+│   ├── process_census.py      # ACS B25044 -> car-free layer
+│   └── make_demo_roster.py    # synthetic roster for the employer demo
 ├── Frontend/
 │   ├── index.html
-│   ├── app.js
-│   └── style.css
+│   ├── style.css
+│   └── js/
+│       ├── main.js            # app shell + view switching
+│       ├── map.js             # shared MapLibre instance
+│       ├── api.js             # fetch helpers
+│       ├── access.js          # county access map view
+│       ├── commute.js         # commute check view
+│       └── employer.js        # employer gap dashboard view
 ├── Data/
 │   ├── Raw/                   # Census, Assets, (gitignored .pbf / .zip)
-│   └── Processed/             # committed GeoJSON + CSV outputs
+│   ├── Processed/             # committed GeoJSON + CSV outputs
+│   └── Demo/                  # synthetic roster (clearly labelled)
 ├── requirements.txt
 └── .env.example
 ```
+
+---
+
+## Roadmap
+
+The carpool hub is designed but not built. Recording the design decisions here
+because they are the load-bearing ones:
+
+**Verified organisations, not just employers.** An organisation is any institution
+with an existing trusted relationship to its people — an employer, a school, a
+youth programme, a clinic. Employer is simply the first type. This keeps students
+in scope without special-casing them.
+
+**Verification is attestation, not document upload.** An organisation admin
+confirms that a person belongs. No driver's licence images are ever stored: a
+named manager with accountability is stronger evidence than a photo, and a breach
+then exposes no government IDs. Real KYC sits behind an interface with a mock
+implementation.
+
+**Organisation-scoped visibility.** You can only see or message people who share
+a verified organisation with you. There is no global stranger matching. This single
+constraint removes most of the abuse surface in a ride-matching product.
+
+**Coarse locations only.** Pickup points are access grid nodes and public
+landmarks, never home addresses — the rule the demo roster already follows.
+
+**Adults first; minors gated by design.** v1 matches verified members 18+. Youth
+matching requires guardian consent on file and an approved-driver list, mediated
+by the organisation. Open matching for minors is never enabled.
+
+Still to build: Postgres schema and migrations, magic-link auth, organisation and
+membership models, admin verification queue, shift-scoped ride matching,
+organisation-scoped messaging, report/block, and an audit log.
 
 ---
 

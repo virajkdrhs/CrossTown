@@ -1,4 +1,7 @@
-const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
+/** County access map view: score grid, Census overlay, amenities, statistics. */
+
+import { getJSON, postJSON } from "./api.js";
+import { map, setVisibility, fitToPoints, setMarker, clearMarker } from "./map.js";
 
 const CATEGORY_COLORS = {
   Food: "#34d399",
@@ -7,89 +10,23 @@ const CATEGORY_COLORS = {
   Civic: "#a78bfa",
 };
 
-const map = new maplibregl.Map({
-  container: "map",
-  style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
-  center: [-77.48, 37.58], // Henrico County, VA
-  zoom: 10.5,
-});
-
-map.addControl(new maplibregl.NavigationControl(), "top-right");
-map.addControl(new maplibregl.ScaleControl({ unit: "imperial" }), "bottom-right");
-
-// Tailwind's CDN build injects its stylesheet asynchronously, so MapLibre often
-// measures the container before the flex layout has settled and the canvas ends
-// up a fraction of the viewport. Watching the container keeps the canvas in
-// sync with whatever size it actually ends up at (including sidebar toggles and
-// window resizes).
-if (typeof ResizeObserver !== "undefined") {
-  new ResizeObserver(() => map.resize()).observe(document.getElementById("map"));
-} else {
-  window.addEventListener("resize", () => map.resize());
-}
-
-let selectedMarker = null;
-let selectedNodeId = null;
 let hoverPopup = null;
+let gridBounds = [];
 
-/* ------------------------------------------------------------------ helpers */
-
-async function getJSON(path, options) {
-  const response = await fetch(`${API_BASE_URL}${path}`, options);
-  if (!response.ok) {
-    let detail = `Request failed (${response.status})`;
-    try {
-      const body = await response.json();
-      if (body && body.detail) detail = body.detail;
-    } catch (_) {
-      /* non-JSON error body */
-    }
-    throw new Error(detail);
-  }
-  return response.json();
-}
-
-function setApiStatus(text, ok) {
-  const el = document.getElementById("api-status");
-  el.textContent = text;
-  el.className = ok
-    ? "text-xs px-2 py-1 rounded-full border border-emerald-600 text-emerald-400"
-    : "text-xs px-2 py-1 rounded-full border border-red-600 text-red-400";
-}
-
-/* -------------------------------------------------------------- map layers */
-
-map.on("load", async () => {
-  // Health check first, so a dead backend produces one clear message instead of
-  // three silent console errors.
-  try {
-    const health = await getJSON("/health");
-    setApiStatus(`API ok · ${health.data_source}`, true);
-    document.getElementById("budget-label").textContent =
-      health.travel_time_budget_minutes ?? 45;
-  } catch (err) {
-    setApiStatus("API offline", false);
-    document.getElementById("offline-banner").classList.remove("hidden");
-    return;
-  }
-
+export async function init() {
   await Promise.all([loadAccessGrid(), loadCensusLayer(), loadDestinations()]);
   loadStats();
-  fitToGrid();
-});
+  wireControls();
+}
 
-/** Frame the county from the data instead of trusting a hard-coded zoom. */
-function fitToGrid() {
-  const source = map.getSource("access-grid-source");
-  if (!source || !source._data) return;
-  const bounds = new maplibregl.LngLatBounds();
-  source._data.features.forEach((feature) => bounds.extend(feature.geometry.coordinates));
-  if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 60, duration: 0 });
+export function focus() {
+  if (gridBounds.length) fitToPoints(gridBounds, { padding: 60, duration: 0 });
 }
 
 async function loadAccessGrid() {
   try {
-    const gridData = await getJSON("/grid");
+    const gridData = await getJSON("/api/v1/grid");
+    gridBounds = gridData.features.map((feature) => feature.geometry.coordinates);
 
     map.addSource("access-grid-source", { type: "geojson", data: gridData });
 
@@ -98,8 +35,6 @@ async function loadAccessGrid() {
       type: "circle",
       source: "access-grid-source",
       paint: {
-        // The grid is a ~800 m lattice; radii are tuned so neighbouring cells
-        // touch without stacking into a solid wash of colour.
         "circle-radius": [
           "interpolate", ["linear"], ["zoom"],
           9, 6,
@@ -120,7 +55,6 @@ async function loadAccessGrid() {
       },
     });
 
-    // Ring drawn around whichever node is currently selected.
     map.addLayer({
       id: "access-grid-selected",
       type: "circle",
@@ -144,7 +78,6 @@ async function loadAccessGrid() {
       const feature = event.features && event.features[0];
       if (feature) selectNode(feature);
     });
-
     map.on("mouseenter", "access-grid-layer", () => {
       map.getCanvas().style.cursor = "pointer";
     });
@@ -159,18 +92,19 @@ async function loadAccessGrid() {
 
 async function loadCensusLayer() {
   try {
-    const censusData = await getJSON("/demographics");
+    const censusData = await getJSON("/api/v1/demographics");
 
     const percentages = censusData.features
-      .map((f) => Number(f.properties.pct_carfree) || 0)
+      .map((feature) => Number(feature.properties.pct_carfree) || 0)
       .sort((a, b) => a - b);
     // Ramp to the 95th percentile so a couple of extreme block groups do not
-    // flatten everything else into the same dark blue.
+    // flatten everything else into one shade.
     const rampMax = Math.max(
       5,
       Math.ceil(percentages[Math.floor(percentages.length * 0.95)] || 20)
     );
-    document.getElementById("legend-census-max").textContent = `${rampMax}%+`;
+    const legendMax = document.getElementById("legend-census-max");
+    if (legendMax) legendMax.textContent = `${rampMax}%+`;
 
     map.addSource("census-carfree-source", { type: "geojson", data: censusData });
 
@@ -190,7 +124,7 @@ async function loadCensusLayer() {
           "fill-opacity": 0.55,
         },
       },
-      "access-grid-layer" // keep the polygons underneath the score circles
+      "access-grid-layer"
     );
 
     map.addLayer(
@@ -212,7 +146,7 @@ async function loadCensusLayer() {
         .setHTML(
           `<strong>Block group ${props.GEOID}</strong><br>` +
             `${Number(props.pct_carfree).toFixed(1)}% car-free<br>` +
-            `<span class="text-gray-400">${props.carfree_units} of ${props.total_units} households</span>`
+            `<span class="ct-muted">${props.carfree_units} of ${props.total_units} households</span>`
         )
         .addTo(map);
     });
@@ -229,10 +163,8 @@ async function loadCensusLayer() {
 
 async function loadDestinations() {
   try {
-    const destinations = await getJSON("/destinations");
-
+    const destinations = await getJSON("/api/v1/destinations");
     map.addSource("destinations-source", { type: "geojson", data: destinations });
-
     map.addLayer({
       id: "destinations-layer",
       type: "circle",
@@ -257,9 +189,7 @@ async function loadDestinations() {
       const props = event.features[0].properties;
       new maplibregl.Popup({ className: "ct-popup" })
         .setLngLat(event.features[0].geometry.coordinates)
-        .setHTML(
-          `<strong>${props.name}</strong><br><span class="text-gray-400">${props.category}</span>`
-        )
+        .setHTML(`<strong>${props.name}</strong><br><span class="ct-muted">${props.category}</span>`)
         .addTo(map);
     });
     map.on("mouseenter", "destinations-layer", () => {
@@ -276,7 +206,7 @@ async function loadDestinations() {
 async function loadStats() {
   const panel = document.getElementById("stats-panel");
   try {
-    const { summary, equity } = await getJSON("/stats");
+    const { summary, equity } = await getJSON("/api/v1/stats");
 
     const rows = [
       ["Grid nodes analysed", summary.nodes],
@@ -284,14 +214,14 @@ async function loadStats() {
       ["High access nodes", `${summary.bands.high} (${pct(summary.bands.high, summary.nodes)})`],
       ["Low access nodes", `${summary.bands.low} (${pct(summary.bands.low, summary.nodes)})`],
       [
-        "Nodes with no clinic reachable",
+        "No clinic reachable",
         `${summary.nodes_with_zero_access.health} (${pct(
           summary.nodes_with_zero_access.health,
           summary.nodes
         )})`,
       ],
       [
-        "Nodes with no library reachable",
+        "No library reachable",
         `${summary.nodes_with_zero_access.civic} (${pct(
           summary.nodes_with_zero_access.civic,
           summary.nodes
@@ -299,29 +229,31 @@ async function loadStats() {
       ],
     ];
 
-    let html = rows
-      .map(
-        ([label, value]) =>
-          `<div class="flex justify-between gap-3"><span>${label}</span><span class="text-gray-200 font-semibold whitespace-nowrap">${value}</span></div>`
-      )
-      .join("");
+    let html = rows.map(([label, value]) => statRow(label, value)).join("");
 
     if (equity.available) {
       html +=
         `<div class="mt-3 pt-3 border-t border-gray-700">` +
         `<p class="text-[11px] uppercase font-bold tracking-wider text-gray-500 mb-2">Car-free equity</p>` +
-        `<div class="flex justify-between gap-3"><span>Car-free households</span><span class="text-gray-200 font-semibold">${equity.carfree_households.toLocaleString()}</span></div>` +
-        `<div class="flex justify-between gap-3"><span>Share of all households</span><span class="text-gray-200 font-semibold">${equity.pct_carfree_countywide}%</span></div>` +
-        `<div class="flex justify-between gap-3 mt-1"><span class="text-amber-400">In low-access areas</span><span class="text-amber-400 font-bold">${equity.pct_carfree_in_low_access}%</span></div>` +
+        statRow("Car-free households", equity.carfree_households.toLocaleString()) +
+        statRow("Share of all households", `${equity.pct_carfree_countywide}%`) +
+        `<div class="flex justify-between gap-3 mt-1"><span class="text-amber-400">In low-access areas</span>` +
+        `<span class="text-amber-400 font-bold">${equity.pct_carfree_in_low_access}%</span></div>` +
         `</div>`;
     } else {
       html += `<p class="mt-3 pt-3 border-t border-gray-700 text-amber-400/80 text-[11px]">${equity.reason}</p>`;
     }
-
     panel.innerHTML = html;
   } catch (err) {
     panel.innerHTML = `<p class="text-red-400">Statistics unavailable: ${err.message}</p>`;
   }
+}
+
+function statRow(label, value) {
+  return (
+    `<div class="flex justify-between gap-3"><span>${label}</span>` +
+    `<span class="text-gray-200 font-semibold whitespace-nowrap">${value}</span></div>`
+  );
 }
 
 function pct(part, whole) {
@@ -329,15 +261,12 @@ function pct(part, whole) {
   return `${Math.round((100 * part) / whole)}%`;
 }
 
-/* ------------------------------------------------------------ interactions */
-
 function selectNode(feature) {
   const props = feature.properties;
   const [lon, lat] = feature.geometry.coordinates;
 
-  // Every score below is computed server-side. The previous build recalculated
-  // them in the browser with different constants, so clicking a point and
-  // searching the same address disagreed.
+  // Every score here is computed server-side so map clicks and address searches
+  // cannot disagree.
   renderResults({
     overall: props.access_score_100,
     subtitle: `Grid node ${props.id} · ${lat.toFixed(4)}, ${lon.toFixed(4)}`,
@@ -355,18 +284,10 @@ function selectNode(feature) {
     },
   });
 
-  selectedNodeId = props.id;
   if (map.getLayer("access-grid-selected")) {
     map.setFilter("access-grid-selected", ["==", ["get", "id"], props.id]);
   }
-  placeMarker(lon, lat);
-}
-
-function placeMarker(lon, lat) {
-  if (selectedMarker) selectedMarker.remove();
-  selectedMarker = new maplibregl.Marker({ color: "#10b981" })
-    .setLngLat([lon, lat])
-    .addTo(map);
+  setMarker("access-selection", [lon, lat]);
 }
 
 function showSearchError(message) {
@@ -375,14 +296,10 @@ function showSearchError(message) {
   errorEl.classList.remove("hidden");
 }
 
-function clearSearchError() {
-  document.getElementById("search-error").classList.add("hidden");
-}
-
 async function executeAddressLookup() {
   const button = document.getElementById("search-btn");
   const address = document.getElementById("address-input").value.trim();
-  clearSearchError();
+  document.getElementById("search-error").classList.add("hidden");
 
   if (address.length < 3) {
     showSearchError("Enter at least 3 characters of an address.");
@@ -391,20 +308,13 @@ async function executeAddressLookup() {
 
   button.disabled = true;
   button.textContent = "Locating…";
-
   try {
-    const data = await getJSON("/reachability", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ address }),
-    });
-
+    const data = await postJSON("/api/v1/reachability", { address });
     const { longitude, latitude } = data.coordinates;
     map.flyTo({ center: [longitude, latitude], zoom: 13.5, speed: 1.2 });
-    placeMarker(longitude, latitude);
+    setMarker("access-selection", [longitude, latitude]);
 
     const node = data.nearest_node;
-    selectedNodeId = node.id;
     if (map.getLayer("access-grid-selected")) {
       map.setFilter("access-grid-selected", ["==", ["get", "id"], node.id]);
     }
@@ -432,11 +342,7 @@ function renderResults({ overall, subtitle, scores, counts, warning }) {
   const overallEl = document.getElementById("score-overall");
   overallEl.textContent = overallScore;
   overallEl.className = `text-4xl font-extrabold my-1 ${
-    overallScore >= 70
-      ? "text-emerald-400"
-      : overallScore >= 35
-      ? "text-amber-400"
-      : "text-red-400"
+    overallScore >= 70 ? "text-emerald-400" : overallScore >= 35 ? "text-amber-400" : "text-red-400"
   }`;
 
   document.getElementById("score-subtitle").textContent = subtitle || "Calculated Zone";
@@ -449,10 +355,9 @@ function renderResults({ overall, subtitle, scores, counts, warning }) {
     warningEl.classList.add("hidden");
   }
 
-  document.querySelectorAll(".category-row").forEach((row) => {
+  document.querySelectorAll("#access-view .category-row").forEach((row) => {
     const key = row.dataset.cat;
-    // `?? 0` rather than `|| 0`: a genuine score of 0 is meaningful data here,
-    // and the old code silently replaced it with an invented estimate.
+    // `?? 0` not `|| 0`: a genuine score of zero is real data.
     const value = Number(scores?.[key] ?? 0);
     const count = counts?.[key];
 
@@ -468,45 +373,32 @@ function renderResults({ overall, subtitle, scores, counts, warning }) {
   });
 }
 
-/* ------------------------------------------------------------------ controls */
+function wireControls() {
+  document.getElementById("search-btn").addEventListener("click", executeAddressLookup);
+  document.getElementById("address-input").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") executeAddressLookup();
+  });
 
-document.getElementById("search-btn").addEventListener("click", executeAddressLookup);
-document.getElementById("address-input").addEventListener("keydown", (event) => {
-  if (event.key === "Enter") executeAddressLookup();
-});
+  document.getElementById("toggle-grid").addEventListener("change", (event) => {
+    setVisibility(["access-grid-layer", "access-grid-selected"], event.target.checked);
+  });
 
-function setLayerVisibility(layerIds, visible) {
-  layerIds.forEach((id) => {
-    if (map.getLayer(id)) {
-      map.setLayoutProperty(id, "visibility", visible ? "visible" : "none");
-    }
+  document.getElementById("toggle-census").addEventListener("change", (event) => {
+    setVisibility(["census-carfree-layer", "census-carfree-outline"], event.target.checked);
+    document.getElementById("legend-census").classList.toggle("hidden", !event.target.checked);
+  });
+
+  document.getElementById("toggle-destinations").addEventListener("change", (event) => {
+    setVisibility(["destinations-layer"], event.target.checked);
+    document.getElementById("destination-filters").classList.toggle("hidden", !event.target.checked);
+    document.getElementById("legend-destinations").classList.toggle("hidden", !event.target.checked);
+    if (event.target.checked) applyDestinationFilter();
+  });
+
+  document.querySelectorAll(".dest-cat").forEach((box) => {
+    box.addEventListener("change", applyDestinationFilter);
   });
 }
-
-document.getElementById("toggle-grid").addEventListener("change", (event) => {
-  setLayerVisibility(["access-grid-layer", "access-grid-selected"], event.target.checked);
-});
-
-document.getElementById("toggle-census").addEventListener("change", (event) => {
-  setLayerVisibility(
-    ["census-carfree-layer", "census-carfree-outline"],
-    event.target.checked
-  );
-  document
-    .getElementById("legend-census")
-    .classList.toggle("hidden", !event.target.checked);
-});
-
-document.getElementById("toggle-destinations").addEventListener("change", (event) => {
-  setLayerVisibility(["destinations-layer"], event.target.checked);
-  document
-    .getElementById("destination-filters")
-    .classList.toggle("hidden", !event.target.checked);
-  document
-    .getElementById("legend-destinations")
-    .classList.toggle("hidden", !event.target.checked);
-  if (event.target.checked) applyDestinationFilter();
-});
 
 function applyDestinationFilter() {
   const active = Array.from(document.querySelectorAll(".dest-cat"))
@@ -516,13 +408,24 @@ function applyDestinationFilter() {
   map.setFilter("destinations-layer", ["in", ["get", "category"], ["literal", active]]);
 }
 
-document.querySelectorAll(".dest-cat").forEach((box) => {
-  box.addEventListener("change", applyDestinationFilter);
-});
+/** Layers this view owns, so the view switcher can hide them. */
+export const layers = [
+  "access-grid-layer",
+  "access-grid-selected",
+  "census-carfree-layer",
+  "census-carfree-outline",
+  "destinations-layer",
+];
 
-document.getElementById("toggle-sidebar").addEventListener("click", (event) => {
-  const sidebar = document.getElementById("sidebar");
-  const hidden = sidebar.classList.toggle("hidden");
-  event.target.textContent = hidden ? "Show panel" : "Hide panel";
-  map.resize();
-});
+export function clear() {
+  clearMarker("access-selection");
+}
+
+export function restoreLayerVisibility() {
+  setVisibility(["access-grid-layer", "access-grid-selected"], document.getElementById("toggle-grid").checked);
+  setVisibility(
+    ["census-carfree-layer", "census-carfree-outline"],
+    document.getElementById("toggle-census").checked
+  );
+  setVisibility(["destinations-layer"], document.getElementById("toggle-destinations").checked);
+}

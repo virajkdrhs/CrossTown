@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CrossTown | Spatial Transit Accessibility Engine</title>
+  <title>CrossTown | Transportation Access for Henrico County</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -16,167 +16,285 @@
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans h-screen overflow-hidden flex flex-col">
 
-  <!-- Header Navigation -->
-  <header class="bg-gray-800 border-b border-gray-700 px-6 py-3 flex items-center justify-between z-20 shadow-md shrink-0">
-    <div class="flex items-center space-x-3">
-      <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-gray-900 text-lg">CT</div>
-      <div>
-        <h1 class="text-xl font-bold tracking-wide text-white">CrossTown</h1>
-        <p class="text-xs text-gray-400">Henrico County Transit Access Engine</p>
+  <!-- Header -->
+  <header class="bg-gray-800 border-b border-gray-700 px-5 py-3 flex items-center justify-between gap-4 z-20 shadow-md shrink-0">
+    <div class="flex items-center space-x-3 min-w-0">
+      <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-gray-900 text-lg shrink-0">CT</div>
+      <div class="min-w-0">
+        <h1 class="text-lg font-bold tracking-wide text-white leading-tight">CrossTown</h1>
+        <p id="view-subtitle" class="text-xs text-gray-400 truncate">Transportation access for Henrico County, VA</p>
       </div>
     </div>
 
-    <div class="flex items-center gap-4">
-      <span id="api-status" class="text-xs px-2 py-1 rounded-full border border-gray-600 text-gray-400">
-        connecting&hellip;
-      </span>
-      <button id="toggle-sidebar" class="text-xs text-gray-400 hover:text-white border border-gray-600 rounded px-2 py-1 transition">
-        Hide panel
-      </button>
+    <nav class="flex items-center gap-1 bg-gray-900/70 rounded-lg p-1 shrink-0" role="tablist" aria-label="Views">
+      <button class="view-tab" data-view="access" role="tab">Access Map</button>
+      <button class="view-tab" data-view="commute" role="tab">Commute Check</button>
+      <button class="view-tab" data-view="employer" role="tab">Employer</button>
+    </nav>
+
+    <div class="flex items-center gap-3 shrink-0">
+      <span id="api-status" class="text-xs px-2 py-1 rounded-full border border-gray-600 text-gray-400">connecting&hellip;</span>
+      <button id="toggle-sidebar" class="text-xs text-gray-400 hover:text-white border border-gray-600 rounded px-2 py-1 transition">Hide panel</button>
     </div>
   </header>
 
-  <!-- Main Container -->
   <div class="flex flex-1 min-h-0 relative overflow-hidden">
 
-    <!-- Sidebar Panel -->
-    <aside id="sidebar" class="w-96 shrink-0 bg-gray-800 border-r border-gray-700 p-5 flex flex-col gap-5 overflow-y-auto z-10 shadow-2xl">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-96 shrink-0 bg-gray-800 border-r border-gray-700 p-5 overflow-y-auto z-10 shadow-2xl">
 
-      <!-- Search Form -->
-      <div>
-        <label for="address-input" class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">Location Query</label>
-        <input type="text" id="address-input" placeholder="e.g., 4301 E Parham Rd"
-               autocomplete="off"
-               class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
-        <button id="search-btn" class="mt-3 w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
-          Calculate Reachability
+      <!-- ============================ ACCESS VIEW ============================ -->
+      <section id="access-view" class="flex flex-col gap-5">
+        <div>
+          <label for="address-input" class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">Location Query</label>
+          <input type="text" id="address-input" placeholder="e.g., 4301 E Parham Rd" autocomplete="off"
+                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
+          <button id="search-btn" class="mt-3 w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
+            Calculate Reachability
+          </button>
+          <p id="search-error" class="text-red-400 text-xs mt-2 hidden" role="alert"></p>
+          <p class="text-[11px] text-gray-500 mt-2">Or click any circle on the map.</p>
+        </div>
+
+        <hr class="border-gray-700">
+
+        <div aria-live="polite">
+          <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">
+            Reachable Amenities (<span id="budget-label">45</span>-Min Transit)
+          </h2>
+
+          <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 mb-3 text-center">
+            <p class="text-xs text-gray-400">Composite Access Score</p>
+            <div id="score-overall" class="text-4xl font-extrabold text-emerald-400 my-1">--</div>
+            <p id="score-subtitle" class="text-xs text-gray-500">Select an address or map point</p>
+            <p id="score-warning" class="text-amber-400 text-[11px] mt-2 hidden"></p>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="category-row" data-cat="food">
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-gray-300">🍎 Food &amp; Groceries</span>
+                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
+              </div>
+              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
+            </div>
+            <div class="category-row" data-cat="health">
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-gray-300">🏥 Health &amp; Clinics</span>
+                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
+              </div>
+              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
+            </div>
+            <div class="category-row" data-cat="education">
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-gray-300">📚 Education</span>
+                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
+              </div>
+              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
+            </div>
+            <div class="category-row" data-cat="civic">
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-gray-300">🏛️ Civic &amp; Libraries</span>
+                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
+              </div>
+              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-gray-700">
+
+        <div>
+          <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">Map Layers</h2>
+          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
+            <span>Access score grid</span>
+            <input type="checkbox" id="toggle-grid" checked class="accent-emerald-500 w-4 h-4 cursor-pointer">
+          </label>
+          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
+            <span>Car-free households (Census)</span>
+            <input type="checkbox" id="toggle-census" class="accent-indigo-500 w-4 h-4 cursor-pointer">
+          </label>
+          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer">
+            <span>Amenity locations</span>
+            <input type="checkbox" id="toggle-destinations" class="accent-sky-500 w-4 h-4 cursor-pointer">
+          </label>
+          <div id="destination-filters" class="mt-3 hidden grid grid-cols-2 gap-1.5 text-[11px]">
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-emerald-500" value="Food" checked><span class="text-gray-400">Food</span></label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-rose-500" value="Health" checked><span class="text-gray-400">Health</span></label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-amber-500" value="Education" checked><span class="text-gray-400">Education</span></label>
+            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-violet-500" value="Civic" checked><span class="text-gray-400">Civic</span></label>
+          </div>
+        </div>
+
+        <hr class="border-gray-700">
+
+        <div>
+          <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">County Summary</h2>
+          <div id="stats-panel" class="text-xs text-gray-400 space-y-2">
+            <p class="text-gray-500">Loading statistics&hellip;</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================== COMMUTE VIEW ============================ -->
+      <section id="commute-view" class="hidden flex-col gap-4">
+        <div>
+          <h2 class="text-sm font-bold text-white mb-1">Can you get to work?</h2>
+          <p class="text-[11px] text-gray-400 leading-relaxed">
+            Routes a real trip on the live GRTC schedule. When transit cannot cover it,
+            the reason is the case for a carpool.
+          </p>
+          <p id="commute-feed-note" class="text-[10px] text-gray-500 mt-1.5"></p>
+        </div>
+
+        <div>
+          <label for="commute-origin" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Home</label>
+          <input type="text" id="commute-origin" value="Highland Springs, VA" autocomplete="off"
+                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
+        </div>
+
+        <div>
+          <label for="commute-worksite-preset" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Workplace</label>
+          <select id="commute-worksite-preset" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 mb-2 focus:outline-none focus:border-emerald-500">
+            <option value="-1">— pick a major employment site —</option>
+          </select>
+          <input type="text" id="commute-destination" value="Innsbrook office park" autocomplete="off"
+                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
+        </div>
+
+        <div>
+          <label class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Shift</label>
+          <div class="flex gap-2 mb-2">
+            <input type="time" id="commute-shift-start" value="09:00"
+                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+            <span class="text-gray-500 self-center text-xs">to</span>
+            <input type="time" id="commute-shift-end" value="17:00"
+                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button class="commute-shift-preset shift-chip" data-start="09:00" data-end="17:00">Day 9–5</button>
+            <button class="commute-shift-preset shift-chip" data-start="06:00" data-end="14:00">Early 6–2</button>
+            <button class="commute-shift-preset shift-chip" data-start="15:00" data-end="23:00">Evening 3–11</button>
+            <button class="commute-shift-preset shift-chip" data-start="23:00" data-end="07:00">Night 11–7</button>
+          </div>
+        </div>
+
+        <div>
+          <label for="commute-day" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Service date</label>
+          <input type="date" id="commute-day"
+                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <button id="commute-check-btn" class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
+          Check this commute
         </button>
-        <p id="search-error" class="text-red-400 text-xs mt-2 hidden" role="alert"></p>
-        <p class="text-[11px] text-gray-500 mt-2">Or click any circle on the map.</p>
-      </div>
+        <p id="commute-error" class="text-red-400 text-xs hidden" role="alert"></p>
 
-      <hr class="border-gray-700">
+        <div id="commute-result" class="transition-opacity">
+          <p class="text-xs text-gray-500">Pick a home, a workplace and a shift, then check.</p>
+        </div>
+      </section>
 
-      <!-- Access Summary Card -->
-      <div id="results-panel" aria-live="polite">
-        <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">
-          Reachable Amenities (<span id="budget-label">45</span>-Min Transit)
-        </h2>
-
-        <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 mb-3 text-center">
-          <p class="text-xs text-gray-400">Composite Access Score</p>
-          <div id="score-overall" class="text-4xl font-extrabold text-emerald-400 my-1">--</div>
-          <p id="score-subtitle" class="text-xs text-gray-500">Select an address or map point</p>
-          <p id="score-warning" class="text-amber-400 text-[11px] mt-2 hidden"></p>
+      <!-- ========================== EMPLOYER VIEW ============================ -->
+      <section id="employer-view" class="hidden flex-col gap-4">
+        <div>
+          <h2 class="text-sm font-bold text-white mb-1">Employer gap report</h2>
+          <p class="text-[11px] text-gray-400 leading-relaxed">
+            Evaluates a whole staff roster against one worksite and shift, then groups
+            the stranded staff into carpool seed zones.
+          </p>
         </div>
 
-        <!-- Category Bars -->
-        <div class="space-y-2.5" id="category-list">
-          <div class="category-row" data-cat="food">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-gray-300">🍎 Food &amp; Groceries</span>
-              <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-            </div>
-            <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-          </div>
-          <div class="category-row" data-cat="health">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-gray-300">🏥 Health &amp; Clinics</span>
-              <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-            </div>
-            <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-          </div>
-          <div class="category-row" data-cat="education">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-gray-300">📚 Education</span>
-              <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-            </div>
-            <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-          </div>
-          <div class="category-row" data-cat="civic">
-            <div class="flex justify-between text-xs mb-1">
-              <span class="text-gray-300">🏛️ Civic &amp; Libraries</span>
-              <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-            </div>
-            <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-          </div>
+        <div>
+          <label for="employer-worksite-preset" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Worksite</label>
+          <select id="employer-worksite-preset" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 mb-2 focus:outline-none focus:border-emerald-500">
+            <option value="-1">— pick a major employment site —</option>
+          </select>
+          <input type="text" id="employer-worksite" value="Innsbrook office park" autocomplete="off"
+                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
         </div>
-      </div>
 
-      <hr class="border-gray-700">
-
-      <!-- Map Layers -->
-      <div>
-        <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">Map Layers</h2>
-
-        <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
-          <span>Access score grid</span>
-          <input type="checkbox" id="toggle-grid" checked class="accent-emerald-500 w-4 h-4 cursor-pointer">
-        </label>
-
-        <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
-          <span>Car-free households (Census)</span>
-          <input type="checkbox" id="toggle-census" class="accent-indigo-500 w-4 h-4 cursor-pointer">
-        </label>
-
-        <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer">
-          <span>Amenity locations</span>
-          <input type="checkbox" id="toggle-destinations" class="accent-sky-500 w-4 h-4 cursor-pointer">
-        </label>
-
-        <div id="destination-filters" class="mt-3 hidden grid grid-cols-2 gap-1.5 text-[11px]">
-          <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-emerald-500" value="Food" checked><span class="text-gray-400">Food</span></label>
-          <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-rose-500" value="Health" checked><span class="text-gray-400">Health</span></label>
-          <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-amber-500" value="Education" checked><span class="text-gray-400">Education</span></label>
-          <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-violet-500" value="Civic" checked><span class="text-gray-400">Civic</span></label>
+        <div>
+          <label class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Default shift</label>
+          <div class="flex gap-2">
+            <input type="time" id="employer-shift-start" value="09:00"
+                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+            <span class="text-gray-500 self-center text-xs">to</span>
+            <input type="time" id="employer-shift-end" value="17:00"
+                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <label class="flex items-center gap-2 mt-2 text-[11px] text-gray-400 cursor-pointer">
+            <input type="checkbox" id="employer-use-own-shifts" checked class="accent-emerald-500 w-3.5 h-3.5">
+            <span>Use each employee's own shift instead</span>
+          </label>
         </div>
-      </div>
 
-      <hr class="border-gray-700">
-
-      <!-- County Summary -->
-      <div>
-        <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">County Summary</h2>
-        <div id="stats-panel" class="text-xs text-gray-400 space-y-2">
-          <p class="text-gray-500">Loading statistics&hellip;</p>
+        <div>
+          <button id="employer-load-roster" class="w-full bg-gray-700 hover:bg-gray-600 text-gray-100 font-semibold py-2 rounded-lg text-xs transition">
+            Load demo roster (60 staff)
+          </button>
+          <p id="employer-roster-status" class="text-[10px] text-gray-500 mt-1.5">No roster loaded.</p>
         </div>
-      </div>
 
-      <!-- Footer Info -->
-      <div class="mt-auto pt-4 border-t border-gray-700 text-[11px] text-gray-500 leading-relaxed">
-        Engine powered by <span class="text-emerald-400 font-semibold">r5py</span>,
-        <span class="text-blue-400 font-semibold">PostGIS</span> &amp;
+        <button id="employer-analyse" disabled class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
+          Analyse roster
+        </button>
+        <p id="employer-error" class="text-red-400 text-xs hidden" role="alert"></p>
+
+        <div id="employer-result">
+          <p class="text-xs text-gray-500">Load the roster, choose a worksite, then analyse.</p>
+        </div>
+      </section>
+
+      <div class="mt-6 pt-4 border-t border-gray-700 text-[11px] text-gray-500 leading-relaxed">
+        Transit routing on the live <span class="text-sky-400 font-semibold">GRTC GTFS</span> feed ·
+        accessibility grid via <span class="text-emerald-400 font-semibold">r5py</span> ·
         <span class="text-purple-400 font-semibold">FastAPI</span>.
-        Scores are relative to the 95th-percentile grid node, not an absolute standard.
       </div>
     </aside>
 
-    <!-- Map Canvas Container -->
+    <!-- Map -->
     <main class="flex-1 relative bg-gray-950">
       <div id="map" class="absolute inset-0"></div>
 
-      <!-- Legend -->
-      <div id="legend" class="absolute bottom-4 left-4 bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs z-10 shadow-xl">
-        <p class="font-bold text-gray-200 mb-2">Composite access score</p>
-        <div class="flex items-center gap-2 mb-1.5">
-          <div class="h-2 w-32 rounded-full" style="background:linear-gradient(90deg,#ef4444 0%,#f59e0b 45%,#10b981 100%)"></div>
+      <!-- Legends -->
+      <div class="absolute bottom-4 left-4 z-10 flex flex-col gap-2">
+        <div id="legend-access" class="bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl">
+          <p class="font-bold text-gray-200 mb-2">Composite access score</p>
+          <div class="h-2 w-32 rounded-full mb-1" style="background:linear-gradient(90deg,#ef4444 0%,#f59e0b 45%,#10b981 100%)"></div>
+          <div class="flex justify-between text-gray-500 w-32 mb-2"><span>0</span><span>50</span><span>100</span></div>
+          <div id="legend-census" class="pt-2 border-t border-gray-700 hidden">
+            <p class="font-bold text-gray-200 mb-1.5">Car-free households</p>
+            <div class="h-2 w-32 rounded-full" style="background:linear-gradient(90deg,#1e293b 0%,#6366f1 55%,#a855f7 100%)"></div>
+            <div class="flex justify-between text-gray-500 w-32"><span>0%</span><span id="legend-census-max">40%</span></div>
+          </div>
+          <div id="legend-destinations" class="pt-2 mt-2 border-t border-gray-700 hidden space-y-1">
+            <p class="font-bold text-gray-200 mb-1">Amenities</p>
+            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span><span class="text-gray-400">Food</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span><span class="text-gray-400">Health</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span><span class="text-gray-400">Education</span></div>
+            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-violet-400 inline-block"></span><span class="text-gray-400">Civic</span></div>
+          </div>
         </div>
-        <div class="flex justify-between text-gray-500 w-32 mb-2"><span>0</span><span>50</span><span>100</span></div>
-        <div id="legend-census" class="pt-2 border-t border-gray-700 hidden">
-          <p class="font-bold text-gray-200 mb-1.5">Car-free households</p>
-          <div class="h-2 w-32 rounded-full" style="background:linear-gradient(90deg,#1e293b 0%,#6366f1 55%,#a855f7 100%)"></div>
-          <div class="flex justify-between text-gray-500 w-32"><span>0%</span><span id="legend-census-max">40%</span></div>
+
+        <div id="legend-commute" class="hidden bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl space-y-1.5">
+          <p class="font-bold text-gray-200 mb-1">Itinerary</p>
+          <div class="flex items-center gap-2"><span class="inline-block w-6 h-1 rounded" style="background:#38bdf8"></span><span class="text-gray-400">Bus leg</span></div>
+          <div class="flex items-center gap-2"><span class="inline-block w-6 border-t-2 border-dashed" style="border-color:#94a3b8"></span><span class="text-gray-400">Walking</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block border-2 border-white" style="background:#0ea5e9"></span><span class="text-gray-400">Boarding stop</span></div>
         </div>
-        <div id="legend-destinations" class="pt-2 mt-2 border-t border-gray-700 hidden space-y-1">
-          <p class="font-bold text-gray-200 mb-1">Amenities</p>
-          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span><span class="text-gray-400">Food</span></div>
-          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span><span class="text-gray-400">Health</span></div>
-          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span><span class="text-gray-400">Education</span></div>
-          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-violet-400 inline-block"></span><span class="text-gray-400">Civic</span></div>
+
+        <div id="legend-employer" class="hidden bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl space-y-1.5">
+          <p class="font-bold text-gray-200 mb-1">Staff by pickup zone</p>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#10b981"></span><span class="text-gray-400">Transit works</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#f59e0b"></span><span class="text-gray-400">Difficult</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#ef4444"></span><span class="text-gray-400">Transit gap</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#b91c1c"></span><span class="text-gray-400">No service</span></div>
+          <div class="flex items-center gap-2 pt-1 border-t border-gray-700"><span class="w-3 h-3 rounded-full inline-block border-2" style="border-color:#34d399"></span><span class="text-gray-400">Carpool seed zone</span></div>
+          <p class="text-[10px] text-gray-500 pt-1">Circle size = staff in that zone</p>
         </div>
       </div>
 
-      <!-- Backend-offline banner -->
       <div id="offline-banner" class="hidden absolute top-4 left-1/2 -translate-x-1/2 bg-red-900/90 border border-red-600 text-red-100 text-sm rounded-lg px-4 py-3 z-20 shadow-xl max-w-lg">
         <p class="font-bold mb-1">Cannot reach the CrossTown API</p>
         <p class="text-xs leading-relaxed">
@@ -188,6 +306,6 @@
     </main>
   </div>
 
-  <script src="app.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

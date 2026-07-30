@@ -17,12 +17,16 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from . import config, datasource, scoring
+from . import api_transit, config, datasource, scoring
 
 app = FastAPI(
     title="CrossTown API",
-    version="1.1.0",
-    description="Multi-modal spatial transit accessibility engine for Henrico County, VA.",
+    version="2.0.0",
+    description=(
+        "Transportation access platform for Henrico County, VA. "
+        "/api/v1 describes county-wide accessibility; /api/v2 answers whether a "
+        "specific commute is viable on transit."
+    ),
 )
 
 app.add_middleware(
@@ -37,6 +41,8 @@ app.add_middleware(
 
 SOURCE, SOURCE_NOTE = datasource.build_source()
 SCORE_CAPS = datasource.calibrate_scoring(SOURCE)
+
+app.include_router(api_transit.router)
 
 # Generous bounding box around Henrico County, used to reject geocoder results
 # that land in another state (Nominatim happily returns those).
