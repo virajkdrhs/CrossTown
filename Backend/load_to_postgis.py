@@ -1,60 +1,61 @@
-import os
-import geopandas as gpd
-from sqlalchemy import create_engine
+"""Ingest the processed spatial layers into PostgreSQL/PostGIS.
 
-def main():
+Credentials come from the environment (see .env.example) - the previous version
+had a working password committed in source, which is both a leak and a guarantee
+that it breaks on every other machine.
+"""
+
+from __future__ import annotations
+
+import sys
+
+from . import config
+
+
+def main() -> int:
     print("--- Starting PostGIS Data Ingestion ---")
 
-    # DATABASE CREDENTIALS
-    # Replace 'YOUR_ACTUAL_PASSWORD_HERE' with the password you created during PostgreSQL installation
-    DB_USER = "postgres"
-    DB_PASS = "101110"  
-    DB_HOST = "localhost"
-    DB_PORT = "5432"
-    DB_NAME = "crosstown"
-
-    # Create connection engine
-    connection_url = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    engine = create_engine(connection_url)
-
-    # File Paths
-    PROCESSED_DIR = os.path.abspath("data/processed")
-    access_grid_path = os.path.join(PROCESSED_DIR, "access_grid_final.geojson")
-    census_path = os.path.join(PROCESSED_DIR, "census_carfree.geojson")
-
-    # 1. Ingest Scored Access Grid
-    if os.path.exists(access_grid_path):
-        print("[1/2] Ingesting access_grid_final.geojson into PostGIS...")
-        grid_gdf = gpd.read_file(access_grid_path)
-        
-        # Save to PostGIS table named 'access_grid'
-        grid_gdf.to_postgis(
-            name="access_grid",
-            con=engine,
-            if_exists="replace",
-            index=False
+    database_url = config.database_url()
+    if not database_url:
+        print(
+            "ERROR: no database configured.\n"
+            "       Set CROSSTOWN_DB_PASSWORD (and optionally CROSSTOWN_DB_USER/HOST/PORT/NAME)\n"
+            "       or CROSSTOWN_DATABASE_URL. Copy .env.example to .env to get started.\n"
+            "       The API itself does not need this - it falls back to the processed\n"
+            "       GeoJSON files in Data/Processed."
         )
-        print(" -> Table 'access_grid' successfully created!")
-    else:
-        print(f" ERROR: Missing file {access_grid_path}")
+        return 1
 
-    # 2. Ingest Census Car-Free Layer
-    if os.path.exists(census_path):
-        print("[2/2] Ingesting census_carfree.geojson into PostGIS...")
-        census_gdf = gpd.read_file(census_path)
-        
-        # Save to PostGIS table named 'census_carfree'
-        census_gdf.to_postgis(
-            name="census_carfree",
-            con=engine,
-            if_exists="replace",
-            index=False
-        )
-        print(" -> Table 'census_carfree' successfully created!")
-    else:
-        print(f" WARNING: Missing file {census_path}. Skipping census table creation.")
+    import geopandas as gpd  # noqa: PLC0415 - heavy import, only needed here
+    from sqlalchemy import create_engine  # noqa: PLC0415
 
-    print("--- PostGIS Ingestion Complete! ---")
+    engine = create_engine(database_url)
+
+    layers = [
+        ("access_grid", config.ACCESS_GRID_GEOJSON),
+        ("census_carfree", config.CENSUS_GEOJSON),
+    ]
+
+    failures = 0
+    for step, (table, path) in enumerate(layers, start=1):
+        prefix = f"[{step}/{len(layers)}]"
+        if not path.exists():
+            print(f"{prefix} ERROR: missing {path.relative_to(config.ROOT_DIR)} - skipping {table}")
+            failures += 1
+            continue
+
+        print(f"{prefix} Ingesting {path.name} into '{table}'...")
+        gdf = gpd.read_file(path)
+        if gdf.crs is None:
+            gdf = gdf.set_crs("EPSG:4326")
+        else:
+            gdf = gdf.to_crs("EPSG:4326")
+        gdf.to_postgis(name=table, con=engine, if_exists="replace", index=False)
+        print(f" -> Table '{table}' created with {len(gdf)} rows")
+
+    print("--- PostGIS Ingestion Complete ---")
+    return 1 if failures else 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

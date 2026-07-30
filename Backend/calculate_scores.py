@@ -1,76 +1,92 @@
-import os
-import pandas as pd
-import geopandas as gpd
+"""Turn the r5py travel-time matrix into a scored access grid.
 
-def main():
+Counts, per origin node, how many destinations of each category are reachable
+inside the travel-time budget, then writes access_grid_final.geojson.
+"""
+
+from __future__ import annotations
+
+import sys
+
+from . import config
+
+
+def main() -> int:
     print("--- Starting Access Score Calculation ---")
-    
-    # Paths
-    PROCESSED_DIR = os.path.abspath("data/processed")
-    matrix_path = os.path.join(PROCESSED_DIR, "travel_time_matrix.csv")
-    dest_path = os.path.join(PROCESSED_DIR, "destinations.csv")
-    grid_path = os.path.join(PROCESSED_DIR, "origins_grid.csv")
-    output_geojson = os.path.join(PROCESSED_DIR, "access_grid_final.geojson")
 
-    # 1. Load Data
+    import pandas as pd  # noqa: PLC0415
+    import geopandas as gpd  # noqa: PLC0415
+
+    for path in (
+        config.TRAVEL_TIME_MATRIX_CSV,
+        config.DESTINATIONS_CSV,
+        config.ORIGINS_CSV,
+    ):
+        if not path.exists():
+            print(f"ERROR: missing {path.relative_to(config.ROOT_DIR)}")
+            if path == config.TRAVEL_TIME_MATRIX_CSV:
+                print("       Run 'python -m Backend.routing_engine' first.")
+            return 1
+
     print("[1/4] Loading matrix, destinations, and origin grid...")
-    matrix_df = pd.read_csv(matrix_path)
-    dest_df = pd.read_csv(dest_path)
-    grid_df = pd.read_csv(grid_path)
+    matrix_df = pd.read_csv(config.TRAVEL_TIME_MATRIX_CSV)
+    dest_df = pd.read_csv(config.DESTINATIONS_CSV)
+    grid_df = pd.read_csv(config.ORIGINS_CSV)
 
-    # 2. Filter matrix for trips <= 45 minutes
-    print("[2/4] Filtering for reachable destinations within 45 minutes...")
-    # r5py outputs 'from_id', 'to_id', and 'travel_time'
-    reachable = matrix_df[matrix_df['travel_time'] <= 45].copy()
+    # r5py has used both 'travel_time' and 'travel_time_p50' across versions.
+    time_column = next(
+        (name for name in ("travel_time", "travel_time_p50") if name in matrix_df.columns),
+        None,
+    )
+    if time_column is None:
+        print(f"ERROR: no travel-time column in matrix. Columns: {list(matrix_df.columns)}")
+        return 1
 
-    # Join with destination categories
+    budget = config.TRAVEL_TIME_BUDGET_MIN
+    print(f"[2/4] Filtering for destinations reachable within {budget} minutes...")
+    reachable = matrix_df[matrix_df[time_column] <= budget].copy()
     reachable = reachable.merge(
-        dest_df[['id', 'category']], 
-        left_on='to_id', 
-        right_on='id', 
-        how='inner'
+        dest_df[["id", "category"]], left_on="to_id", right_on="id", how="inner"
     )
 
-    # 3. Pivot & Tally Categories per Origin Node
     print("[3/4] Aggregating category counts per grid point...")
     category_counts = (
-        reachable.groupby(['from_id', 'category'])
-        .size()
-        .unstack(fill_value=0)
-        .reset_index()
+        reachable.groupby(["from_id", "category"]).size().unstack(fill_value=0).reset_index()
     )
 
-    # Ensure all expected category columns exist
-    for cat in ['Food', 'Health', 'Education', 'Civic']:
-        if cat not in category_counts.columns:
-            category_counts[cat] = 0
+    # Derive the category list from the data so a new category (e.g. Recreation)
+    # flows through without editing this file.
+    categories = sorted(str(value) for value in dest_df["category"].dropna().unique())
+    for category in categories:
+        if category not in category_counts.columns:
+            category_counts[category] = 0
 
-    # Calculate aggregate score (simple sum of reachable amenities)
-    category_counts['access_score'] = (
-        category_counts['Food'] + 
-        category_counts['Health'] + 
-        category_counts['Education'] + 
-        category_counts['Civic']
-    )
+    category_counts["access_score"] = category_counts[categories].sum(axis=1)
 
-    # Merge back with original origins grid to keep points even if 0 destinations were reached
+    # Left join so origins that reached nothing stay in the grid with zeros.
     final_grid = grid_df.merge(
-        category_counts, 
-        left_on='id', 
-        right_on='from_id', 
-        how='left'
-    ).fillna(0)
+        category_counts, left_on="id", right_on="from_id", how="left"
+    )
+    count_columns = [*categories, "access_score"]
+    final_grid[count_columns] = final_grid[count_columns].fillna(0).astype(int)
+    final_grid["from_id"] = final_grid["from_id"].fillna(final_grid["id"]).astype(int)
 
-    # 4. Convert to GeoDataFrame & Export GeoJSON
-    print(f"[4/4] Writing GeoJSON to {output_geojson}...")
+    print(f"[4/4] Writing {config.ACCESS_GRID_GEOJSON.relative_to(config.ROOT_DIR)}...")
     final_gdf = gpd.GeoDataFrame(
         final_grid,
         geometry=gpd.points_from_xy(final_grid.longitude, final_grid.latitude),
-        crs="EPSG:4326"
+        crs="EPSG:4326",
     )
-    
-    final_gdf.to_file(output_geojson, driver="GeoJSON")
-    print("--- Access Scores Generated Successfully! ---")
+    config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    final_gdf.to_file(config.ACCESS_GRID_GEOJSON, driver="GeoJSON")
+
+    reached_nothing = int((final_grid["access_score"] == 0).sum())
+    print(
+        f"--- Done. {len(final_grid)} nodes, mean raw score "
+        f"{final_grid['access_score'].mean():.1f}, {reached_nothing} node(s) reached nothing ---"
+    )
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

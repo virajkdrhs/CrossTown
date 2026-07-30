@@ -9,17 +9,66 @@ aside::-webkit-scrollbar-thumb {
   background: #374151;
   border-radius: 3px;
 }
+aside {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 #1f2937;
+}
 
-/* MapLibre Canvas Adjustments */
+/* MapLibre popup styling to match the dark shell */
 .maplibregl-popup-content {
   background-color: #111827 !important;
   color: #f3f4f6 !important;
   border: 1px solid #374151;
   border-radius: 0.5rem;
-  padding: 10px 14px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: 0 10px 25px rgb(0 0 0 / 45%);
+}
+.maplibregl-popup-content .text-gray-400 {
+  color: #9ca3af;
+}
+.maplibregl-popup-close-button {
+  color: #9ca3af;
+  font-size: 16px;
+  padding: 0 6px;
 }
 .maplibregl-popup-anchor-top .maplibregl-popup-tip,
-.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
   border-bottom-color: #111827 !important;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
   border-top-color: #111827 !important;
+}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: #111827 !important;
+}
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: #111827 !important;
+}
+
+/* Navigation / scale controls read better dark than the default white */
+.maplibregl-ctrl-group {
+  background: #1f2937 !important;
+  border: 1px solid #374151;
+}
+.maplibregl-ctrl-group button + button {
+  border-top-color: #374151 !important;
+}
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(0.85);
+}
+.maplibregl-ctrl-scale {
+  background: rgb(17 24 39 / 80%) !important;
+  border-color: #4b5563 !important;
+  color: #d1d5db !important;
+}
+.maplibregl-ctrl-attrib {
+  background: rgb(17 24 39 / 80%) !important;
+}
+.maplibregl-ctrl-attrib a {
+  color: #9ca3af !important;
 }

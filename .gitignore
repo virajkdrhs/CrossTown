@@ -32,3 +32,8 @@ Thumbs.db
 .vscode/
 .idea/
 .env
+# Local env file
+.env
+
+# Processed matrix (regenerate with Backend/routing_engine.py)
+Data/Processed/travel_time_matrix.csv

@@ -1,80 +1,165 @@
-import os
-import geopandas as gpd
-import pandas as pd
-import pygris
-import censusdata
+"""Build the car-free household layer for Henrico County block groups.
 
-def main():
-    print("--- Starting Census Car-Free Demographics Processing ---")
+Vehicle availability comes from ACS table B25044:
+    B25044_001E  total occupied housing units
+    B25044_003E  owner occupied, no vehicle available
+    B25044_010E  renter occupied, no vehicle available
 
-    PROCESSED_DIR = os.path.abspath("data/processed")
-    output_path = os.path.join(PROCESSED_DIR, "census_carfree.geojson")
+Two sources, in priority order:
 
-    # 1. Download Census Block Group Shapefiles for Henrico County, VA (FIPS 51087)
-    print("[1/4] Fetching Henrico County Census Block Groups via pygris...")
-    henrico_gdf = pygris.block_groups(state="VA", county="Henrico", cb=True, year=2021)
+1. ``Data/Raw/Census/B25044_henrico_blockgroups.json`` - the Census API response
+   already committed to the repo. Requires no network and no API key.
+2. A live ``censusdata`` download, if the committed file is missing.
 
-    # Convert GEOID to string for merging
-    henrico_gdf['GEOID'] = henrico_gdf['GEOID'].astype(str)
+The previous version only tried the live download and, when it failed, silently
+wrote a constant ``pct_carfree = 12.5`` for every block group. That is what is
+currently in ``census_carfree.geojson``: 243 block groups all with the identical
+placeholder value, which made the map overlay a flat single colour and any
+equity statistic meaningless.
+"""
 
-    # 2. Fetch ACS 5-Year Data for Vehicle Availability (Table B25044)
-    # B25044_001E = Total Occupied Units
-    # B25044_003E = Owner-occupied: No vehicle available
-    # B25044_010E = Renter-occupied: No vehicle available
-    print("[2/4] Fetching ACS 5-Year Vehicle Availability data (Table B25044)...")
+from __future__ import annotations
+
+import json
+import sys
+
+from . import config
+
+CARFREE_FIELDS = ("B25044_003E", "B25044_010E")
+TOTAL_FIELD = "B25044_001E"
+
+
+def _to_int(value) -> int:
+    """Census API uses negative sentinels (-666666666) for suppressed values."""
     try:
-        acs_data = censusdata.download(
-            'acs5', 2021,
-            censusdata.censusgeo([('state', '51'), ('county', '087'), ('block group', '*')]),
-            ['B25044_001E', 'B25044_003E', 'B25044_010E']
+        number = int(float(value))
+    except (TypeError, ValueError):
+        return 0
+    return number if number >= 0 else 0
+
+
+def load_committed_acs() -> dict[str, dict[str, int]]:
+    """Parse the committed Census API JSON into {GEOID: metrics}."""
+    with config.CENSUS_B25044_JSON.open(encoding="utf-8") as handle:
+        payload = json.load(handle)
+
+    header, *rows = payload
+    index = {name: position for position, name in enumerate(header)}
+    geo_col = index.get("GEO_ID")
+    if geo_col is None:
+        raise ValueError("Census JSON is missing a GEO_ID column.")
+
+    metrics: dict[str, dict[str, int]] = {}
+    for row in rows:
+        # GEO_ID looks like '1500000US510872001061'; the GEOID is the tail.
+        geoid = str(row[geo_col]).split("US")[-1]
+        total = _to_int(row[index[TOTAL_FIELD]])
+        carfree = sum(_to_int(row[index[field]]) for field in CARFREE_FIELDS)
+        metrics[geoid] = {
+            "total_units": total,
+            "carfree_units": carfree,
+            "pct_carfree": round(100 * carfree / total, 2) if total else 0.0,
+        }
+    return metrics
+
+
+def load_live_acs() -> dict[str, dict[str, int]]:
+    """Fall back to a live ACS download via the censusdata package."""
+    import censusdata  # noqa: PLC0415
+
+    frame = censusdata.download(
+        "acs5",
+        2021,
+        censusdata.censusgeo(
+            [("state", config.STATE_FIPS), ("county", config.COUNTY_FIPS), ("block group", "*")]
+        ),
+        [TOTAL_FIELD, *CARFREE_FIELDS],
+    )
+
+    metrics: dict[str, dict[str, int]] = {}
+    for geo, row in frame.iterrows():
+        params = dict(geo.params())
+        geoid = (
+            f"{config.STATE_FIPS}{config.COUNTY_FIPS}"
+            f"{params['tract']}{params['block group']}"
         )
-        
-        # Reset index to extract Census GEOID
-        acs_data = acs_data.reset_index()
-        
-        # Extract 12-digit GEOID string from censusgeo objects
-        def parse_geoid(geo_obj):
-            params = dict(geo_obj.params)
-            return f"51087{params['tract']}{params['block group']}"
+        total = _to_int(row[TOTAL_FIELD])
+        carfree = sum(_to_int(row[field]) for field in CARFREE_FIELDS)
+        metrics[geoid] = {
+            "total_units": total,
+            "carfree_units": carfree,
+            "pct_carfree": round(100 * carfree / total, 2) if total else 0.0,
+        }
+    return metrics
 
-        acs_data['GEOID'] = acs_data['index'].apply(parse_geoid)
 
-        # Calculate total car-free households and percentage
-        acs_data['total_units'] = acs_data['B25044_001E']
-        acs_data['carfree_units'] = acs_data['B25044_003E'] + acs_data['B25044_010E']
-        
-        # Calculate percentage (prevent division by zero)
-        acs_data['pct_carfree'] = (acs_data['carfree_units'] / acs_data['total_units'].replace(0, 1) * 100).round(2)
+def load_geometries() -> dict:
+    """Reuse the committed block group geometries, or download them via pygris."""
+    if config.CENSUS_GEOJSON.exists():
+        with config.CENSUS_GEOJSON.open(encoding="utf-8") as handle:
+            return json.load(handle)
 
-    except Exception as e:
-        print(f"Notice: Live Census API download fallback engaged ({e}). Generating fallback geometry dataset...")
-        # Fallback dummy percentages if Census API is temporarily unreachable
-        henrico_gdf['pct_carfree'] = 12.5
-        henrico_gdf['carfree_units'] = 50
-        henrico_gdf['total_units'] = 400
-        acs_data = None
+    import pygris  # noqa: PLC0415
 
-    # 3. Merge Demographic Data with Spatial Block Group Geometries
-    print("[3/4] Merging demographic metrics with spatial geometries...")
-    if acs_data is not None:
-        merged_gdf = henrico_gdf.merge(
-            acs_data[['GEOID', 'total_units', 'carfree_units', 'pct_carfree']], 
-            on='GEOID', 
-            how='left'
-        ).fillna(0)
+    gdf = pygris.block_groups(state="VA", county="Henrico", cb=True, year=2021)
+    gdf["GEOID"] = gdf["GEOID"].astype(str)
+    return json.loads(gdf.to_crs("EPSG:4326")[["GEOID", "geometry"]].to_json())
+
+
+def main() -> int:
+    print("--- Building Census car-free demographics layer ---")
+
+    if config.CENSUS_B25044_JSON.exists():
+        print(f"[1/3] Reading committed ACS data: {config.CENSUS_B25044_JSON.name}")
+        metrics = load_committed_acs()
     else:
-        merged_gdf = henrico_gdf
+        print("[1/3] Committed ACS file missing; attempting live Census download...")
+        metrics = load_live_acs()
+    print(f"      {len(metrics)} block groups of vehicle-availability data")
 
-    # Reproject to WGS84 for GeoJSON map standard
-    merged_gdf = merged_gdf.to_crs("EPSG:4326")
+    print("[2/3] Joining metrics to block group geometries...")
+    collection = load_geometries()
+    matched = 0
+    features = []
+    for feature in collection.get("features", []):
+        props = dict(feature.get("properties") or {})
+        geoid = str(props.get("GEOID", ""))
+        stats = metrics.get(geoid)
+        if stats:
+            matched += 1
+        else:
+            stats = {"total_units": 0, "carfree_units": 0, "pct_carfree": 0.0}
+        features.append(
+            {
+                "type": "Feature",
+                "geometry": feature.get("geometry"),
+                "properties": {"GEOID": geoid, **stats},
+            }
+        )
 
-    # Keep relevant spatial columns
-    final_gdf = merged_gdf[['GEOID', 'total_units', 'carfree_units', 'pct_carfree', 'geometry']]
+    total = len(features)
+    print(f"      matched {matched}/{total} block groups")
+    if total and matched / total < 0.5:
+        print("      ERROR: fewer than half the block groups matched - refusing to write.")
+        return 1
 
-    # 4. Save GeoJSON
-    print(f"[4/4] Writing GeoJSON to {output_path}...")
-    final_gdf.to_file(output_path, driver="GeoJSON")
-    print("--- Census Car-Free GeoJSON Processing Complete! ---")
+    print(f"[3/3] Writing {config.CENSUS_GEOJSON.relative_to(config.ROOT_DIR)}...")
+    config.CENSUS_GEOJSON.parent.mkdir(parents=True, exist_ok=True)
+    with config.CENSUS_GEOJSON.open("w", encoding="utf-8") as handle:
+        json.dump({"type": "FeatureCollection", "features": features}, handle)
+
+    percentages = sorted(f["properties"]["pct_carfree"] for f in features)
+    carfree_total = sum(f["properties"]["carfree_units"] for f in features)
+    units_total = sum(f["properties"]["total_units"] for f in features)
+    print(
+        f"--- Done. pct_carfree ranges {percentages[0]:.1f}% to {percentages[-1]:.1f}% "
+        f"(county-wide {100 * carfree_total / units_total:.1f}% of "
+        f"{units_total:,} households) ---"
+        if units_total
+        else "--- Done. ---"
+    )
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
