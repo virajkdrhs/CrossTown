@@ -5,8 +5,9 @@
  * location.
  */
 
-import { getJSON, postJSON } from "./api.js";
+import { postJSON } from "./api.js";
 import { map, setMarker, clearMarker, fitToPoints, setVisibility, emptyCollection } from "./map.js";
+import * as roster from "./roster.js";
 
 const WORKSITE_PRESETS = [
   { label: "Innsbrook office park", lat: 37.658, lon: -77.57 },
@@ -36,8 +37,6 @@ const REASON_LABELS = {
   early_departure: "Would have to leave before 05:00",
 };
 
-let roster = [];
-
 export async function init() {
   const select = document.getElementById("employer-worksite-preset");
   WORKSITE_PRESETS.forEach((preset, index) => {
@@ -64,6 +63,9 @@ export async function init() {
 
   document.getElementById("employer-load-roster").addEventListener("click", loadRoster);
   document.getElementById("employer-analyse").addEventListener("click", analyse);
+
+  roster.onChange(reflectRoster);
+  reflectRoster();
 
   window.addEventListener("crosstown:show-employer", (event) => {
     const detail = event.detail || {};
@@ -171,21 +173,27 @@ export function focus() {
 
 async function loadRoster() {
   const button = document.getElementById("employer-load-roster");
-  const status = document.getElementById("employer-roster-status");
   button.disabled = true;
   try {
-    const data = await getJSON("/api/v2/demo/roster");
-    roster = data.employees;
-    const withoutVehicle = roster.filter((employee) => !employee.has_vehicle).length;
-    status.innerHTML =
-      `<span class="text-emerald-400">${roster.length} employees loaded</span> · ` +
-      `${withoutVehicle} without a vehicle · ` +
-      `<span class="text-amber-400/90">synthetic demo data</span>`;
-    document.getElementById("employer-analyse").disabled = false;
+    await roster.load();
   } catch (err) {
-    status.innerHTML = `<span class="text-red-400">${escapeHTML(err.message)}</span>`;
+    document.getElementById("employer-roster-status").innerHTML =
+      `<span class="text-red-400">${escapeHTML(err.message)}</span>`;
   } finally {
     button.disabled = false;
+  }
+}
+
+function reflectRoster() {
+  const status = document.getElementById("employer-roster-status");
+  if (roster.isLoaded()) {
+    status.innerHTML =
+      `<span class="text-emerald-400">${roster.describe()}</span> · ` +
+      `<span class="text-amber-400/90">synthetic demo data</span>`;
+    document.getElementById("employer-analyse").disabled = false;
+  } else {
+    status.textContent = "No roster loaded.";
+    document.getElementById("employer-analyse").disabled = true;
   }
 }
 
@@ -194,7 +202,7 @@ async function analyse() {
   const errorEl = document.getElementById("employer-error");
   errorEl.classList.add("hidden");
 
-  if (!roster.length) {
+  if (!roster.isLoaded()) {
     errorEl.textContent = "Load a roster first.";
     errorEl.classList.remove("hidden");
     return;
@@ -223,13 +231,7 @@ async function analyse() {
     worksite,
     shift_start: document.getElementById("employer-shift-start").value || "09:00",
     shift_end: document.getElementById("employer-shift-end").value || null,
-    employees: roster.map((employee) => ({
-      employee_ref: employee.employee_ref,
-      origin_zone_id: employee.origin_zone_id,
-      has_vehicle: employee.has_vehicle,
-      shift_start: useOwnShifts ? employee.shift_start : null,
-      shift_end: useOwnShifts ? employee.shift_end : null,
-    })),
+    employees: roster.toPayload(useOwnShifts),
   };
 
   button.disabled = true;

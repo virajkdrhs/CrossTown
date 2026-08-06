@@ -7,13 +7,15 @@ has no bus system, but because the bus system does not reach the places and hour
 that jobs actually exist in. CrossTown measures that gap precisely, then treats
 it as the starting point for organising rides rather than the end of the story.
 
-Three layers, each building on the one below:
+Layers, each building on the one below:
 
 | Layer | Question it answers | Status |
 | --- | --- | --- |
 | **Access map** | Where does transit reach across the county at all? | Built |
 | **Commute check** | Can *this* person reach *this* job for *this* shift? | Built |
-| **Carpool hub** | Who else is stranded, and can they ride together? | Designed — see [Roadmap](#roadmap) |
+| **Employer report** | How many of my staff cannot get here, and why? | Built |
+| **Carpool planner** | Who can ride with whom, leaving when? | Built |
+| **Accounts & messaging** | Verified organisations, opt-in, contact exchange | Designed — see [Roadmap](#roadmap) |
 
 The bus network is one input, not the product. The map's job is to prove the gap;
 the gap's job is to justify the ride.
@@ -35,6 +37,9 @@ Measured with the code in this repository, against the GRTC schedule published
   Richmond: stops serve both ends, but no bus runs early enough.
 - Of a 60-person roster distributed by where car-free households actually live,
   **59 cannot reach Short Pump on transit**; 26 of them own no car.
+- Those 26 stranded riders can be matched to colleagues already driving:
+  **25 of 26 get a ride across 16 carpools, at a mean detour of 5.4 minutes** —
+  86 minutes of total added driving to move 25 people who otherwise cannot work.
 - County-wide, **26.2% of car-free households** sit in the lowest-access areas,
   and 85% of grid nodes cannot reach a library within 45 minutes.
 
@@ -61,15 +66,18 @@ Then serve the frontend (a static server is required — opening `index.html` vi
 `file://` breaks the API calls because of CORS):
 
 ```bash
-python3 -m http.server 5500 --directory Frontend
+python3 Frontend/dev_server.py
 ```
 
 Open <http://127.0.0.1:5500>. Interactive API docs live at
 <http://127.0.0.1:8000/docs>, and <http://127.0.0.1:8000/api/v1/health> reports
 which data backend is live.
 
-VS Code's Live Server extension also works; it serves on port 5500 by default,
-which is already in the API's CORS allow-list.
+Use `dev_server.py` rather than `python -m http.server`: it sends `Cache-Control:
+no-store`. Plain `http.server` sends no cache headers at all, so browsers hold on
+to the ES modules under `Frontend/js/` for the life of the tab — you edit a file,
+reload, and the browser quietly runs the old one. VS Code's Live Server extension
+also works and serves on port 5500, which is already in the API's CORS allow-list.
 
 ---
 
@@ -112,7 +120,32 @@ read from the environment only — never hard-code them in source.
 | `GET` | `/api/v2/transit/stops` | All bus stops as GeoJSON |
 | `POST` | `/api/v2/commute` | One trip: itinerary both ways + gap verdict |
 | `POST` | `/api/v2/roster/gaps` | A whole roster vs one worksite + carpool clusters |
+| `POST` | `/api/v2/carpool/plan` | Match stranded staff to drivers; routes and pickup times |
 | `GET` | `/api/v2/demo/roster` | The synthetic roster used by the demo |
+
+### How carpool matching works
+
+`Backend/carpool.py` solves a capacitated pickup problem with cheapest insertion:
+
+1. **Riders** are staff with no vehicle whose transit commute is a gap. **Drivers**
+   are colleagues on the same shift already driving to the same site — a seat
+   costs them a detour, not a trip. Someone with a car is never counted as
+   stranded, even when their own transit verdict is a gap.
+2. Seed each driver with the direct route `home → worksite`.
+3. Place riders **most-constrained-first** (fewest drivers who could reach them
+   inside the detour cap), so the hardest people to serve get placed while seats
+   remain.
+4. Insert each rider at the point in a driver's route that adds the least
+   distance, respecting seat capacity and the maximum detour.
+
+Pickup times are computed backwards from shift start, including a 2-minute dwell
+per stop. Shifts are matched separately — a driver on the 6am shift is no use to
+a rider starting at 3pm.
+
+This is a greedy heuristic, not an optimal vehicle-routing solution, and
+distances are straight-line scaled by 1.25 rather than turn-by-turn. It is
+deterministic and produces routes a human can sanity-check, which matters more
+here than the last few percent of efficiency.
 
 ### How the transit router works
 
@@ -235,17 +268,22 @@ CrossTown/
 │   ├── calculate_scores.py    # matrix -> scored access grid
 │   ├── load_to_postgis.py     # GeoJSON -> PostGIS
 │   ├── process_census.py      # ACS B25044 -> car-free layer
+│   ├── carpool.py             # rider/driver matching and route building
+│   ├── fetch_gtfs.py          # download + validate the GRTC feed
 │   └── make_demo_roster.py    # synthetic roster for the employer demo
 ├── Frontend/
 │   ├── index.html
 │   ├── style.css
+│   ├── dev_server.py          # static server with caching disabled
 │   └── js/
 │       ├── main.js            # app shell + view switching
 │       ├── map.js             # shared MapLibre instance
 │       ├── api.js             # fetch helpers
+│       ├── roster.js          # demo roster shared across views
 │       ├── access.js          # county access map view
 │       ├── commute.js         # commute check view
-│       └── employer.js        # employer gap dashboard view
+│       ├── employer.js        # employer gap dashboard view
+│       └── carpool.js         # carpool planner view
 ├── Data/
 │   ├── Raw/                   # Census, Assets, (gitignored .pbf / .zip)
 │   ├── Processed/             # committed GeoJSON + CSV outputs
@@ -258,8 +296,10 @@ CrossTown/
 
 ## Roadmap
 
-The carpool hub is designed but not built. Recording the design decisions here
-because they are the load-bearing ones:
+The matching engine works; the trust layer around it does not exist yet. The
+planner currently proposes rides between rows in a spreadsheet. Turning those into
+contact between real people needs everything below, and these are the load-bearing
+decisions:
 
 **Verified organisations, not just employers.** An organisation is any institution
 with an existing trusted relationship to its people — an employer, a school, a
@@ -284,8 +324,10 @@ matching requires guardian consent on file and an approved-driver list, mediated
 by the organisation. Open matching for minors is never enabled.
 
 Still to build: Postgres schema and migrations, magic-link auth, organisation and
-membership models, admin verification queue, shift-scoped ride matching,
-organisation-scoped messaging, report/block, and an audit log.
+membership models, admin verification queue, rider/driver opt-in on proposed
+matches, organisation-scoped messaging, report/block, and an audit log. The
+matching itself (`Backend/carpool.py`) is done and needs only real memberships in
+place of the demo roster.
 
 ---
 

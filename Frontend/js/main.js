@@ -5,6 +5,7 @@ import { map, ready, setVisibility } from "./map.js";
 import * as access from "./access.js";
 import * as commute from "./commute.js";
 import * as employer from "./employer.js";
+import * as carpoolView from "./carpool.js";
 
 const VIEWS = {
   access: {
@@ -24,6 +25,12 @@ const VIEWS = {
     legend: ["legend-employer"],
     module: employer,
     title: "Find staff who cannot reach a worksite",
+  },
+  carpool: {
+    panel: "carpool-view",
+    legend: ["legend-carpool"],
+    module: carpoolView,
+    title: "Match stranded staff with colleagues who drive",
   },
 };
 
@@ -91,6 +98,7 @@ async function start() {
   await access.init();
   await commute.init();
   await employer.init();
+  await carpoolView.init();
 
   document.querySelectorAll(".view-tab").forEach((tab) => {
     tab.addEventListener("click", () => showView(tab.dataset.view));
@@ -108,4 +116,13 @@ async function start() {
   showView("access");
 }
 
-start();
+// Without this, one view failing to initialise leaves the whole shell dead with
+// nothing in the console: the tab listeners below never get attached either.
+start().catch((err) => {
+  console.error("CrossTown failed to start:", err);
+  setApiStatus("startup failed", false);
+  const banner = document.getElementById("offline-banner");
+  banner.querySelector("p").textContent = "CrossTown failed to start";
+  banner.querySelectorAll("p")[1].textContent = err && err.message ? err.message : String(err);
+  banner.classList.remove("hidden");
+});

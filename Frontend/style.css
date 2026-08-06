@@ -109,7 +109,8 @@ aside {
 /* Sections toggled by the view switcher must keep their flex layout when shown */
 #access-view:not(.hidden),
 #commute-view:not(.hidden),
-#employer-view:not(.hidden) {
+#employer-view:not(.hidden),
+#carpool-view:not(.hidden) {
   display: flex;
 }
 

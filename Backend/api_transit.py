@@ -18,7 +18,7 @@ from functools import lru_cache
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, model_validator
 
-from . import commute, config, gtfs, transit_router
+from . import carpool, commute, config, gtfs, transit_router
 
 router = APIRouter(prefix="/api/v2", tags=["transit"])
 
@@ -70,6 +70,11 @@ class RosterRequest(BaseModel):
     day: str | None = None
     employees: list[RosterEmployee] = Field(min_length=1, max_length=MAX_ROSTER_SIZE)
     max_walk_m: float = Field(default=transit_router.DEFAULT_MAX_WALK_M, ge=100, le=3000)
+
+
+class CarpoolRequest(RosterRequest):
+    seats_per_driver: int = Field(default=carpool.DEFAULT_SEATS, ge=1, le=7)
+    max_detour_minutes: int = Field(default=carpool.DEFAULT_MAX_DETOUR_MIN, ge=5, le=60)
 
 
 # ---------------------------------------------------------------------- helpers
@@ -258,18 +263,14 @@ def evaluate_commute(payload: CommuteRequest):
     return result
 
 
-@router.post("/roster/gaps")
-def roster_gaps(payload: RosterRequest):
-    """Which of an employer's staff cannot reach this worksite on transit.
+def evaluate_roster(payload: RosterRequest, feed, day, worksite, worksite_name):
+    """Transit verdict for every employee against one worksite.
 
     One backward network scan per distinct shift covers the whole roster, so a
-    200-person analysis costs about the same as two individual lookups.
+    200-person analysis costs about the same as two individual lookups. Shared by
+    the gap report and the carpool planner.
     """
-    feed = get_feed_or_503()
-    day = resolve_day(payload.day, feed)
-    worksite, worksite_name = resolve_place(payload.worksite, "Worksite")
     zones = grid_zones()
-
     default_start = parse_clock(payload.shift_start)
     default_end = parse_clock(payload.shift_end) if payload.shift_end else None
 
@@ -277,11 +278,9 @@ def roster_gaps(payload: RosterRequest):
     grouped: dict[tuple[int, int | None], list[RosterEmployee]] = {}
     unresolved: list[str] = []
     for employee in payload.employees:
-        if employee.lat is not None and employee.lon is not None:
-            pass
-        elif employee.origin_zone_id is not None and employee.origin_zone_id in zones:
-            pass
-        else:
+        has_coords = employee.lat is not None and employee.lon is not None
+        has_zone = employee.origin_zone_id is not None and employee.origin_zone_id in zones
+        if not has_coords and not has_zone:
             unresolved.append(employee.employee_ref)
             continue
 
@@ -296,15 +295,14 @@ def roster_gaps(payload: RosterRequest):
         scan = transit_router.scan_backward(
             feed, worksite[0], worksite[1], start, day, payload.max_walk_m
         )
-        # The trip home is identical for everyone on this shift only in its
-        # departure time, so it still needs a per-employee forward search.
+        # The trip home shares only its departure time across the shift, so it
+        # still needs a per-employee forward search.
         for employee in members:
             if employee.lat is not None and employee.lon is not None:
                 origin = (employee.lon, employee.lat)
-                zone_id = employee.origin_zone_id
             else:
                 origin = zones[employee.origin_zone_id]
-                zone_id = employee.origin_zone_id
+            zone_id = employee.origin_zone_id
 
             assessment = commute.evaluate(
                 feed,
@@ -324,7 +322,9 @@ def roster_gaps(payload: RosterRequest):
                     "origin_zone_id": zone_id,
                     "origin": {"lon": origin[0], "lat": origin[1]},
                     "shift_start": gtfs.format_seconds(start),
+                    "shift_start_s": start,
                     "shift_end": gtfs.format_seconds(end) if end is not None else None,
+                    "shift_end_s": end,
                     "has_vehicle": employee.has_vehicle,
                     "verdict": assessment["verdict"],
                     "reasons": assessment["reasons"],
@@ -335,6 +335,19 @@ def roster_gaps(payload: RosterRequest):
                     "carpool_recommended": assessment["carpool_recommended"],
                 }
             )
+
+    return results, unresolved
+
+
+@router.post("/roster/gaps")
+def roster_gaps(payload: RosterRequest):
+    """Which of an employer's staff cannot reach this worksite on transit."""
+    feed = get_feed_or_503()
+    day = resolve_day(payload.day, feed)
+    worksite, worksite_name = resolve_place(payload.worksite, "Worksite")
+    zones = grid_zones()
+
+    results, unresolved = evaluate_roster(payload, feed, day, worksite, worksite_name)
 
     counts: dict[str, int] = {"viable": 0, "marginal": 0, "gap": 0, "no_service": 0}
     for item in results:
@@ -390,6 +403,59 @@ def roster_gaps(payload: RosterRequest):
         "carpool_candidates": carpool_candidates,
         "employees": results,
     }
+
+
+@router.post("/carpool/plan")
+def carpool_plan(payload: CarpoolRequest):
+    """Form carpools between staff who cannot reach the worksite and staff who drive.
+
+    Riders are people with no vehicle whose transit commute is a gap. Drivers are
+    colleagues on the same shift who are already making the trip by car, so a
+    seat costs them a detour rather than a journey.
+
+    Pickups happen at access grid zone points - public locations on a ~800 m
+    lattice - never at a home address, which is the same rule the rest of the
+    roster pipeline follows.
+    """
+    feed = get_feed_or_503()
+    day = resolve_day(payload.day, feed)
+    worksite, worksite_name = resolve_place(payload.worksite, "Worksite")
+
+    results, unresolved = evaluate_roster(payload, feed, day, worksite, worksite_name)
+
+    people = [
+        carpool.Person(
+            ref=row["employee_ref"],
+            lon=row["origin"]["lon"],
+            lat=row["origin"]["lat"],
+            zone_id=row["origin_zone_id"],
+            has_vehicle=bool(row["has_vehicle"]),
+            verdict=row["verdict"],
+            shift_start_s=row["shift_start_s"],
+            shift_end_s=row["shift_end_s"],
+        )
+        for row in results
+    ]
+
+    plan = carpool.plan(
+        people,
+        worksite,
+        seats_per_driver=payload.seats_per_driver,
+        max_detour_min=payload.max_detour_minutes,
+    )
+
+    drivers_available = sum(1 for person in people if person.has_vehicle)
+    plan["summary"]["drivers_available"] = drivers_available
+    plan["summary"]["employees_analysed"] = len(results)
+    plan["summary"]["unresolved_employees"] = unresolved
+    plan["worksite"] = {"name": worksite_name, "lon": worksite[0], "lat": worksite[1]}
+    plan["day"] = day.isoformat()
+    plan["day_name"] = day.strftime("%A")
+    plan["note"] = (
+        "Proposals only. In the live product both parties opt in inside a verified "
+        "organisation before any contact details are exchanged."
+    )
+    return plan
 
 
 @router.get("/demo/roster")

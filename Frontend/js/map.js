@@ -22,10 +22,38 @@ if (typeof ResizeObserver !== "undefined") {
   window.addEventListener("resize", () => map.resize());
 }
 
-export const ready = new Promise((resolve) => {
-  if (map.loaded()) resolve();
-  else map.once("load", resolve);
+/** Resolves when it is safe to call addSource/addLayer.
+ *
+ * Deliberately NOT `map.on("load")`. That event waits for the basemap's vector
+ * tiles as well as its stylesheet, so a slow, rate-limited or blocked tile CDN
+ * left every view uninitialised — with no console error, because the promise
+ * simply never settled. Adding sources and layers only requires the style to be
+ * parsed, which is what `style.load` signals. The county data then renders over
+ * whatever the basemap manages to fetch.
+ */
+export const ready = new Promise((resolve, reject) => {
+  if (map.style && map.style._loaded) {
+    resolve();
+    return;
+  }
+  map.once("style.load", () => resolve());
+  setTimeout(
+    () =>
+      reject(
+        new Error(
+          "The basemap style did not load. Check your network connection to " +
+            "basemaps.cartocdn.com, then reload."
+        )
+      ),
+    20000
+  );
 });
+
+// ES module scope is not reachable from the console, which makes a misbehaving
+// layer painful to inspect. Expose the map for local debugging only.
+if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+  window.__crosstown = { map, ready };
+}
 
 /** Replace a GeoJSON source's data, creating the source and layers on first use. */
 export function setGeoJSON(sourceId, data, layerFactory) {
