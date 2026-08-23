@@ -142,6 +142,23 @@ class TestAPI(unittest.TestCase):
         self.assertTrue(body["has_microtransit_option"])
         self.assertFalse(body["carpool_recommended"])
 
+    def test_geocodes_city_of_richmond_addresses(self):
+        """Regression: the geocoder used to force ", Henrico County, VA" onto every
+        query, so anywhere in the City of Richmond was unresolvable even though
+        GRTC serves it."""
+        for address in ("Downtown Richmond", "VCU Medical Center"):
+            status, body = _request(
+                "/api/v2/commute",
+                {
+                    "origin": {"address": address},
+                    "destination": {"lat": 37.658, "lon": -77.57},
+                    "shift_start": "09:00",
+                    "shift_end": "17:00",
+                },
+            )
+            self.assertEqual(status, 200, f"{address} failed to geocode: {body}")
+            self.assertIn("origin", body)
+
     def test_commute_rejects_short_address(self):
         status, _ = _request(
             "/api/v2/commute",

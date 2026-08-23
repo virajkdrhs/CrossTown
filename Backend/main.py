@@ -329,9 +329,14 @@ def _geocode(address: str):
     from geopy.geocoders import Nominatim  # noqa: PLC0415
 
     geolocator = Nominatim(user_agent="crosstown-henrico-accessibility/1.1", timeout=10)
-    query = address if "henrico" in address.lower() else f"{address}, Henrico County, VA"
+    query = address if "henrico" in address.lower() else f"{address}, Virginia"
     try:
-        return geolocator.geocode(query, country_codes="us")
+        # Bound to the region rather than forcing a county name, which made
+        # anything inside the City of Richmond unresolvable.
+        # geopy takes viewbox corners as (latitude, longitude).
+        return geolocator.geocode(
+            query, country_codes="us", viewbox=[(37.20, -77.90), (37.95, -76.95)], bounded=True
+        )
     except (GeocoderTimedOut, GeocoderServiceError) as exc:
         raise HTTPException(
             status_code=503,

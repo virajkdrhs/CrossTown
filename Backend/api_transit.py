@@ -127,19 +127,40 @@ def resolve_day(value: str | None, feed: gtfs.Feed) -> date:
     return candidate
 
 
+# The GRTC service area, used to bias and bound geocoding.
+# geopy takes viewbox corners as (latitude, longitude) - the opposite order to
+# the (lon, lat) convention used everywhere else in this codebase.
+REGION_VIEWBOX = [(37.20, -77.90), (37.95, -76.95)]
+
+
 @lru_cache(maxsize=256)
 def _geocode_cached(address: str):
+    """Geocode within the Richmond region.
+
+    Biasing to a bounding box beats appending a county name. The old approach
+    forced ", Henrico County, VA" onto every query, so anything in the City of
+    Richmond - "Downtown Richmond", say - became unresolvable, even though GRTC
+    serves it and the rest of the app handles it fine.
+    """
     from geopy.exc import GeocoderServiceError, GeocoderTimedOut
     from geopy.geocoders import Nominatim
 
     geolocator = Nominatim(user_agent="crosstown-henrico-accessibility/1.1", timeout=10)
-    # Only skip the county suffix when the address already names the state. A
-    # naive substring test matches the "va" inside "Varina", which then geocodes
-    # against the whole country instead of Henrico.
     already_qualified = bool(re.search(r"\b(va|virginia)\b", address.lower()))
-    query = address if already_qualified else f"{address}, Henrico County, VA"
+    attempts = [address if already_qualified else f"{address}, Virginia"]
+    if not already_qualified:
+        # Fall back to naming the county explicitly for bare street addresses,
+        # which are ambiguous without it.
+        attempts.append(f"{address}, Henrico County, VA")
+
     try:
-        return geolocator.geocode(query, country_codes="us")
+        for query in attempts:
+            located = geolocator.geocode(
+                query, country_codes="us", viewbox=REGION_VIEWBOX, bounded=True
+            )
+            if located:
+                return located
+        return None
     except (GeocoderTimedOut, GeocoderServiceError) as exc:
         raise HTTPException(
             status_code=503,
