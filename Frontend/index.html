@@ -20,22 +20,23 @@
   <header class="bg-gray-800 border-b border-gray-700 px-5 py-3 flex items-center justify-between gap-4 z-20 shadow-md shrink-0">
     <div class="flex items-center space-x-3 min-w-0">
       <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-gray-900 text-lg shrink-0">CT</div>
-      <div class="min-w-0">
+      <div class="min-w-0 ct-wordmark">
         <h1 class="text-lg font-bold tracking-wide text-white leading-tight">CrossTown</h1>
         <p id="view-subtitle" class="text-xs text-gray-400 truncate">Transportation access for Henrico County, VA</p>
       </div>
     </div>
 
-    <nav class="flex items-center gap-1 bg-gray-900/70 rounded-lg p-1 shrink-0" role="tablist" aria-label="Views">
-      <button class="view-tab" data-view="access" role="tab">Access Map</button>
-      <button class="view-tab" data-view="commute" role="tab">Commute Check</button>
-      <button class="view-tab" data-view="employer" role="tab">Employer</button>
-      <button class="view-tab" data-view="carpool" role="tab">Carpool</button>
+    <nav id="view-tabs" class="flex items-center gap-1 rounded-lg p-1 shrink-0" style="background:var(--ct-raised)" role="tablist" aria-label="Views">
+      <button class="view-tab" data-view="access" role="tab" aria-controls="access-view"><span class="ct-tab-label">Access </span>Map</button>
+      <button class="view-tab" data-view="commute" role="tab" aria-controls="commute-view">Commute</button>
+      <button class="view-tab" data-view="employer" role="tab" aria-controls="employer-view">Employer</button>
+      <button class="view-tab" data-view="carpool" role="tab" aria-controls="carpool-view">Carpool</button>
     </nav>
 
     <div class="flex items-center gap-3 shrink-0">
-      <span id="api-status" class="text-xs px-2 py-1 rounded-full border border-gray-600 text-gray-400">connecting&hellip;</span>
-      <button id="toggle-sidebar" class="text-xs text-gray-400 hover:text-white border border-gray-600 rounded px-2 py-1 transition">Hide panel</button>
+      <span id="api-status" class="text-xs px-2 py-1 rounded-full border" style="border-color:var(--ct-border);color:var(--ct-text-muted)">connecting&hellip;</span>
+      <button id="help-btn" class="text-xs rounded px-2 py-1 transition" style="border:1px solid var(--ct-border);color:var(--ct-text-muted)" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">?</button>
+      <button id="toggle-sidebar" class="text-xs rounded px-2 py-1 transition" style="border:1px solid var(--ct-border);color:var(--ct-text-muted)" aria-controls="sidebar" aria-expanded="true">Hide panel</button>
     </div>
   </header>
 
@@ -115,10 +116,18 @@
             <span>Car-free households (Census)</span>
             <input type="checkbox" id="toggle-census" class="accent-indigo-500 w-4 h-4 cursor-pointer">
           </label>
-          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer">
+          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
             <span>Amenity locations</span>
             <input type="checkbox" id="toggle-destinations" class="accent-sky-500 w-4 h-4 cursor-pointer">
           </label>
+          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer">
+            <span>LINK on-demand zones</span>
+            <input type="checkbox" id="toggle-link-zones" class="accent-sky-500 w-4 h-4 cursor-pointer">
+          </label>
+          <p class="text-[10px] mt-1.5 leading-relaxed" style="color:var(--ct-text-dim)">
+            GRTC LINK is fare-free on-demand service that the GTFS feed omits entirely.
+            Boundaries approximate.
+          </p>
           <div id="destination-filters" class="mt-3 hidden grid grid-cols-2 gap-1.5 text-[11px]">
             <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-emerald-500" value="Food" checked><span class="text-gray-400">Food</span></label>
             <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-rose-500" value="Health" checked><span class="text-gray-400">Health</span></label>
@@ -298,9 +307,11 @@
       </section>
 
       <div class="mt-6 pt-4 border-t border-gray-700 text-[11px] text-gray-500 leading-relaxed">
-        Transit routing on the live <span class="text-sky-400 font-semibold">GRTC GTFS</span> feed ·
-        accessibility grid via <span class="text-emerald-400 font-semibold">r5py</span> ·
-        <span class="text-purple-400 font-semibold">FastAPI</span>.
+        Live <span style="color:var(--ct-info)" class="font-semibold">GRTC GTFS</span> feed ·
+        LINK zones from <span style="color:var(--ct-info)" class="font-semibold">ridegrtc.com</span> ·
+        car-free data from <span style="color:var(--ct-accent)" class="font-semibold">ACS B25044</span> ·
+        grid via <span style="color:var(--ct-ok)" class="font-semibold">r5py</span>.
+        <span class="block mt-1">Press <kbd>?</kbd> for help.</span>
       </div>
     </aside>
 
@@ -309,7 +320,7 @@
       <div id="map" class="absolute inset-0"></div>
 
       <!-- Legends -->
-      <div class="absolute bottom-4 left-4 z-10 flex flex-col gap-2">
+      <div id="legend-host" class="absolute bottom-4 left-4 z-10 flex flex-col gap-2 max-h-[70vh] overflow-y-auto ct-scroll">
         <div id="legend-access" class="bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl">
           <p class="font-bold text-gray-200 mb-2">Composite access score</p>
           <div class="h-2 w-32 rounded-full mb-1" style="background:linear-gradient(90deg,#ef4444 0%,#f59e0b 45%,#10b981 100%)"></div>
@@ -326,6 +337,13 @@
             <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span><span class="text-gray-400">Education</span></div>
             <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-violet-400 inline-block"></span><span class="text-gray-400">Civic</span></div>
           </div>
+        </div>
+
+        <div id="legend-link" class="hidden bg-gray-900/90 backdrop-blur border rounded-lg p-3 text-xs shadow-xl space-y-1.5" style="border-color:var(--ct-border)">
+          <p class="font-bold mb-1" style="color:var(--ct-text)">LINK on-demand zones</p>
+          <div class="flex items-center gap-2"><span class="inline-block w-5 h-3 rounded-sm" style="background:rgb(56 189 248 / 20%);border:1px dashed #38bdf8"></span><span style="color:var(--ct-text-muted)">Running today</span></div>
+          <div class="flex items-center gap-2"><span class="inline-block w-5 h-3 rounded-sm" style="background:rgb(100 116 139 / 20%);border:1px dashed #64748b"></span><span style="color:var(--ct-text-muted)">Closed today</span></div>
+          <p class="text-[10px] pt-1" style="color:var(--ct-text-dim)">Free · book in GRTC On the Go</p>
         </div>
 
         <div id="legend-commute" class="hidden bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl space-y-1.5">
@@ -351,6 +369,38 @@
           <div class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full inline-block border-2 border-gray-900" style="background:#34d399"></span><span class="text-gray-400">Driver (D)</span></div>
           <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#34d399"></span><span class="text-gray-400">Pickup, numbered in order</span></div>
           <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block border-2" style="background:#7f1d1d;border-color:#ef4444"></span><span class="text-gray-400">Still stranded</span></div>
+        </div>
+      </div>
+
+      <div id="help-dialog" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4" style="background:rgb(3 7 18 / 70%)" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+        <div class="w-full max-w-md rounded-xl p-5 shadow-2xl" style="background:var(--ct-surface);border:1px solid var(--ct-border)">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-sm font-bold" style="color:var(--ct-text)">Getting around CrossTown</h2>
+            <button id="help-close" class="text-xs px-2 py-1 rounded" style="border:1px solid var(--ct-border);color:var(--ct-text-muted)">Close</button>
+          </div>
+          <div class="space-y-3 text-[11px]" style="color:var(--ct-text-muted)">
+            <div>
+              <p class="font-bold mb-1.5" style="color:var(--ct-text)">The four views</p>
+              <p class="mb-1"><strong style="color:var(--ct-ok)">Access Map</strong> — where transit reaches across the county, and who lives without a car.</p>
+              <p class="mb-1"><strong style="color:var(--ct-info)">Commute</strong> — can one person reach one job for one shift? Routed live on the GRTC schedule.</p>
+              <p class="mb-1"><strong style="color:var(--ct-warn)">Employer</strong> — how many of a workforce cannot get there, and exactly why.</p>
+              <p><strong style="color:var(--ct-accent)">Carpool</strong> — match the stranded to colleagues already driving in.</p>
+            </div>
+            <div class="pt-2" style="border-top:1px solid var(--ct-border-soft)">
+              <p class="font-bold mb-1.5" style="color:var(--ct-text)">Keyboard</p>
+              <div class="grid grid-cols-2 gap-y-1.5">
+                <span><kbd>1</kbd>–<kbd>4</kbd></span><span>Switch view</span>
+                <span><kbd>←</kbd> <kbd>→</kbd></span><span>Move between tabs</span>
+                <span><kbd>[</kbd></span><span>Hide or show the panel</span>
+                <span><kbd>?</kbd></span><span>This dialog</span>
+                <span><kbd>Esc</kbd></span><span>Close / leave a field</span>
+              </div>
+            </div>
+            <p class="pt-2 text-[10px]" style="border-top:1px solid var(--ct-border-soft);color:var(--ct-text-dim)">
+              Transit routing uses the live GRTC GTFS feed. LINK on-demand zones are added
+              separately because GRTC does not publish them in that feed. Roster data is synthetic.
+            </p>
+          </div>
         </div>
       </div>
 

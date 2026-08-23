@@ -13,6 +13,7 @@ Layers, each building on the one below:
 | --- | --- | --- |
 | **Access map** | Where does transit reach across the county at all? | Built |
 | **Commute check** | Can *this* person reach *this* job for *this* shift? | Built |
+| **On-demand (LINK)** | Is there fare-free microtransit where no bus goes? | Built |
 | **Employer report** | How many of my staff cannot get here, and why? | Built |
 | **Carpool planner** | Who can ride with whom, leaving when? | Built |
 | **Accounts & messaging** | Verified organisations, opt-in, contact exchange | Designed — see [Roadmap](#roadmap) |
@@ -33,6 +34,10 @@ Measured with the code in this repository, against the GRTC schedule published
 
 - **Innsbrook office park** — one of the county's largest employment centres — has
   **no bus stop within 1.4 km**. No shift is reachable by transit, at any hour.
+- Large parts of eastern Henrico (Varina, Elko, Sandston) have **no fixed bus route
+  at all**, but GRTC does run fare-free on-demand LINK vans there. Because LINK is
+  missing from the GTFS feed, a schedule-only planner reports "no service" — the
+  worst possible wrong answer for the people this project is about.
 - A **6am shift in the Short Pump retail corridor** is unreachable from downtown
   Richmond: stops serve both ends, but no bus runs early enough.
 - Of a 60-person roster distributed by where car-free households actually live,
@@ -118,10 +123,38 @@ read from the environment only — never hard-code them in source.
 | `POST` | `/api/v1/reachability` | Geocode an address → nearest node scores |
 | `GET` | `/api/v2/transit/health` | GTFS feed window, size, routing assumptions |
 | `GET` | `/api/v2/transit/stops` | All bus stops as GeoJSON |
+| `GET` | `/api/v2/microtransit/zones` | GRTC LINK on-demand zones with today's hours |
 | `POST` | `/api/v2/commute` | One trip: itinerary both ways + gap verdict |
 | `POST` | `/api/v2/roster/gaps` | A whole roster vs one worksite + carpool clusters |
 | `POST` | `/api/v2/carpool/plan` | Match stranded staff to drivers; routes and pickup times |
 | `GET` | `/api/v2/demo/roster` | The synthetic roster used by the demo |
+
+### On-demand microtransit (GRTC LINK)
+
+`Backend/microtransit.py` adds the six GRTC LINK zones — Sandston, Azalea, Broad
+Rock, Ashland, Clover Dale and Powhatan. LINK is on-demand: book in the GRTC On
+the Go app or by phone, a van arrives in about 20 minutes (60 in Powhatan), and it
+carries you anywhere inside the zone, including to a connecting bus stop. No fare.
+
+This exists because **LINK is not in the GTFS feed**, which carries fixed routes
+only. Without it the planner told anyone in Varina or Elko they had no way to
+work. The planner now reports three shapes of option — LINK covering the whole
+trip inside one zone, LINK as a first-mile connection to a bus, and LINK as the
+last leg — and a trip LINK can do door-to-door gets its own verdict rather than
+being lumped in with "no service".
+
+Zone boundaries are **approximate**: GRTC publishes zone maps as images, not open
+data, so the polygons are drawn from the published service-area descriptions.
+Every surface that shows them says so, and hours are resolved per service day.
+
+### Fares and the real cost of a commute
+
+GRTC runs an Open Access system: **no fare on buses, the Pulse, or LINK.** So the
+honest comparison is not bus fare versus petrol, it is free versus the cost of
+owning the car the bus cannot replace. `Backend/commute.py` prices the same trip
+by car at the IRS standard mileage rate, which is what makes the equity argument
+concrete — a Varina-to-Short-Pump commute is **$0 by transit or $9,488 a year to
+drive**, for a household that by definition cannot afford the car.
 
 ### How carpool matching works
 
@@ -250,6 +283,25 @@ polygons — currently downloaded but unused — as a fifth category.
 
 ---
 
+## Testing
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+63 tests. `tests/test_crosstown.py` covers the routing maths, service-calendar
+handling (including the Labor Day exception), gap classification, microtransit
+zones and carpool matching — all against the real GTFS feed, no mocks.
+`tests/test_api.py` exercises every endpoint end to end and skips itself with a
+clear message when the API is not running.
+
+The suite asserts on behaviour that has actually broken before: that a genuine
+zero is never replaced by an invented score, that the census layer is not
+placeholder data, that every roster employee lands in exactly one verdict bucket,
+and that every rider is either matched or explained.
+
+---
+
 ## Repository layout
 
 ```
@@ -269,6 +321,7 @@ CrossTown/
 │   ├── load_to_postgis.py     # GeoJSON -> PostGIS
 │   ├── process_census.py      # ACS B25044 -> car-free layer
 │   ├── carpool.py             # rider/driver matching and route building
+│   ├── microtransit.py        # GRTC LINK on-demand zones
 │   ├── fetch_gtfs.py          # download + validate the GRTC feed
 │   └── make_demo_roster.py    # synthetic roster for the employer demo
 ├── Frontend/
@@ -276,16 +329,21 @@ CrossTown/
 │   ├── style.css
 │   ├── dev_server.py          # static server with caching disabled
 │   └── js/
-│       ├── main.js            # app shell + view switching
+│       ├── main.js            # app shell, view switching, keyboard control
 │       ├── map.js             # shared MapLibre instance
 │       ├── api.js             # fetch helpers
+│       ├── ui.js              # status pills, toasts, skeletons, CSV export
+│       ├── linkzones.js       # LINK on-demand zone layer
 │       ├── roster.js          # demo roster shared across views
 │       ├── access.js          # county access map view
 │       ├── commute.js         # commute check view
 │       ├── employer.js        # employer gap dashboard view
 │       └── carpool.js         # carpool planner view
+├── tests/
+│   ├── test_crosstown.py      # routing, scoring, microtransit, carpool
+│   └── test_api.py            # every endpoint, end to end
 ├── Data/
-│   ├── Raw/                   # Census, Assets, (gitignored .pbf / .zip)
+│   ├── Raw/                   # Census, Assets, Transit/link_zones.geojson
 │   ├── Processed/             # committed GeoJSON + CSV outputs
 │   └── Demo/                  # synthetic roster (clearly labelled)
 ├── requirements.txt

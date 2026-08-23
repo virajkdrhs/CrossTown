@@ -89,7 +89,13 @@ export function fitToPoints(points, options = {}) {
   }
   const bounds = new maplibregl.LngLatBounds();
   usable.forEach((point) => bounds.extend(point));
-  map.fitBounds(bounds, { padding: options.padding ?? 70, duration: options.duration ?? 600 });
+  map.fitBounds(bounds, {
+    padding: options.padding ?? 70,
+    duration: options.duration ?? 600,
+    // Without a cap a 900 m trip zooms to individual buildings, which loses all
+    // sense of where in the county you are.
+    maxZoom: options.maxZoom ?? 14.5,
+  });
 }
 
 const markers = new Map();

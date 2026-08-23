@@ -2,6 +2,7 @@
 
 import { getJSON, postJSON } from "./api.js";
 import { map, setVisibility, fitToPoints, setMarker, clearMarker } from "./map.js";
+import { escapeHTML, toast, skeleton, emptyState, withBusy, money } from "./ui.js";
 
 const CATEGORY_COLORS = {
   Food: "#34d399",
@@ -205,6 +206,7 @@ async function loadDestinations() {
 
 async function loadStats() {
   const panel = document.getElementById("stats-panel");
+  panel.innerHTML = skeleton(6);
   try {
     const { summary, equity } = await getJSON("/api/v1/stats");
 
@@ -245,7 +247,7 @@ async function loadStats() {
     }
     panel.innerHTML = html;
   } catch (err) {
-    panel.innerHTML = `<p class="text-red-400">Statistics unavailable: ${err.message}</p>`;
+    panel.innerHTML = emptyState("📊", "Statistics unavailable", err.message);
   }
 }
 
@@ -306,9 +308,8 @@ async function executeAddressLookup() {
     return;
   }
 
-  button.disabled = true;
-  button.textContent = "Locating…";
   try {
+    await withBusy(button, "Locating…", async () => {
     const data = await postJSON("/api/v1/reachability", { address });
     const { longitude, latitude } = data.coordinates;
     map.flyTo({ center: [longitude, latitude], zoom: 13.5, speed: 1.2 });
@@ -329,11 +330,10 @@ async function executeAddressLookup() {
           "so these scores are only an approximation for this address."
         : null,
     });
+    });
   } catch (err) {
     showSearchError(err.message);
-  } finally {
-    button.disabled = false;
-    button.textContent = "Calculate Reachability";
+    toast(err.message, "error");
   }
 }
 

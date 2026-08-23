@@ -12,13 +12,14 @@ employee shares one worksite and one shift deadline.
 from __future__ import annotations
 
 import csv
+import re
 from datetime import date, datetime, timedelta
 from functools import lru_cache
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, model_validator
 
-from . import carpool, commute, config, gtfs, transit_router
+from . import carpool, commute, config, gtfs, microtransit, transit_router
 
 router = APIRouter(prefix="/api/v2", tags=["transit"])
 
@@ -39,8 +40,16 @@ class Place(BaseModel):
     @model_validator(mode="after")
     def require_one(self):
         has_coords = self.lat is not None and self.lon is not None
-        if not has_coords and not (self.address and self.address.strip()):
+        if has_coords:
+            return self
+        text = (self.address or "").strip()
+        if not text:
             raise ValueError("Provide either an address or both lat and lon.")
+        # A one- or two-character query is not an address. Nominatim will still
+        # happily return *something* for it, and the planner would then report a
+        # confident verdict for a trip nobody asked about.
+        if len(text) < 3:
+            raise ValueError("An address needs at least 3 characters.")
         return self
 
 
@@ -124,7 +133,11 @@ def _geocode_cached(address: str):
     from geopy.geocoders import Nominatim
 
     geolocator = Nominatim(user_agent="crosstown-henrico-accessibility/1.1", timeout=10)
-    query = address if "va" in address.lower() or "virginia" in address.lower() else f"{address}, Henrico County, VA"
+    # Only skip the county suffix when the address already names the state. A
+    # naive substring test matches the "va" inside "Varina", which then geocodes
+    # against the whole country instead of Henrico.
+    already_qualified = bool(re.search(r"\b(va|virginia)\b", address.lower()))
+    query = address if already_qualified else f"{address}, Henrico County, VA"
     try:
         return geolocator.geocode(query, country_codes="us")
     except (GeocoderTimedOut, GeocoderServiceError) as exc:
@@ -225,6 +238,37 @@ def transit_stops():
             }
             for stop in feed.stops.values()
         ],
+    }
+
+
+@router.get("/microtransit/zones")
+def microtransit_zones(day: str | None = None):
+    """GRTC LINK on-demand zones, with today's hours resolved.
+
+    LINK is absent from the GTFS feed, so this is the only place the app learns
+    that large parts of eastern Henrico have fare-free on-demand service.
+    """
+    collection = microtransit.zones_geojson()
+    try:
+        feed = gtfs.get_feed()
+        service_day = resolve_day(day, feed)
+    except (FileNotFoundError, HTTPException):
+        service_day = date.today()
+
+    features = []
+    for feature in collection.get("features", []):
+        props = dict(feature.get("properties") or {})
+        zone = dict(props)
+        zone["geometry"] = feature.get("geometry")
+        described = microtransit.describe(zone, service_day)
+        features.append({**feature, "properties": {**props, **described}})
+
+    return {
+        "type": "FeatureCollection",
+        "features": features,
+        "metadata": collection.get("metadata", {}),
+        "day": service_day.isoformat(),
+        "day_name": service_day.strftime("%A"),
     }
 
 
@@ -333,6 +377,8 @@ def evaluate_roster(payload: RosterRequest, feed, day, worksite, worksite_name):
                     "depart_by": (assessment["outbound"] or {}).get("depart"),
                     "transfers": (assessment["outbound"] or {}).get("transfers"),
                     "carpool_recommended": assessment["carpool_recommended"],
+                    "has_microtransit_option": assessment["has_microtransit_option"],
+                    "drive_cost_per_year_usd": assessment["cost"]["drive_cost_per_year_usd"],
                 }
             )
 
@@ -349,7 +395,13 @@ def roster_gaps(payload: RosterRequest):
 
     results, unresolved = evaluate_roster(payload, feed, day, worksite, worksite_name)
 
-    counts: dict[str, int] = {"viable": 0, "marginal": 0, "gap": 0, "no_service": 0}
+    counts: dict[str, int] = {
+        "viable": 0,
+        "marginal": 0,
+        "microtransit": 0,
+        "gap": 0,
+        "no_service": 0,
+    }
     for item in results:
         counts[item["verdict"]] = counts.get(item["verdict"], 0) + 1
 

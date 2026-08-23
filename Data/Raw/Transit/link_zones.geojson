@@ -1,0 +1,114 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "title": "GRTC LINK on-demand microtransit zones",
+    "source": "https://www.ridegrtc.com/link/",
+    "retrieved": "2026-08-22",
+    "boundaries": "APPROXIMATE. GRTC publishes zone maps as images, not as open spatial data. These polygons were drawn from the published service-area descriptions and landmark lists. Treat them as indicative: always confirm a pickup in the GRTC On the Go app.",
+    "why_this_exists": "LINK is not present in the GRTC GTFS feed, which only contains fixed routes. Without this layer the trip planner reports 'no service' for places such as Elko and Varina that GRTC does in fact serve, fare-free, on demand."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "sandston",
+        "name": "Sandston",
+        "locality": "Henrico County",
+        "wait_minutes": 20,
+        "hours": {"weekday": ["05:00", "20:00"], "saturday": null, "sunday": null},
+        "connects_routes": ["4B", "7A", "7B", "91"],
+        "key_destinations": ["Richmond International Airport", "Sandston", "Elko"],
+        "prebook_hours": 0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-77.385, 37.425], [-77.150, 37.425], [-77.150, 37.560], [-77.385, 37.560], [-77.385, 37.425]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "azalea",
+        "name": "Azalea",
+        "locality": "Henrico County",
+        "wait_minutes": 20,
+        "hours": {"weekday": ["05:00", "20:00"], "saturday": ["08:00", "20:00"], "sunday": null},
+        "connects_routes": ["1", "2A", "2B", "2C", "14", "91"],
+        "key_destinations": ["Henrico High School", "Azalea Avenue corridor"],
+        "prebook_hours": 0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-77.505, 37.570], [-77.375, 37.570], [-77.375, 37.665], [-77.505, 37.665], [-77.505, 37.570]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "broad_rock",
+        "name": "Broad Rock",
+        "locality": "City of Richmond",
+        "wait_minutes": 20,
+        "hours": {"weekday": ["05:30", "23:00"], "saturday": ["06:00", "19:00"], "sunday": null},
+        "connects_routes": ["1A", "1C", "2C", "3A", "3B", "3C", "20", "86", "87", "88"],
+        "key_destinations": ["Richmond VA Medical Center", "Broad Rock Industrial Park"],
+        "prebook_hours": 0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-77.535, 37.420], [-77.415, 37.420], [-77.415, 37.512], [-77.535, 37.512], [-77.535, 37.420]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "ashland",
+        "name": "Ashland",
+        "locality": "Hanover County",
+        "wait_minutes": 20,
+        "hours": {"weekday": ["06:00", "23:00"], "saturday": ["08:00", "23:00"], "sunday": null},
+        "connects_routes": ["1"],
+        "key_destinations": ["Randolph-Macon College", "Ashland Amtrak Station", "Virginia Center Commons"],
+        "prebook_hours": 0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-77.560, 37.640], [-77.375, 37.640], [-77.375, 37.800], [-77.560, 37.800], [-77.560, 37.640]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "clover_dale",
+        "name": "Clover Dale",
+        "locality": "Chesterfield County",
+        "wait_minutes": 20,
+        "hours": {"weekday": ["06:00", "20:00"], "saturday": null, "sunday": null},
+        "connects_routes": ["1C", "82x"],
+        "key_destinations": ["Clover Hill Library", "Chippenham Mall"],
+        "prebook_hours": 0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-77.700, 37.395], [-77.515, 37.395], [-77.515, 37.525], [-77.700, 37.525], [-77.700, 37.395]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "zone_id": "powhatan",
+        "name": "Powhatan",
+        "locality": "Powhatan County",
+        "wait_minutes": 60,
+        "hours": {"weekday": ["06:00", "19:00"], "saturday": null, "sunday": null},
+        "connects_routes": ["1A"],
+        "key_destinations": ["Powhatan County (entire county)"],
+        "prebook_hours": 24
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-78.060, 37.450], [-77.745, 37.450], [-77.745, 37.690], [-78.060, 37.690], [-78.060, 37.450]]]
+      }
+    }
+  ]
+}

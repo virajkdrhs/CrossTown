@@ -9,10 +9,11 @@ justifies routing someone into a carpool.
 Thresholds are deliberately explicit and conservative rather than tuned, so the
 verdict can be defended and adjusted:
 
-  gap        no service at all, or > 60 min each way, or 3+ transfers,
-             or a departure before 05:00, or no way home after the shift
-  marginal   45-60 min, or exactly 2 transfers
-  viable     everything else
+  gap           no service at all, or > 60 min each way, or 3+ transfers,
+                or a departure before 05:00, or no way home after the shift
+  marginal      45-60 min, or exactly 2 transfers
+  microtransit  fixed routes fail, but GRTC LINK covers the trip on demand
+  viable        everything else
 """
 
 from __future__ import annotations
@@ -20,6 +21,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date
 
+from . import microtransit
 from .gtfs import Feed, format_seconds, haversine_m
 from .transit_router import (
     DEFAULT_MAX_WALK_M,
@@ -41,10 +43,19 @@ EARLIEST_REASONABLE_DEPARTURE_S = 5 * 3600
 DRIVE_SPEED_MPS = 12.5
 DRIVE_OVERHEAD_S = 300
 
+# GRTC runs an Open Access system: no fare is charged on fixed routes, the Pulse
+# or LINK microtransit. https://www.ridegrtc.com/
+TRANSIT_FARE_USD = 0.0
+# IRS standard mileage rate, the usual proxy for the all-in cost of running a
+# car (fuel, insurance, maintenance, depreciation). Not just petrol.
+COST_PER_MILE_USD = 0.70
+METRES_PER_MILE = 1609.34
+WORK_DAYS_PER_MONTH = 21
+
 
 @dataclass
 class Verdict:
-    status: str  # "viable" | "marginal" | "gap" | "no_service"
+    status: str  # "viable" | "marginal" | "microtransit" | "gap" | "no_service"
     reasons: list[str] = field(default_factory=list)
     codes: list[str] = field(default_factory=list)
 
@@ -52,6 +63,27 @@ class Verdict:
         if code not in self.codes:
             self.codes.append(code)
             self.reasons.append(message)
+
+
+def driving_cost(origin: tuple[float, float], destination: tuple[float, float]) -> dict:
+    """What the same commute costs by car, against a fare-free bus.
+
+    The affordability gap is the whole argument: for a household without a car,
+    the barrier is not the bus fare - there isn't one - it is the $10,000-a-year
+    cost of owning the car the bus cannot replace.
+    """
+    one_way_m = haversine_m(origin[0], origin[1], destination[0], destination[1]) * 1.25
+    round_trip_miles = 2 * one_way_m / METRES_PER_MILE
+    per_day = round_trip_miles * COST_PER_MILE_USD
+    return {
+        "transit_fare_usd": TRANSIT_FARE_USD,
+        "transit_note": "GRTC charges no fare on buses, the Pulse or LINK.",
+        "drive_round_trip_miles": round(round_trip_miles, 1),
+        "drive_cost_per_day_usd": round(per_day, 2),
+        "drive_cost_per_month_usd": round(per_day * WORK_DAYS_PER_MONTH, 2),
+        "drive_cost_per_year_usd": round(per_day * WORK_DAYS_PER_MONTH * 12),
+        "cost_basis": f"IRS standard mileage rate, ${COST_PER_MILE_USD:.2f}/mile, round trip",
+    }
 
 
 def drive_estimate_minutes(origin: tuple[float, float], destination: tuple[float, float]) -> int:
@@ -254,6 +286,38 @@ def evaluate(
     verdict = classify(
         outbound, inbound, origin, destination, shift_end_s is not None, proximity
     )
+
+    # LINK microtransit is fare-free GRTC service that the GTFS feed omits, so it
+    # has to be checked separately - otherwise the planner tells people in Elko
+    # and Varina they have no option when GRTC will collect them from home.
+    link_options = microtransit.evaluate_options(
+        origin,
+        destination,
+        day,
+        outbound.depart_s if outbound else shift_start_s - 3600,
+        shift_start_s,
+    )
+    door_to_door = next(
+        (option for option in link_options if option["kind"] == "door_to_door" and option["available"]),
+        None,
+    )
+    connection = next(
+        (option for option in link_options if option["kind"] != "door_to_door" and option["available"]),
+        None,
+    )
+
+    if door_to_door and verdict.status in ("gap", "no_service"):
+        # Fixed routes fail, but LINK covers the whole trip on demand. Reporting
+        # this as "no service" would be simply false.
+        verdict.status = "microtransit"
+        verdict.add("link_door_to_door", door_to_door["headline"] + ".")
+    elif connection and verdict.status in ("gap", "no_service"):
+        verdict.add(
+            "link_connection",
+            connection["headline"]
+            + ". The planner cannot verify the combined LINK-plus-bus timing, so check it in the app.",
+        )
+
     drive_minutes = drive_estimate_minutes(origin, destination)
     transit_minutes = round(outbound.duration_s / 60) if outbound else None
 
@@ -270,6 +334,8 @@ def evaluate(
         "outbound": outbound.as_dict() if outbound else None,
         "inbound": inbound.as_dict() if inbound else None,
         "stop_access": proximity.as_dict(),
+        "microtransit": link_options,
+        "has_microtransit_option": bool(door_to_door or connection),
         "comparison": {
             "transit_minutes": transit_minutes,
             "drive_estimate_minutes": drive_minutes,
@@ -280,5 +346,7 @@ def evaluate(
                 haversine_m(origin[0], origin[1], destination[0], destination[1]) / 1000, 1
             ),
         },
+        "cost": driving_cost(origin, destination),
+        # Somebody LINK can carry door to door already has a ride.
         "carpool_recommended": verdict.status in ("gap", "no_service"),
     }

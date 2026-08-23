@@ -8,6 +8,9 @@
 import { postJSON } from "./api.js";
 import { map, setMarker, clearMarker, clearMarkersWithPrefix, fitToPoints, setVisibility, emptyCollection } from "./map.js";
 import * as roster from "./roster.js";
+import {
+  escapeHTML, tile, money, toast, skeleton, emptyState, withBusy, toCSV, downloadCSV, plural,
+} from "./ui.js";
 
 const WORKSITE_PRESETS = [
   { label: "Short Pump retail corridor", lat: 37.65, lon: -77.61 },
@@ -54,12 +57,29 @@ export async function init() {
 
   roster.onChange(reflectRoster);
   reflectRoster();
+
+  document.getElementById("carpool-result").innerHTML = emptyState(
+    "🚗",
+    "No carpools yet",
+    "Load the roster and pick a worksite. Riders who cannot reach it on transit get matched to colleagues already driving there."
+  );
+
+  window.addEventListener("crosstown:show-carpool", (event) => {
+    const detail = event.detail || {};
+    if (detail.worksite && detail.worksite.name) {
+      const preset = WORKSITE_PRESETS.findIndex((item) => item.label === detail.worksite.name);
+      if (preset >= 0) {
+        document.getElementById("carpool-worksite-preset").value = String(preset);
+        document.getElementById("carpool-worksite").value = detail.worksite.name;
+      }
+    }
+  });
 }
 
 function reflectRoster() {
   const status = document.getElementById("carpool-roster-status");
   if (roster.isLoaded()) {
-    status.innerHTML = `<span class="text-emerald-400">${roster.describe()}</span> · <span class="text-amber-400/90">synthetic demo data</span>`;
+    status.innerHTML = `<span style="color:var(--ct-ok)">${roster.describe()}</span> · <span style="color:var(--ct-warn)">synthetic demo data</span>`;
     document.getElementById("carpool-build").disabled = false;
   } else {
     status.textContent = "No roster loaded.";
@@ -161,7 +181,8 @@ async function loadRoster() {
     await roster.load();
   } catch (err) {
     document.getElementById("carpool-roster-status").innerHTML =
-      `<span class="text-red-400">${escapeHTML(err.message)}</span>`;
+      `<span style="color:var(--ct-bad)">${escapeHTML(err.message)}</span>`;
+    toast(err.message, "error");
   } finally {
     button.disabled = false;
   }
@@ -194,20 +215,74 @@ async function build() {
     max_detour_minutes: Number(document.getElementById("carpool-detour").value),
   };
 
-  button.disabled = true;
-  button.textContent = "Matching…";
+  const panel = document.getElementById("carpool-result");
+  panel.innerHTML = skeleton(7, { heading: true });
   try {
-    const data = await postJSON("/api/v2/carpool/plan", payload);
-    lastPlan = data;
-    render(data);
-    draw(data);
+    await withBusy(button, "Matching…", async () => {
+      const data = await postJSON("/api/v2/carpool/plan", payload);
+      lastPlan = data;
+      render(data);
+      draw(data);
+      const summary = data.summary;
+      toast(
+        `${summary.riders_matched} of ${summary.riders_needing_ride} riders matched into ${plural(
+          summary.pools_formed,
+          "carpool"
+        )}`,
+        summary.riders_matched ? "ok" : "warn"
+      );
+    });
   } catch (err) {
     errorEl.textContent = err.message;
     errorEl.classList.remove("hidden");
-  } finally {
-    button.disabled = false;
-    button.textContent = "Build carpools";
+    panel.innerHTML = emptyState("⚠️", "Could not build carpools", err.message);
+    toast(err.message, "error");
   }
+}
+
+function exportCSV() {
+  if (!lastPlan) return;
+  const rows = [];
+  lastPlan.pools.forEach((pool) => {
+    pool.riders.forEach((rider) => {
+      rows.push({
+        driver: pool.driver.employee_ref,
+        driver_zone: pool.driver.origin_zone_id,
+        depart: pool.depart_time,
+        arrive: pool.arrive_time,
+        detour: pool.detour_minutes,
+        route_km: pool.route_km,
+        shift: pool.shift_start,
+        rider: rider.employee_ref,
+        rider_zone: rider.origin_zone_id,
+        order: rider.order,
+        pickup: rider.pickup_time,
+      });
+    });
+  });
+  lastPlan.unmatched.forEach((person) => {
+    rows.push({
+      driver: "", driver_zone: "", depart: "", arrive: "", detour: "", route_km: "",
+      shift: person.shift_start, rider: person.employee_ref,
+      rider_zone: person.origin_zone_id, order: "", pickup: "UNMATCHED",
+    });
+  });
+  const csv = toCSV(rows, [
+    { label: "driver", get: (r) => r.driver },
+    { label: "driver_zone", get: (r) => r.driver_zone },
+    { label: "shift_start", get: (r) => r.shift },
+    { label: "depart_time", get: (r) => r.depart },
+    { label: "arrive_time", get: (r) => r.arrive },
+    { label: "detour_minutes", get: (r) => r.detour },
+    { label: "route_km", get: (r) => r.route_km },
+    { label: "rider", get: (r) => r.rider },
+    { label: "rider_zone", get: (r) => r.rider_zone },
+    { label: "pickup_order", get: (r) => r.order },
+    { label: "pickup_time", get: (r) => r.pickup },
+  ]);
+  const site = (lastPlan.worksite.name || "worksite").replace(/[^a-z0-9]+/gi, "-").toLowerCase();
+  downloadCSV(`crosstown-carpool-plan-${site}-${lastPlan.day}.csv`, csv);
+  toast("Carpool plan exported as CSV", "ok");
 }
 
 function render(data) {
@@ -291,18 +366,17 @@ function render(data) {
     <p class="text-[11px] uppercase font-bold tracking-wider text-gray-500 mb-1.5">Proposed carpools</p>
     ${pools || '<p class="text-[11px] text-gray-500 mb-2">No carpools could be formed.</p>'}
     ${unmatched}
-    <p class="text-[10px] text-gray-500 leading-relaxed mt-2 pt-2 border-t border-gray-700">
+    <button id="carpool-export" class="w-full text-xs font-semibold py-2 rounded-lg transition mb-2"
+            style="border:1px solid var(--ct-border);color:var(--ct-text-muted);background:var(--ct-raised)">
+      Export carpool plan (CSV)
+    </button>
+    <p class="text-[10px] leading-relaxed mt-1 pt-2" style="color:var(--ct-text-dim);border-top:1px solid var(--ct-border-soft)">
       ${escapeHTML(data.note)}
     </p>`;
+
+  document.getElementById("carpool-export").addEventListener("click", exportCSV);
 }
 
-function tile(label, value, sub) {
-  return `<div class="bg-gray-900/70 border border-gray-700/60 rounded-lg px-2.5 py-2">
-    <p class="text-[10px] uppercase tracking-wider text-gray-500">${label}</p>
-    <p class="text-sm font-bold text-gray-100">${value}</p>
-    <p class="text-[9px] text-gray-600">${sub}</p>
-  </div>`;
-}
 
 function draw(data) {
   const routeFeatures = [];
@@ -379,8 +453,3 @@ export function clear() {
   clearMarkersWithPrefix("carpool-");
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (character) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character])
-  );
-}

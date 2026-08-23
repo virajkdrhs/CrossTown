@@ -1,109 +1,258 @@
-/* Custom scrollbar for sidebar */
-aside::-webkit-scrollbar {
-  width: 6px;
+/* CrossTown — design tokens and shared components.
+ *
+ * Tokens first, components second. Ad-hoc hex in markup is what makes an app
+ * look assembled rather than designed; everything semantic lives here.
+ */
+
+:root {
+  /* Surfaces, darkest to lightest */
+  --ct-bg: #0b1120;
+  --ct-surface: #131c2e;
+  --ct-surface-2: #1b2639;
+  --ct-raised: #0f1727;
+  --ct-border: #28324a;
+  --ct-border-soft: rgb(40 50 74 / 60%);
+
+  /* Text */
+  --ct-text: #eef2f9;
+  --ct-text-muted: #97a3bb;
+  --ct-text-dim: #6b7793;
+
+  /* Brand + semantics */
+  --ct-brand: #10b981;
+  --ct-brand-dim: #0d9668;
+  --ct-ok: #34d399;
+  --ct-info: #38bdf8;
+  --ct-warn: #fbbf24;
+  --ct-bad: #f87171;
+  --ct-critical: #dc2626;
+  --ct-accent: #a78bfa;
+
+  --ct-radius: 10px;
+  --ct-radius-sm: 7px;
+  --ct-shadow: 0 12px 30px rgb(0 0 0 / 45%);
+  --ct-focus: 0 0 0 2px var(--ct-bg), 0 0 0 4px var(--ct-brand);
 }
-aside::-webkit-scrollbar-track {
-  background: #1f2937;
+
+/* Respect the OS setting for people who find the map animations rough. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
-aside::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 3px;
+
+/* Visible keyboard focus everywhere — the app is fully keyboard-drivable. */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ct-focus);
+  border-radius: 4px;
 }
-aside {
+
+/* --------------------------------------------------------------- scrollbars */
+
+aside::-webkit-scrollbar,
+.ct-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+aside::-webkit-scrollbar-track,
+.ct-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+aside::-webkit-scrollbar-thumb,
+.ct-scroll::-webkit-scrollbar-thumb {
+  background: var(--ct-border);
+  border-radius: 4px;
+}
+aside::-webkit-scrollbar-thumb:hover,
+.ct-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3a4763;
+}
+aside, .ct-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #374151 #1f2937;
+  scrollbar-color: var(--ct-border) transparent;
 }
 
-/* MapLibre popup styling to match the dark shell */
-.maplibregl-popup-content {
-  background-color: #111827 !important;
-  color: #f3f4f6 !important;
-  border: 1px solid #374151;
-  border-radius: 0.5rem;
-  padding: 8px 12px;
+/* -------------------------------------------------------------- status pill */
+
+.ct-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.ct-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------- tiles */
+
+.ct-tile {
+  background: var(--ct-raised);
+  border: 1px solid var(--ct-border-soft);
+  border-radius: var(--ct-radius-sm);
+  padding: 8px 10px;
+}
+.ct-tile-label {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ct-text-dim);
+  margin-bottom: 2px;
+}
+.ct-tile-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ct-text);
+  line-height: 1.2;
+}
+.ct-tile-sub {
+  font-size: 9.5px;
+  color: var(--ct-text-dim);
+  margin-top: 1px;
+}
+
+/* ------------------------------------------------------------------ toasts */
+
+.ct-toast-host {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.ct-toast {
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 220px;
+  max-width: 360px;
+  padding: 10px 14px;
+  border-radius: var(--ct-radius-sm);
+  background: var(--ct-surface-2);
+  border: 1px solid var(--ct-border);
+  color: var(--ct-text);
   font-size: 12px;
-  line-height: 1.45;
-  box-shadow: 0 10px 25px rgb(0 0 0 / 45%);
+  box-shadow: var(--ct-shadow);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.maplibregl-popup-content .text-gray-400 {
-  color: #9ca3af;
+.ct-toast-in {
+  opacity: 1;
+  transform: translateY(0);
 }
-.maplibregl-popup-close-button {
-  color: #9ca3af;
-  font-size: 16px;
-  padding: 0 6px;
+.ct-toast-icon {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: var(--ct-bg);
 }
-.maplibregl-popup-anchor-top .maplibregl-popup-tip,
-.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
-.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
-  border-bottom-color: #111827 !important;
+.ct-toast-ok .ct-toast-icon { background: var(--ct-ok); }
+.ct-toast-error .ct-toast-icon { background: var(--ct-bad); }
+.ct-toast-warn .ct-toast-icon { background: var(--ct-warn); }
+.ct-toast-info .ct-toast-icon { background: var(--ct-info); }
+.ct-toast-ok { border-left: 3px solid var(--ct-ok); }
+.ct-toast-error { border-left: 3px solid var(--ct-bad); }
+.ct-toast-warn { border-left: 3px solid var(--ct-warn); }
+.ct-toast-info { border-left: 3px solid var(--ct-info); }
+
+/* --------------------------------------------------------------- skeletons */
+
+.ct-skel-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
-.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
-.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
-  border-top-color: #111827 !important;
+.ct-skel {
+  background: linear-gradient(90deg, var(--ct-surface-2) 25%, #24314a 50%, var(--ct-surface-2) 75%);
+  background-size: 200% 100%;
+  animation: ct-shimmer 1.4s infinite;
+  border-radius: 5px;
 }
-.maplibregl-popup-anchor-left .maplibregl-popup-tip {
-  border-right-color: #111827 !important;
-}
-.maplibregl-popup-anchor-right .maplibregl-popup-tip {
-  border-left-color: #111827 !important;
+@keyframes ct-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-/* Navigation / scale controls read better dark than the default white */
-.maplibregl-ctrl-group {
-  background: #1f2937 !important;
-  border: 1px solid #374151;
+/* ------------------------------------------------------------ empty states */
+
+.ct-empty {
+  text-align: center;
+  padding: 22px 12px;
+  border: 1px dashed var(--ct-border);
+  border-radius: var(--ct-radius);
+  background: rgb(15 23 39 / 40%);
 }
-.maplibregl-ctrl-group button + button {
-  border-top-color: #374151 !important;
+.ct-empty-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+  opacity: 0.75;
 }
-.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
-  filter: invert(1) brightness(0.85);
+.ct-empty-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ct-text-muted);
+  margin-bottom: 3px;
 }
-.maplibregl-ctrl-scale {
-  background: rgb(17 24 39 / 80%) !important;
-  border-color: #4b5563 !important;
-  color: #d1d5db !important;
-}
-.maplibregl-ctrl-attrib {
-  background: rgb(17 24 39 / 80%) !important;
-}
-.maplibregl-ctrl-attrib a {
-  color: #9ca3af !important;
+.ct-empty-body {
+  font-size: 11px;
+  color: var(--ct-text-dim);
+  line-height: 1.5;
+  max-width: 260px;
+  margin: 0 auto;
 }
 
-/* Shared muted text inside MapLibre popups (Tailwind classes do not apply there) */
-.ct-muted {
-  color: #9ca3af;
-}
+/* ------------------------------------------------------------------- chrome */
 
-/* View tabs — base class; main.js swaps the active/inactive variants */
 .view-tab {
   padding: 0.375rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 600;
-  border-radius: 0.375rem;
-  color: #9ca3af;
-  transition: all 0.15s;
+  border-radius: var(--ct-radius-sm);
+  color: var(--ct-text-muted);
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
 }
-.view-tab:hover {
-  color: #fff;
-}
+.view-tab:hover { color: #fff; }
 
-/* Shift preset chips in the commute view */
 .shift-chip {
   font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 9999px;
-  border: 1px solid #374151;
-  color: #9ca3af;
-  background: #111827;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--ct-border);
+  color: var(--ct-text-muted);
+  background: var(--ct-raised);
   transition: all 0.15s;
 }
 .shift-chip:hover {
-  border-color: #10b981;
-  color: #6ee7b7;
+  border-color: var(--ct-brand);
+  color: var(--ct-ok);
+}
+.shift-chip[aria-pressed="true"] {
+  border-color: var(--ct-brand);
+  color: var(--ct-bg);
+  background: var(--ct-brand);
+  font-weight: 700;
 }
 
 /* Sections toggled by the view switcher must keep their flex layout when shown */
@@ -114,13 +263,125 @@ aside {
   display: flex;
 }
 
-details summary::-webkit-details-marker {
-  display: none;
+details summary::-webkit-details-marker { display: none; }
+details summary::before { content: "▸ "; color: var(--ct-text-dim); }
+details[open] summary::before { content: "▾ "; }
+
+kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--ct-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--ct-raised);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  color: var(--ct-text-muted);
 }
-details summary::before {
-  content: "▸ ";
-  color: #6b7280;
+
+/* ------------------------------------------------------- itinerary timeline */
+
+.ct-leg {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  position: relative;
 }
-details[open] summary::before {
-  content: "▾ ";
+.ct-leg:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 20px;
+  bottom: -8px;
+  width: 2px;
+  background: var(--ct-border);
+}
+.ct-leg-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  flex-shrink: 0;
+  background: var(--ct-surface-2);
+  border: 1px solid var(--ct-border);
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------- MapLibre themes */
+
+.maplibregl-popup-content {
+  background-color: var(--ct-surface) !important;
+  color: var(--ct-text) !important;
+  border: 1px solid var(--ct-border);
+  border-radius: var(--ct-radius-sm);
+  padding: 9px 13px;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: var(--ct-shadow);
+}
+.ct-muted { color: var(--ct-text-muted); }
+.maplibregl-popup-close-button {
+  color: var(--ct-text-muted);
+  font-size: 16px;
+  padding: 0 6px;
+}
+.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-bottom-color: var(--ct-surface) !important;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+  border-top-color: var(--ct-surface) !important;
+}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: var(--ct-surface) !important; }
+.maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: var(--ct-surface) !important; }
+
+.maplibregl-ctrl-group {
+  background: var(--ct-surface) !important;
+  border: 1px solid var(--ct-border);
+}
+.maplibregl-ctrl-group button + button { border-top-color: var(--ct-border) !important; }
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(1) brightness(0.85); }
+.maplibregl-ctrl-scale {
+  background: rgb(19 28 46 / 85%) !important;
+  border-color: var(--ct-border) !important;
+  color: var(--ct-text-muted) !important;
+}
+.maplibregl-ctrl-attrib { background: rgb(19 28 46 / 85%) !important; }
+.maplibregl-ctrl-attrib a { color: var(--ct-text-dim) !important; }
+
+/* ------------------------------------------------------------- responsive */
+
+/* Below ~1100px the header cannot hold the wordmark, four tabs, status and two
+   buttons at once. Shed the least useful parts first rather than truncating
+   everything into ellipses. */
+@media (max-width: 1100px) {
+  #view-subtitle { display: none; }
+  #api-status { display: none; }
+}
+
+@media (max-width: 780px) {
+  .ct-wordmark { display: none; }
+}
+
+@media (max-width: 900px) {
+  #sidebar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: min(88vw, 24rem);
+    z-index: 30;
+    transform: translateX(0);
+    transition: transform 0.25s ease;
+  }
+  #sidebar.ct-collapsed { transform: translateX(-102%); }
+  #legend-host { display: none; }
+  .ct-tab-label { display: none; }
+}
+
+@media (min-width: 901px) {
+  #sidebar.ct-collapsed { display: none; }
 }
