@@ -202,7 +202,14 @@ function render(data) {
   if (comparison.transit_penalty != null) {
     metrics.push(tile("Transit penalty", `${comparison.transit_penalty}×`, "longer than driving", "var(--ct-warn)"));
   }
-  metrics.push(tile("Distance", `${comparison.straight_line_km} km`, "straight line"));
+  // Name the distance for what it actually is, so a fallback never masquerades
+  // as a road measurement.
+  const roadRouted = comparison.distance_provider === "osrm" && comparison.road_km != null;
+  metrics.push(
+    roadRouted
+      ? tile("Distance", `${comparison.road_km} km`, "by road")
+      : tile("Distance", `${comparison.straight_line_km} km`, "straight line est.")
+  );
 
   const reasons = data.reasons
     .map(

@@ -16,7 +16,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from Backend import carpool, commute, gtfs, microtransit, scoring, transit_router  # noqa: E402
+from Backend import (  # noqa: E402
+    carpool, commute, gtfs, microtransit, roadnetwork, scoring, transit_router,
+)
 
 WEEKDAY = date(2026, 8, 5)
 SATURDAY = date(2026, 8, 8)
@@ -268,11 +270,24 @@ class TestMicrotransit(unittest.TestCase):
 
 
 class TestCarpool(unittest.TestCase):
+    """Matching logic, held to a deterministic offline distance model.
+
+    These assert on the heuristic, not on road geometry, so they use an explicit
+    straight-line matrix. Real road routing is covered in TestRoadNetwork.
+    """
+
     def _person(self, ref, lon, lat, has_vehicle, verdict="no_service", shift=9 * 3600):
         return carpool.Person(
             ref=ref, lon=lon, lat=lat, zone_id=None,
             has_vehicle=has_vehicle, verdict=verdict, shift_start_s=shift,
         )
+
+    def _plan(self, people, worksite=DOWNTOWN, **kwargs):
+        matrix = roadnetwork._haversine_matrix(
+            list({(p.lon, p.lat) for p in people} | {worksite}), "test"
+        )
+        kwargs.setdefault("include_geometry", False)
+        return carpool.plan(people, worksite, matrix=matrix, **kwargs)
 
     def test_rider_with_a_car_is_not_stranded(self):
         person = self._person("A", *VARINA, True, "no_service")
@@ -291,7 +306,7 @@ class TestCarpool(unittest.TestCase):
             self._person("driver", -77.44, 37.55, True),
             self._person("rider", -77.441, 37.551, False),
         ]
-        plan = carpool.plan(people, DOWNTOWN)
+        plan = self._plan(people)
         self.assertEqual(plan["summary"]["riders_matched"], 1)
         self.assertEqual(len(plan["pools"]), 1)
         self.assertEqual(plan["pools"][0]["seats_used"], 1)
@@ -299,7 +314,7 @@ class TestCarpool(unittest.TestCase):
     def test_respects_seat_capacity(self):
         people = [self._person("driver", -77.44, 37.55, True)]
         people += [self._person(f"r{i}", -77.441, 37.551, False) for i in range(5)]
-        plan = carpool.plan(people, DOWNTOWN, seats_per_driver=2)
+        plan = self._plan(people, seats_per_driver=2)
         self.assertEqual(plan["summary"]["riders_matched"], 2)
         self.assertEqual(plan["summary"]["riders_unmatched"], 3)
 
@@ -309,7 +324,7 @@ class TestCarpool(unittest.TestCase):
             # Far away rider: any detour blows a tiny cap.
             self._person("rider", -77.90, 37.90, False),
         ]
-        plan = carpool.plan(people, DOWNTOWN, max_detour_min=5)
+        plan = self._plan(people, max_detour_min=5)
         self.assertEqual(plan["summary"]["riders_matched"], 0)
         self.assertEqual(len(plan["unmatched"]), 1)
         self.assertIn("detour", plan["unmatched"][0]["reason"].lower())
@@ -319,7 +334,7 @@ class TestCarpool(unittest.TestCase):
             self._person("driver_am", -77.44, 37.55, True, shift=6 * 3600),
             self._person("rider_pm", -77.441, 37.551, False, shift=15 * 3600),
         ]
-        plan = carpool.plan(people, DOWNTOWN)
+        plan = self._plan(people)
         self.assertEqual(plan["summary"]["riders_matched"], 0)
         self.assertIn("shift", plan["unmatched"][0]["reason"].lower())
 
@@ -329,7 +344,7 @@ class TestCarpool(unittest.TestCase):
             self._person("r1", -77.445, 37.552, False),
             self._person("r2", -77.450, 37.556, False),
         ]
-        plan = carpool.plan(people, DOWNTOWN)
+        plan = self._plan(people)
         pool = plan["pools"][0]
         times = [rider["pickup_time"] for rider in pool["riders"]]
         self.assertEqual(times, sorted(times))
@@ -342,7 +357,7 @@ class TestCarpool(unittest.TestCase):
             self._person("driver", -77.44, 37.55, True),
             self._person("rider", -77.445, 37.552, False),
         ]
-        plan = carpool.plan(people, DOWNTOWN)
+        plan = self._plan(people)
         route = plan["pools"][0]["route"]
         self.assertEqual(route[0], [-77.44, 37.55])
         self.assertEqual(route[-1], list(DOWNTOWN))
@@ -352,22 +367,130 @@ class TestCarpool(unittest.TestCase):
             self._person("driver", -77.44, 37.55, True),
             self._person("rider", -77.445, 37.552, False),
         ]
-        plan = carpool.plan(people, DOWNTOWN)
+        plan = self._plan(people)
         for pool in plan["pools"]:
             self.assertGreaterEqual(pool["detour_minutes"], 0)
             self.assertGreaterEqual(pool["route_minutes"], pool["direct_minutes"])
 
     def test_no_drivers_leaves_everyone_unmatched(self):
         people = [self._person("rider", -77.44, 37.55, False)]
-        plan = carpool.plan(people, DOWNTOWN)
+        plan = self._plan(people)
         self.assertEqual(plan["summary"]["riders_matched"], 0)
         self.assertEqual(len(plan["unmatched"]), 1)
 
     def test_empty_roster_does_not_crash(self):
-        plan = carpool.plan([], DOWNTOWN)
+        plan = self._plan([])
         self.assertEqual(plan["summary"]["riders_needing_ride"], 0)
         self.assertEqual(plan["pools"], [])
 
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestRoadNetwork(unittest.TestCase):
+    """Road routing, plus the fallback that keeps a demo alive when it is down."""
+
+    # Two points either side of the James River: ~9.8 km apart in a straight
+    # line, ~21 km by road because you can only cross at a bridge.
+    SOUTH = (-77.4300, 37.4300)
+    NORTH = (-77.3200, 37.4400)
+
+    def test_haversine_matrix_is_self_consistent(self):
+        matrix = roadnetwork._haversine_matrix([self.SOUTH, self.NORTH], "test")
+        self.assertEqual(matrix.provider, "haversine")
+        self.assertFalse(matrix.is_real_roads)
+        self.assertEqual(matrix.distance(self.SOUTH, self.SOUTH), 0)
+        # Straight-line distance is symmetric by construction.
+        self.assertAlmostEqual(
+            matrix.distance(self.SOUTH, self.NORTH),
+            matrix.distance(self.NORTH, self.SOUTH),
+            places=3,
+        )
+
+    def test_unknown_points_fall_back_rather_than_raising(self):
+        matrix = roadnetwork._haversine_matrix([self.SOUTH], "test")
+        # A point absent from the matrix must still return a usable distance.
+        self.assertGreater(matrix.distance(self.SOUTH, self.NORTH), 1000)
+        self.assertGreater(matrix.duration(self.SOUTH, self.NORTH), 0)
+
+    def test_disabled_routing_degrades_cleanly(self):
+        original = roadnetwork.OSRM_ENABLED
+        roadnetwork.OSRM_ENABLED = False
+        try:
+            matrix = roadnetwork.build_matrix([self.SOUTH, self.NORTH])
+            self.assertEqual(matrix.provider, "haversine")
+            self.assertIn("disabled", matrix.note.lower())
+            self.assertIsNone(roadnetwork.route_geometry([self.SOUTH, self.NORTH]))
+        finally:
+            roadnetwork.OSRM_ENABLED = original
+
+    def test_too_many_points_falls_back(self):
+        points = [(-77.4 - i * 0.001, 37.5 + i * 0.001) for i in range(200)]
+        matrix = roadnetwork.build_matrix(points)
+        self.assertEqual(matrix.provider, "haversine")
+        self.assertIn("limit", matrix.note.lower())
+
+    def test_matrix_deduplicates_points(self):
+        repeated = [self.SOUTH, self.SOUTH, self.NORTH, self.SOUTH]
+        matrix = roadnetwork._haversine_matrix(
+            list(dict.fromkeys(repeated)), "test"
+        )
+        self.assertEqual(len(matrix.points), 2)
+
+    def test_carpool_plan_reports_its_distance_source(self):
+        people = [
+            carpool.Person(ref="d", lon=-77.44, lat=37.55, zone_id=None,
+                           has_vehicle=True, verdict="no_service", shift_start_s=9 * 3600),
+            carpool.Person(ref="r", lon=-77.445, lat=37.552, zone_id=None,
+                           has_vehicle=False, verdict="no_service", shift_start_s=9 * 3600),
+        ]
+        matrix = roadnetwork._haversine_matrix([(-77.44, 37.55), (-77.445, 37.552), DOWNTOWN], "test")
+        plan = carpool.plan(people, DOWNTOWN, matrix=matrix, include_geometry=False)
+        self.assertEqual(plan["summary"]["distance_provider"], "haversine")
+        self.assertFalse(plan["summary"]["routed_on_real_roads"])
+
+
+def _osrm_reachable() -> bool:
+    try:
+        matrix = roadnetwork.build_matrix(
+            [(-77.4300, 37.4300), (-77.3200, 37.4400)], timeout=12
+        )
+        return matrix.is_real_roads
+    except Exception:  # noqa: BLE001
+        return False
+
+
+@unittest.skipUnless(_osrm_reachable(), "OSRM routing service not reachable")
+class TestRoadNetworkLive(unittest.TestCase):
+    SOUTH = (-77.4300, 37.4300)
+    NORTH = (-77.3200, 37.4400)
+
+    def test_road_distance_exceeds_straight_line_across_the_river(self):
+        matrix = roadnetwork.build_matrix([self.SOUTH, self.NORTH])
+        straight = gtfs.haversine_m(*self.SOUTH, *self.NORTH)
+        road = matrix.distance(self.SOUTH, self.NORTH)
+        # The bridge detour is the whole reason this module exists: the old flat
+        # 1.25 factor underestimated it by well over half.
+        self.assertGreater(road, straight * 1.6)
+
+    def test_road_distances_can_be_asymmetric(self):
+        matrix = roadnetwork.build_matrix([self.SOUTH, self.NORTH])
+        there = matrix.distance(self.SOUTH, self.NORTH)
+        back = matrix.distance(self.NORTH, self.SOUTH)
+        self.assertNotAlmostEqual(there, back, places=0)
+
+    def test_route_geometry_follows_roads(self):
+        geometry = roadnetwork.route_geometry([self.SOUTH, self.NORTH])
+        self.assertIsNotNone(geometry)
+        # A straight line would be two points; a real road route has many.
+        self.assertGreater(len(geometry), 20)
+        for lon, lat in geometry:
+            self.assertTrue(-78.5 < lon < -76.5, f"lon out of region: {lon}")
+            self.assertTrue(36.5 < lat < 38.5, f"lat out of region: {lat}")
+
+    def test_durations_are_present_and_plausible(self):
+        matrix = roadnetwork.build_matrix([self.SOUTH, self.NORTH])
+        minutes = matrix.duration(self.SOUTH, self.NORTH) / 60
+        self.assertGreater(minutes, 5)
+        self.assertLess(minutes, 90)

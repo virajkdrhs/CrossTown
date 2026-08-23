@@ -43,8 +43,10 @@ Measured with the code in this repository, against the GRTC schedule published
 - Of a 60-person roster distributed by where car-free households actually live,
   **59 cannot reach Short Pump on transit**; 26 of them own no car.
 - Those 26 stranded riders can be matched to colleagues already driving:
-  **25 of 26 get a ride across 16 carpools, at a mean detour of 5.4 minutes** —
-  86 minutes of total added driving to move 25 people who otherwise cannot work.
+  **24 of 26 get a ride across 13 carpools, at a mean detour of 8.6 minutes** —
+  112 minutes of total added driving to move 24 people who otherwise cannot work.
+  (Routed on real roads. A straight-line model claimed 25 riders at 5.4 minutes;
+  it was quietly ignoring the James River.)
 - County-wide, **26.2% of car-free households** sit in the lowest-access areas,
   and 85% of grid nodes cannot reach a library within 45 minutes.
 
@@ -175,10 +177,37 @@ Pickup times are computed backwards from shift start, including a 2-minute dwell
 per stop. Shifts are matched separately — a driver on the 6am shift is no use to
 a rider starting at 3pm.
 
-This is a greedy heuristic, not an optimal vehicle-routing solution, and
-distances are straight-line scaled by 1.25 rather than turn-by-turn. It is
+This is a greedy heuristic, not an optimal vehicle-routing solution. It is
 deterministic and produces routes a human can sanity-check, which matters more
 here than the last few percent of efficiency.
+
+### Road distances, and why they matter here
+
+Distances and drive times come from real road routing (`Backend/roadnetwork.py`),
+not straight lines. Around Richmond that is not a refinement, it is a correctness
+issue: **the James River splits the county and you can only cross it at a
+bridge.** Two points 9.8 km apart in a straight line are 21.1 km apart by road —
+the old flat 1.25 factor underestimated that detour by **1.73×**, so the matcher
+would seat a rider "on the way" when the driver would in fact cross the river
+twice. Road distances are also *asymmetric* (21,137 m out, 21,527 m back on that
+pair, because of one-way streets), which a symmetric model cannot express at all.
+
+Switching to real roads changed the demo result honestly: **25 riders matched
+across 16 pools at a claimed 5.4-minute mean detour became 24 riders across 13
+pools at 8.6 minutes.** The old numbers were flattering, not accurate.
+
+One OSRM `/table` request returns the full matrix for a whole plan, and points
+are deduplicated first — employees share grid zones, so a 60-person roster
+collapses to about 25 distinct pickup points. The same routing supplies the road
+polylines the map draws, fetched concurrently (sequentially this was 17 seconds
+on a cold cache; it is now under 3) and cached to disk under `Data/Cache/`.
+
+**It degrades safely.** If the routing service is unreachable, rate limited, or
+the point set is too large for one request, everything falls back to the old
+straight-line model and says so — in the API as `summary.distance_provider`, and
+in the UI as a visible note. A demo must never fail because a public server is
+busy. Set `CROSSTOWN_OSRM_URL` to use your own OSRM instance, or
+`CROSSTOWN_OSRM_DISABLED=1` to force the offline model.
 
 ### How the transit router works
 
@@ -289,9 +318,12 @@ polygons — currently downloaded but unused — as a fifth category.
 python -m unittest discover -s tests -v
 ```
 
-63 tests. `tests/test_crosstown.py` covers the routing maths, service-calendar
+73 tests. `tests/test_crosstown.py` covers the routing maths, service-calendar
 handling (including the Labor Day exception), gap classification, microtransit
-zones and carpool matching — all against the real GTFS feed, no mocks.
+zones, road routing and carpool matching — all against the real GTFS feed, no
+mocks. Carpool matching is tested against an explicit straight-line matrix so the
+heuristic is verified deterministically and offline; live road routing has its
+own tests that skip themselves when the service is unreachable.
 `tests/test_api.py` exercises every endpoint end to end and skips itself with a
 clear message when the API is not running.
 
@@ -322,6 +354,7 @@ CrossTown/
 │   ├── process_census.py      # ACS B25044 -> car-free layer
 │   ├── carpool.py             # rider/driver matching and route building
 │   ├── microtransit.py        # GRTC LINK on-demand zones
+│   ├── roadnetwork.py         # OSRM road distances, routes, and fallback
 │   ├── fetch_gtfs.py          # download + validate the GRTC feed
 │   └── make_demo_roster.py    # synthetic roster for the employer demo
 ├── Frontend/

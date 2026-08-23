@@ -19,7 +19,7 @@ from functools import lru_cache
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, model_validator
 
-from . import carpool, commute, config, gtfs, microtransit, transit_router
+from . import carpool, commute, config, gtfs, microtransit, roadnetwork, transit_router
 
 router = APIRouter(prefix="/api/v2", tags=["transit"])
 
@@ -307,7 +307,7 @@ def evaluate_commute(payload: CommuteRequest):
     return result
 
 
-def evaluate_roster(payload: RosterRequest, feed, day, worksite, worksite_name):
+def evaluate_roster(payload: RosterRequest, feed, day, worksite, worksite_name, road_matrix=None):
     """Transit verdict for every employee against one worksite.
 
     One backward network scan per distinct shift covers the whole roster, so a
@@ -334,6 +334,18 @@ def evaluate_roster(payload: RosterRequest, feed, day, worksite, worksite_name):
             end += 86400
         grouped.setdefault((start, end), []).append(employee)
 
+    # Build the road matrix once for the whole roster. Per-employee routing calls
+    # turned a 60-person analysis into a minute of sequential network waiting.
+    if road_matrix is None:
+        origins = []
+        for members in grouped.values():
+            for employee in members:
+                if employee.lat is not None and employee.lon is not None:
+                    origins.append((employee.lon, employee.lat))
+                else:
+                    origins.append(zones[employee.origin_zone_id])
+        road_matrix = roadnetwork.build_matrix(origins + [worksite])
+
     results = []
     for (start, end), members in sorted(grouped.items()):
         scan = transit_router.scan_backward(
@@ -359,6 +371,7 @@ def evaluate_roster(payload: RosterRequest, feed, day, worksite, worksite_name):
                 origin_name=f"Zone {zone_id}" if zone_id is not None else "Home",
                 destination_name=worksite_name,
                 scan=scan,
+                road_matrix=road_matrix,
             )
             results.append(
                 {
@@ -473,7 +486,19 @@ def carpool_plan(payload: CarpoolRequest):
     day = resolve_day(payload.day, feed)
     worksite, worksite_name = resolve_place(payload.worksite, "Worksite")
 
-    results, unresolved = evaluate_roster(payload, feed, day, worksite, worksite_name)
+    # One matrix serves both the transit evaluation and the carpool matching.
+    zones = grid_zones()
+    origins = [
+        (employee.lon, employee.lat)
+        if employee.lat is not None and employee.lon is not None
+        else zones.get(employee.origin_zone_id, worksite)
+        for employee in payload.employees
+    ]
+    road_matrix = roadnetwork.build_matrix(origins + [worksite])
+
+    results, unresolved = evaluate_roster(
+        payload, feed, day, worksite, worksite_name, road_matrix=road_matrix
+    )
 
     people = [
         carpool.Person(
@@ -494,6 +519,7 @@ def carpool_plan(payload: CarpoolRequest):
         worksite,
         seats_per_driver=payload.seats_per_driver,
         max_detour_min=payload.max_detour_minutes,
+        matrix=road_matrix,
     )
 
     drivers_available = sum(1 for person in people if person.has_vehicle)

@@ -29,19 +29,21 @@ A cheapest-insertion heuristic for a capacitated pickup problem:
 This is a greedy heuristic, not an optimal vehicle-routing solution. It is
 deterministic, runs instantly for a few hundred people, and produces routes a
 human can sanity-check - which matters more here than the last few percent of
-efficiency. Distances are straight-line scaled by a road-network factor; there is
-no turn-by-turn routing.
+efficiency.
+
+Distances and drive times come from real road routing (see roadnetwork.py), which
+matters more here than it sounds: the James River splits the county, and a
+straight-line model priced a two-bridge detour as if the driver could swim. Where
+routing is unavailable everything degrades to the old straight-line estimate and
+says so in ``summary.distance_provider``.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from . import roadnetwork
 from .gtfs import format_seconds, haversine_m
-
-# Straight-line distance scaled to approximate real road distance.
-ROAD_DETOUR_FACTOR = 1.25
-DRIVE_SPEED_MPS = 12.5  # ~45 km/h average including local streets
 
 DEFAULT_SEATS = 3
 DEFAULT_MAX_DETOUR_MIN = 20
@@ -81,16 +83,14 @@ class Pool:
         return points
 
 
-def _road_distance(a: tuple[float, float], b: tuple[float, float]) -> float:
-    return haversine_m(a[0], a[1], b[0], b[1]) * ROAD_DETOUR_FACTOR
+def _route_distance(matrix, points: list[tuple[float, float]]) -> float:
+    return sum(matrix.distance(points[i], points[i + 1]) for i in range(len(points) - 1))
 
 
-def _route_distance(points: list[tuple[float, float]]) -> float:
-    return sum(_road_distance(points[i], points[i + 1]) for i in range(len(points) - 1))
-
-
-def _drive_seconds(distance_m: float, pickups: int) -> int:
-    return int(distance_m / DRIVE_SPEED_MPS) + pickups * PICKUP_DWELL_S
+def _route_seconds(matrix, points: list[tuple[float, float]], pickups: int) -> int:
+    """Driving time along a route, plus the time spent stopped for each pickup."""
+    driving = sum(matrix.duration(points[i], points[i + 1]) for i in range(len(points) - 1))
+    return int(driving) + pickups * PICKUP_DWELL_S
 
 
 def plan(
@@ -98,6 +98,8 @@ def plan(
     worksite: tuple[float, float],
     seats_per_driver: int = DEFAULT_SEATS,
     max_detour_min: int = DEFAULT_MAX_DETOUR_MIN,
+    matrix=None,
+    include_geometry: bool = True,
 ) -> dict:
     """Build carpool proposals for one worksite.
 
@@ -105,6 +107,13 @@ def plan(
     rider starting at 3pm.
     """
     max_detour_s = max_detour_min * 60
+
+    if matrix is None:
+        # One routing call covers every driver, rider and the worksite. Employees
+        # share grid zones, so the point set collapses well below the roster size.
+        matrix = roadnetwork.build_matrix(
+            [(person.lon, person.lat) for person in people] + [worksite]
+        )
 
     by_shift: dict[int, list[Person]] = {}
     for person in people:
@@ -143,12 +152,14 @@ def plan(
         # all, and place the riders with the fewest options while seats remain.
         def feasible_driver_count(rider: Person) -> int:
             count = 0
+            rider_point = (rider.lon, rider.lat)
             for driver in drivers:
-                base = _route_distance([(driver.lon, driver.lat), worksite])
-                via = _route_distance(
-                    [(driver.lon, driver.lat), (rider.lon, rider.lat), worksite]
+                driver_point = (driver.lon, driver.lat)
+                base = matrix.duration(driver_point, worksite)
+                via = matrix.duration(driver_point, rider_point) + matrix.duration(
+                    rider_point, worksite
                 )
-                if _drive_seconds(via - base, 1) <= max_detour_s:
+                if (via - base) + PICKUP_DWELL_S <= max_detour_s:
                     count += 1
             return count
 
@@ -168,17 +179,17 @@ def plan(
                     continue
 
                 base_points = pool.stops(worksite)
-                base_distance = _route_distance(base_points)
-                direct_distance = _route_distance([(driver.lon, driver.lat), worksite])
+                base_seconds = _route_seconds(matrix, base_points, len(pool.sequence))
+                direct_seconds = matrix.duration((driver.lon, driver.lat), worksite)
 
                 for position in range(1, len(base_points)):
                     candidate = list(base_points)
                     candidate.insert(position, (rider.lon, rider.lat))
-                    candidate_distance = _route_distance(candidate)
-                    added = candidate_distance - base_distance
-                    detour_s = _drive_seconds(
-                        candidate_distance - direct_distance, len(pool.sequence) + 1
-                    )
+                    candidate_seconds = _route_seconds(matrix, candidate, len(pool.sequence) + 1)
+                    # Cost the insertion in the driver's time, which is what they
+                    # actually agree to give up.
+                    added = candidate_seconds - base_seconds
+                    detour_s = candidate_seconds - direct_seconds
                     if detour_s > max_detour_s:
                         continue
                     if best is None or added < best[0]:
@@ -209,8 +220,11 @@ def plan(
             pool = routes[driver.ref]
             if not pool.riders:
                 continue
-            pools.append(_describe(pool, worksite, shift_start))
+            pools.append(_describe(pool, worksite, shift_start, matrix))
             total_detour_s += pools[-1]["detour_minutes"] * 60
+
+    if include_geometry and matrix.is_real_roads:
+        _attach_geometry(pools)
 
     matched = sum(len(pool["riders"]) for pool in pools)
     return {
@@ -229,16 +243,51 @@ def plan(
             "mean_detour_minutes": round(total_detour_s / 60 / len(pools), 1) if pools else 0,
             "seats_per_driver": seats_per_driver,
             "max_detour_minutes": max_detour_min,
+            "distance_provider": matrix.provider,
+            "distance_note": matrix.note,
+            "routed_on_real_roads": matrix.is_real_roads,
         },
     }
 
 
-def _describe(pool: Pool, worksite: tuple[float, float], shift_start_s: int) -> dict:
+def _attach_geometry(pools: list[dict]) -> None:
+    """Fetch every pool's road polyline at once.
+
+    Sequentially this was 13 round trips and about 17 seconds on a cold cache -
+    long enough to look broken during a demo. A small thread pool brings it under
+    two seconds, and the on-disk cache makes repeat runs instant. Failures leave
+    route_geometry as None and the map falls back to straight lines.
+    """
+    if not pools:
+        return
+    from concurrent.futures import ThreadPoolExecutor  # noqa: PLC0415
+
+    def fetch(pool):
+        points = [tuple(point) for point in pool["route"]]
+        try:
+            return roadnetwork.route_geometry(points)
+        except Exception:  # noqa: BLE001 - drawing is never worth failing a plan for
+            return None
+
+    # Keep the pool small: this is a shared public routing service.
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        for pool, geometry in zip(pools, executor.map(fetch, pools)):
+            pool["route_geometry"] = geometry
+
+
+def _describe(
+    pool: Pool,
+    worksite: tuple[float, float],
+    shift_start_s: int,
+    matrix,
+) -> dict:
     points = pool.stops(worksite)
-    route_distance = _route_distance(points)
-    direct_distance = _route_distance([(pool.driver.lon, pool.driver.lat), worksite])
-    route_seconds = _drive_seconds(route_distance, len(pool.sequence))
-    detour_seconds = _drive_seconds(route_distance - direct_distance, len(pool.sequence))
+    driver_point = (pool.driver.lon, pool.driver.lat)
+    route_distance = _route_distance(matrix, points)
+    direct_distance = matrix.distance(driver_point, worksite)
+    route_seconds = _route_seconds(matrix, points, len(pool.sequence))
+    direct_seconds = int(matrix.duration(driver_point, worksite))
+    detour_seconds = max(0, route_seconds - direct_seconds)
 
     # Work backwards from the shift start so every pickup gets a real clock time.
     arrive_s = shift_start_s - ARRIVAL_BUFFER_S
@@ -247,7 +296,7 @@ def _describe(pool: Pool, worksite: tuple[float, float], shift_start_s: int) -> 
     legs = []
     clock = depart_s
     for index, rider in enumerate(pool.sequence):
-        clock += int(_road_distance(points[index], points[index + 1]) / DRIVE_SPEED_MPS)
+        clock += int(matrix.duration(points[index], points[index + 1]))
         legs.append(
             {
                 "employee_ref": rider.ref,
@@ -273,8 +322,12 @@ def _describe(pool: Pool, worksite: tuple[float, float], shift_start_s: int) -> 
         "arrive_time": format_seconds(arrive_s),
         "shift_start": format_seconds(shift_start_s),
         "route_minutes": round(route_seconds / 60),
-        "direct_minutes": round(_drive_seconds(direct_distance, 0) / 60),
+        "direct_minutes": round(direct_seconds / 60),
         "detour_minutes": round(detour_seconds / 60),
         "route_km": round(route_distance / 1000, 1),
+        "direct_km": round(direct_distance / 1000, 1),
         "route": [list(point) for point in points],
+        # Filled in by _attach_geometry once every pool is known, so the road
+        # polylines can be fetched concurrently rather than one at a time.
+        "route_geometry": None,
     }

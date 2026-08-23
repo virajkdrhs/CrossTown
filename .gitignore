@@ -37,3 +37,6 @@ Thumbs.db
 
 # Processed matrix (regenerate with Backend/routing_engine.py)
 Data/Processed/travel_time_matrix.csv
+
+# OSRM routing cache (regenerated on demand)
+Data/Cache/

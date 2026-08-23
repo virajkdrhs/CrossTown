@@ -251,6 +251,7 @@ function exportCSV() {
         depart: pool.depart_time,
         arrive: pool.arrive_time,
         detour: pool.detour_minutes,
+        direct_km: pool.direct_km,
         route_km: pool.route_km,
         shift: pool.shift_start,
         rider: rider.employee_ref,
@@ -262,7 +263,7 @@ function exportCSV() {
   });
   lastPlan.unmatched.forEach((person) => {
     rows.push({
-      driver: "", driver_zone: "", depart: "", arrive: "", detour: "", route_km: "",
+      driver: "", driver_zone: "", depart: "", arrive: "", detour: "", direct_km: "", route_km: "",
       shift: person.shift_start, rider: person.employee_ref,
       rider_zone: person.origin_zone_id, order: "", pickup: "UNMATCHED",
     });
@@ -274,6 +275,7 @@ function exportCSV() {
     { label: "depart_time", get: (r) => r.depart },
     { label: "arrive_time", get: (r) => r.arrive },
     { label: "detour_minutes", get: (r) => r.detour },
+    { label: "direct_km", get: (r) => r.direct_km },
     { label: "route_km", get: (r) => r.route_km },
     { label: "rider", get: (r) => r.rider },
     { label: "rider_zone", get: (r) => r.rider_zone },
@@ -305,6 +307,14 @@ function render(data) {
     tile("Still stranded", `${summary.riders_unmatched}`, "no feasible driver"),
   ].join("");
 
+  const routing = summary.routed_on_real_roads
+    ? `<p class="text-[10px] mb-3 flex items-center gap-1.5" style="color:var(--ct-text-dim)">
+         <span style="color:var(--ct-ok)">●</span> Routed on real roads — detours account for bridges and one-way streets.
+       </p>`
+    : `<p class="text-[10px] mb-3 flex items-center gap-1.5" style="color:var(--ct-warn)">
+         <span>●</span> ${escapeHTML(summary.distance_note || "Straight-line estimate.")}
+       </p>`;
+
   const pools = data.pools
     .map((pool, index) => {
       const color = POOL_COLORS[index % POOL_COLORS.length];
@@ -332,8 +342,9 @@ function render(data) {
           } min</span>
         </div>
         <p class="text-[10px] text-gray-500 mb-1.5">
-          Leaves ${pool.depart_time} · arrives ${pool.arrive_time} · ${pool.route_km} km ·
-          shift ${pool.shift_start}
+          Leaves ${pool.depart_time} · arrives ${pool.arrive_time} · shift ${pool.shift_start}<br>
+          Alone ${pool.direct_km ?? "?"} km / ${pool.direct_minutes} min →
+          <span style="color:var(--ct-text-muted)">with pickups ${pool.route_km} km / ${pool.route_minutes} min</span>
         </p>
         <ul class="space-y-1 text-[11px]">${riders}</ul>
       </div>`;
@@ -362,8 +373,9 @@ function render(data) {
 
   panel.innerHTML = `
     ${headline}
-    <div class="grid grid-cols-2 gap-2 mb-3">${tiles}</div>
-    <p class="text-[11px] uppercase font-bold tracking-wider text-gray-500 mb-1.5">Proposed carpools</p>
+    <div class="grid grid-cols-2 gap-2 mb-2">${tiles}</div>
+    ${routing}
+    <p class="text-[11px] uppercase font-bold tracking-wider mb-1.5" style="color:var(--ct-text-dim)">Proposed carpools</p>
     ${pools || '<p class="text-[11px] text-gray-500 mb-2">No carpools could be formed.</p>'}
     ${unmatched}
     <button id="carpool-export" class="w-full text-xs font-semibold py-2 rounded-lg transition mb-2"
@@ -385,13 +397,19 @@ function draw(data) {
 
   data.pools.forEach((pool, index) => {
     const color = POOL_COLORS[index % POOL_COLORS.length];
-    if (pool.route && pool.route.length >= 2) {
+    // Prefer the real road polyline; fall back to straight lines between stops
+    // when routing was unavailable.
+    const line = pool.route_geometry && pool.route_geometry.length >= 2
+      ? pool.route_geometry
+      : pool.route;
+    if (line && line.length >= 2) {
       routeFeatures.push({
         type: "Feature",
-        geometry: { type: "LineString", coordinates: pool.route },
+        geometry: { type: "LineString", coordinates: line },
         properties: { color, driver: pool.driver.employee_ref },
       });
-      pool.route.forEach((point) => points.push(point));
+      // Fit to the stops, not every vertex of the road geometry.
+      (pool.route || []).forEach((point) => points.push(point));
     }
     pointFeatures.push({
       type: "Feature",

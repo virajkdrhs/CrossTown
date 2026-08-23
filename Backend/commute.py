@@ -21,7 +21,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date
 
-from . import microtransit
+from . import microtransit, roadnetwork
 from .gtfs import Feed, format_seconds, haversine_m
 from .transit_router import (
     DEFAULT_MAX_WALK_M,
@@ -65,17 +65,26 @@ class Verdict:
             self.reasons.append(message)
 
 
-def driving_cost(origin: tuple[float, float], destination: tuple[float, float]) -> dict:
+def driving_cost(
+    origin: tuple[float, float], destination: tuple[float, float], drive: dict | None = None
+) -> dict:
     """What the same commute costs by car, against a fare-free bus.
 
     The affordability gap is the whole argument: for a household without a car,
     the barrier is not the bus fare - there isn't one - it is the $10,000-a-year
-    cost of owning the car the bus cannot replace.
+    cost of owning the car the bus cannot replace. Mileage is road distance where
+    routing is available, since a straight line under-counts every river crossing.
     """
-    one_way_m = haversine_m(origin[0], origin[1], destination[0], destination[1]) * 1.25
+    if drive and drive.get("distance_m"):
+        one_way_m = drive["distance_m"]
+        basis = drive.get("provider", "haversine")
+    else:
+        one_way_m = haversine_m(origin[0], origin[1], destination[0], destination[1]) * 1.25
+        basis = "haversine"
     round_trip_miles = 2 * one_way_m / METRES_PER_MILE
     per_day = round_trip_miles * COST_PER_MILE_USD
     return {
+        "distance_provider": basis,
         "transit_fare_usd": TRANSIT_FARE_USD,
         "transit_note": "GRTC charges no fare on buses, the Pulse or LINK.",
         "drive_round_trip_miles": round(round_trip_miles, 1),
@@ -86,7 +95,12 @@ def driving_cost(origin: tuple[float, float], destination: tuple[float, float]) 
     }
 
 
-def drive_estimate_minutes(origin: tuple[float, float], destination: tuple[float, float]) -> int:
+def drive_estimate_minutes(
+    origin: tuple[float, float], destination: tuple[float, float], drive: dict | None = None
+) -> int:
+    """Driving time, from real road routing when available."""
+    if drive and drive.get("duration_s"):
+        return max(5, round((drive["duration_s"] + DRIVE_OVERHEAD_S) / 60))
     distance = haversine_m(origin[0], origin[1], destination[0], destination[1])
     return max(5, round((distance * 1.25 / DRIVE_SPEED_MPS + DRIVE_OVERHEAD_S) / 60))
 
@@ -255,8 +269,14 @@ def evaluate(
     origin_name: str = "Home",
     destination_name: str = "Workplace",
     scan: BackwardScan | None = None,
+    road_matrix=None,
 ) -> dict:
-    """Full commute assessment in both directions, with a verdict."""
+    """Full commute assessment in both directions, with a verdict.
+
+    ``road_matrix`` lets a caller evaluating many people against one worksite
+    share a single routing call. Without it every employee would trigger their
+    own request, which turned a roster analysis into a minute of network waiting.
+    """
     outbound = plan_arrive_by(
         feed,
         origin,
@@ -318,7 +338,17 @@ def evaluate(
             + ". The planner cannot verify the combined LINK-plus-bus timing, so check it in the app.",
         )
 
-    drive_minutes = drive_estimate_minutes(origin, destination)
+    # One cached road-routing call gives both the drive time and the mileage the
+    # cost comparison is built on - or a lookup, when the caller shares a matrix.
+    if road_matrix is not None:
+        drive = {
+            "distance_m": road_matrix.distance(origin, destination),
+            "duration_s": road_matrix.duration(origin, destination),
+            "provider": road_matrix.provider,
+        }
+    else:
+        drive = roadnetwork.drive_estimate(origin, destination)
+    drive_minutes = drive_estimate_minutes(origin, destination, drive)
     transit_minutes = round(outbound.duration_s / 60) if outbound else None
 
     return {
@@ -345,8 +375,10 @@ def evaluate(
             "straight_line_km": round(
                 haversine_m(origin[0], origin[1], destination[0], destination[1]) / 1000, 1
             ),
+            "road_km": round(drive["distance_m"] / 1000, 1) if drive.get("distance_m") else None,
+            "distance_provider": drive.get("provider", "haversine"),
         },
-        "cost": driving_cost(origin, destination),
+        "cost": driving_cost(origin, destination, drive),
         # Somebody LINK can carry door to door already has a ride.
         "carpool_recommended": verdict.status in ("gap", "no_service"),
     }
