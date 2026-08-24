@@ -6,6 +6,9 @@ ENV/
 # Large Spatial Datasets & Raw Downloads
 *.pbf
 *.zip
+# ...except the GRTC feed and the routing cache, which the deployed API needs
+# in its bundle. Both are small and regenerable (Backend/fetch_gtfs.py).
+!Data/Raw/gtfs.zip
 *.shp
 *.dbf
 *.shx
@@ -38,5 +41,3 @@ Thumbs.db
 # Processed matrix (regenerate with Backend/routing_engine.py)
 Data/Processed/travel_time_matrix.csv
 
-# OSRM routing cache (regenerated on demand)
-Data/Cache/

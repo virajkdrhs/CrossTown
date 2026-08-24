@@ -1,0 +1,301 @@
+{
+ "_note": "Pre-geocoded Richmond-region places so a deployed instance does not depend on Nominatim, which blocks most cloud IPs.",
+ "_source": "OpenStreetMap / Nominatim",
+ "places": {
+  "varina": {
+   "lat": 37.44434,
+   "lon": -77.351485,
+   "label": "Varina, Henrico County, Virginia, 23231, United States"
+  },
+  "sandston": {
+   "lat": 37.510722,
+   "lon": -77.311556,
+   "label": "Sandston, Henrico County, Virginia, United States"
+  },
+  "highland springs": {
+   "lat": 37.552752,
+   "lon": -77.325036,
+   "label": "Highland Springs, Henrico County, Virginia, 23075, United States"
+  },
+  "glen allen": {
+   "lat": 37.664879,
+   "lon": -77.487124,
+   "label": "Glen Allen, Henrico County, Virginia, United States"
+  },
+  "short pump": {
+   "lat": 37.659607,
+   "lon": -77.623866,
+   "label": "Short Pump, Henrico County, Virginia, 23233, United States"
+  },
+  "tuckahoe": {
+   "lat": 37.590146,
+   "lon": -77.556376,
+   "label": "Tuckahoe, Henrico County, Virginia, 23229, United States"
+  },
+  "lakeside": {
+   "lat": 37.611885,
+   "lon": -77.475315,
+   "label": "Lakeside, Henrico County, Virginia, 23228, United States"
+  },
+  "innsbrook": {
+   "lat": 37.654477,
+   "lon": -77.581665,
+   "label": "Innsbrook, Henrico County, Virginia, United States"
+  },
+  "laurel": {
+   "lat": 37.63946,
+   "lon": -77.505723,
+   "label": "Laurel, Henrico County, Virginia, 23273, United States"
+  },
+  "dumbarton": {
+   "lat": 37.61089,
+   "lon": -77.506358,
+   "label": "Dumbarton, Henrico County, Virginia, United States"
+  },
+  "montrose": {
+   "lat": 37.524364,
+   "lon": -77.373429,
+   "label": "Montrose, Henrico County, Virginia, United States"
+  },
+  "elko": {
+   "lat": 37.472924,
+   "lon": -77.211364,
+   "label": "Elko, Henrico County, Virginia, 23141, United States"
+  },
+  "wyndham": {
+   "lat": 37.691752,
+   "lon": -77.612894,
+   "label": "Wyndham, Henrico County, Virginia, United States"
+  },
+  "henrico": {
+   "lat": 37.513119,
+   "lon": -77.346508,
+   "label": "Henrico County, Virginia, United States"
+  },
+  "regency": {
+   "lat": 37.601567,
+   "lon": -77.566517,
+   "label": "Regency, Tuckahoe, Henrico County, Virginia, 23229, United States"
+  },
+  "three chopt": {
+   "lat": 37.590139,
+   "lon": -77.532574,
+   "label": "Virginia ABC, 7015, Three Chopt Road, Westhampton Heights, West End, Richmond, Virginia, 23226, United States"
+  },
+  "fairfield": {
+   "lat": 37.549088,
+   "lon": -77.358343,
+   "label": "Fairfield Shoppers World, Highland Springs, Henrico County, Virginia, United States"
+  },
+  "brookland": {
+   "lat": 37.56951,
+   "lon": -77.429155,
+   "label": "Brookland Park Community Garden, Northside, Richmond, Virginia, United States"
+  },
+  "downtown richmond": {
+   "lat": 37.534331,
+   "lon": -77.435528,
+   "label": "Downtown Expressway, Central Office District, Richmond, Virginia, Richmond, Virginia, 23298, United States"
+  },
+  "richmond": {
+   "lat": 37.538509,
+   "lon": -77.43428,
+   "label": "Richmond, Virginia, United States"
+  },
+  "church hill": {
+   "lat": 37.530471,
+   "lon": -77.414418,
+   "label": "Church Hill, East End, Richmond, Virginia, 23298, United States"
+  },
+  "carytown": {
+   "lat": 37.553637,
+   "lon": -77.48195,
+   "label": "Carytown, Richmond, Virginia, 23221, United States"
+  },
+  "scott's addition": {
+   "lat": 37.569591,
+   "lon": -77.471222,
+   "label": "Scott's Addition, Richmond, Virginia, United States"
+  },
+  "manchester richmond": {
+   "lat": 37.52098,
+   "lon": -77.44415,
+   "label": "Manchester, Richmond, Virginia, 23298, United States"
+  },
+  "the fan richmond": {
+   "lat": 37.552109,
+   "lon": -77.464895,
+   "label": "The Fan, Richmond, Virginia, 23220, United States"
+  },
+  "shockoe bottom": {
+   "lat": 37.531485,
+   "lon": -77.425133,
+   "label": "Shockoe Bottom, Church Hill, Richmond, Virginia, 23298, United States"
+  },
+  "northside richmond": {
+   "lat": 37.571811,
+   "lon": -77.438529,
+   "label": "Northside, Richmond, Virginia, 23232, United States"
+  },
+  "east end richmond": {
+   "lat": 37.526902,
+   "lon": -77.400885,
+   "label": "East End, Richmond, Virginia, 23223, United States"
+  },
+  "southside richmond": {
+   "lat": 37.494678,
+   "lon": -77.471895,
+   "label": "Southside, Richmond, Virginia, 23224, United States"
+  },
+  "broad rock": {
+   "lat": 37.470426,
+   "lon": -77.483041,
+   "label": "Broad Rock, Richmond, Virginia, 23234, United States"
+  },
+  "mechanicsville": {
+   "lat": 37.627722,
+   "lon": -77.353818,
+   "label": "Mechanicsville, Atlee, Hanover County, Virginia, United States"
+  },
+  "ashland": {
+   "lat": 37.759401,
+   "lon": -77.48066,
+   "label": "Ashland, Hanover County, Virginia, 23005, United States"
+  },
+  "chesterfield": {
+   "lat": 37.385998,
+   "lon": -77.578509,
+   "label": "Chesterfield County, Virginia, United States"
+  },
+  "midlothian": {
+   "lat": 37.486806,
+   "lon": -77.647319,
+   "label": "Midlothian, Chesterfield County, Virginia, 23114, United States"
+  },
+  "bon air": {
+   "lat": 37.519124,
+   "lon": -77.575134,
+   "label": "Bon Air, Chesterfield County, Virginia, 23235, United States"
+  },
+  "bensley": {
+   "lat": 37.446781,
+   "lon": -77.436351,
+   "label": "Bensley, Chesterfield County, Virginia, United States"
+  },
+  "chamberlayne": {
+   "lat": 37.628276,
+   "lon": -77.429535,
+   "label": "Chamberlayne, Henrico County, Virginia, United States"
+  },
+  "atlee": {
+   "lat": 37.650968,
+   "lon": -77.399413,
+   "label": "Atlee, Hanover County, Virginia, 23116, United States"
+  },
+  "rockwood": {
+   "lat": 37.465192,
+   "lon": -77.568078,
+   "label": "Rockwood, Chesterfield County, Virginia, United States"
+  },
+  "powhatan": {
+   "lat": 37.521261,
+   "lon": -77.801259,
+   "label": "Powhatan High School, 1800, Judes Ferry Road, Chestnut Oaks, Powhatan County, Virginia, 23139, United States"
+  },
+  "richmond international airport": {
+   "lat": 37.506967,
+   "lon": -77.321484,
+   "label": "Richmond International Airport, 1, Richard E Byrd Terminal Drive, Richmond, Henrico County, Virginia, 23250, United States"
+  },
+  "vcu medical center": {
+   "lat": 37.540258,
+   "lon": -77.430063,
+   "label": "VCU Medical Center, 1250, East Marshall Street, Richmond, Virginia, 23219, United States"
+  },
+  "willow lawn": {
+   "lat": 37.582168,
+   "lon": -77.499291,
+   "label": "Willow Lawn, Henrico County, Virginia, 23230, United States"
+  },
+  "regency square richmond": {
+   "lat": 37.600732,
+   "lon": -77.566919,
+   "label": "The Goddard School of Richmond, Nova Way, Regency Square, Quioccasin, Regency, Tuckahoe, Henrico County, Virginia, 23229, United States"
+  },
+  "chippenham mall": {
+   "lat": 37.480785,
+   "lon": -77.511462,
+   "label": "Chippenham Mall Parking Lot, Elkhardt Road, Richmond, Virginia, 23225, United States"
+  },
+  "short pump town center": {
+   "lat": 37.656137,
+   "lon": -77.619876,
+   "label": "Short Pump Town Center, 11800, West Broad Street, Wellesley, Richmond, Henrico County, Virginia, 23233, United States"
+  },
+  "white oak village": {
+   "lat": 37.527859,
+   "lon": -77.352881,
+   "label": "White Oak Village, Highland Springs, Henrico County, Virginia, United States"
+  },
+  "henrico doctors hospital": {
+   "lat": 37.603302,
+   "lon": -77.541481,
+   "label": "Henrico Doctors' Hospital, 1602, Skipwith Road, Ridge, Richmond, Henrico County, Virginia, 23229, United States"
+  },
+  "randolph-macon college": {
+   "lat": 37.76251,
+   "lon": -77.479542,
+   "label": "Randolph Macon College, 114, Henry Clay Road, Ashland, Hanover County, Virginia, 23005, United States"
+  },
+  "university of richmond": {
+   "lat": 37.57588,
+   "lon": -77.541284,
+   "label": "University of Richmond, 28, Westhampton Way, Richmond, Virginia, 23173, United States"
+  },
+  "virginia union university": {
+   "lat": 37.56176,
+   "lon": -77.45106,
+   "label": "Virginia Union University, Roberts Street, Northside, Richmond, Virginia, 23220, United States"
+  },
+  "main street station richmond": {
+   "lat": 37.535057,
+   "lon": -77.428711,
+   "label": "Main Street Station, 1520, East Main Street, Shockoe Slip, Richmond, Virginia, 23219, United States"
+  },
+  "science museum of virginia": {
+   "lat": 37.561121,
+   "lon": -77.46582,
+   "label": "Science Museum of Virginia, 2500, West Broad Street, Richmond, Virginia, 23220, United States"
+  },
+  "henrico county government center": {
+   "lat": 37.628405,
+   "lon": -77.518275,
+   "label": "Henrico County Government Center, 4301, East Parham Road, Henrico, Laurel, Henrico County, Virginia, 23228, United States"
+  },
+  "azalea avenue": {
+   "lat": 37.602355,
+   "lon": -77.445039,
+   "label": "Azalea Avenue, Brook Hill, Henrico County, Virginia, 23227, United States"
+  },
+  "parham road": {
+   "lat": 37.571862,
+   "lon": -77.575196,
+   "label": "Parham Road, Tuckahoe, Henrico County, Virginia, 23229, United States"
+  },
+  "broad street richmond": {
+   "lat": 37.561547,
+   "lon": -77.466077,
+   "label": "Broad Street Station, 2500, West Broad Street, Richmond, Virginia, 23220, United States"
+  },
+  "nine mile road": {
+   "lat": 37.544105,
+   "lon": -77.393349,
+   "label": "Nine Mile Road, Henrico County, Virginia, 23223, United States"
+  },
+  "laburnum avenue": {
+   "lat": 37.584248,
+   "lon": -77.45711,
+   "label": "West Laburnum Avenue, Ginter Park, Northside, Richmond, Virginia, 23232, United States"
+  }
+ }
+}

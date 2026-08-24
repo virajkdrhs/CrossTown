@@ -17,7 +17,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from . import api_transit, config, datasource, scoring
+from . import api_transit, config, datasource, gazetteer, scoring
 
 app = FastAPI(
     title="CrossTown API",
@@ -327,6 +327,10 @@ def _geocode(address: str):
     """Geocode an address, cached so repeat lookups skip the network call."""
     from geopy.exc import GeocoderServiceError, GeocoderTimedOut  # noqa: PLC0415
     from geopy.geocoders import Nominatim  # noqa: PLC0415
+
+    known = gazetteer.lookup(address)
+    if known is not None:
+        return known
 
     geolocator = Nominatim(user_agent="crosstown-henrico-accessibility/1.1", timeout=10)
     query = address if "henrico" in address.lower() else f"{address}, Virginia"

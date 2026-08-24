@@ -19,7 +19,7 @@ from functools import lru_cache
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, model_validator
 
-from . import carpool, commute, config, gtfs, microtransit, roadnetwork, transit_router
+from . import carpool, commute, config, gazetteer, gtfs, microtransit, roadnetwork, transit_router
 
 router = APIRouter(prefix="/api/v2", tags=["transit"])
 
@@ -142,6 +142,12 @@ def _geocode_cached(address: str):
     Richmond - "Downtown Richmond", say - became unresolvable, even though GRTC
     serves it and the rest of the app handles it fine.
     """
+    # Shipped gazetteer first: instant, and it works where Nominatim is blocked
+    # (most cloud hosts), which is exactly where this runs when deployed.
+    known = gazetteer.lookup(address)
+    if known is not None:
+        return known
+
     from geopy.exc import GeocoderServiceError, GeocoderTimedOut
     from geopy.geocoders import Nominatim
 

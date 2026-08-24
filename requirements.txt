@@ -1,15 +1,17 @@
-# --- API (all that is needed to run the app against the processed files) ---
+# --- Runtime: everything the API needs to serve the app -----------------------
 fastapi>=0.110
-uvicorn[standard]>=0.27
 geopy>=2.4
 python-dotenv>=1.0
 
-# --- Optional: PostGIS backend for the API and load_to_postgis.py ---
+# Local development only (Vercel provides its own ASGI server)
+uvicorn[standard]>=0.27
+
+# --- Optional: PostGIS backend for the API and load_to_postgis.py -------------
 # geopandas>=0.14
 # SQLAlchemy>=2.0
 # psycopg2-binary>=2.9
 
-# --- Optional: data pipeline (routing_engine / calculate_scores / process_census) ---
+# --- Optional: data pipeline (routing_engine / calculate_scores / process_census)
 # pandas>=2.0
 # geopandas>=0.14
 # r5py>=0.1

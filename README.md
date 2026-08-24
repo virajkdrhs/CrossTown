@@ -88,6 +88,37 @@ also works and serves on port 5500, which is already in the API's CORS allow-lis
 
 ---
 
+## Deploying (Vercel)
+
+The repository is configured for a one-click deploy — static frontend plus the
+API as a Python serverless function, on one origin.
+
+1. At [vercel.com/new](https://vercel.com/new), import `virajkdrhs/CrossTown`.
+2. Leave every build setting at its default; `vercel.json` supplies the routing.
+3. Deploy.
+
+`vercel.json` sends `/api/*`, `/docs` and `/openapi.json` to the function and
+everything else to `Frontend/`. The frontend resolves its API base at runtime by
+probing, so the same build works deployed *and* against a local uvicorn.
+
+Three things are committed specifically so the deployed instance does not depend
+on anything it cannot reach:
+
+- **`Data/Raw/gtfs.zip`** — the GRTC feed, so the router has data. Normally
+  gitignored; the `.gitignore` carries an explicit exception.
+- **`Data/Cache/osrm/`** — pre-warmed road routing, so carpool plans render
+  instantly and survive OSRM being rate-limited.
+- **`Data/Raw/gazetteer.json`** — 59 pre-geocoded Richmond-region places.
+  **Nominatim blocks most cloud-provider IPs**, so without this the address box
+  would fail on every deployed request. Live geocoding is still attempted for
+  anything not in the list, so arbitrary street addresses work wherever
+  Nominatim is reachable.
+
+Cold start is about 0.9 s (parsing 164,293 connections); warm requests are
+1–3 s for a full roster analysis.
+
+---
+
 ## Optional: PostGIS backend
 
 ```sql
