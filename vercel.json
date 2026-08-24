@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "builds": [
     {
       "src": "api/index.py",
@@ -9,13 +10,31 @@
         "includeFiles": "Data/**"
       }
     },
-    { "src": "Frontend/**", "use": "@vercel/static" }
+    {
+      "src": "Frontend/**",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index.py" },
-    { "src": "/docs", "dest": "/api/index.py" },
-    { "src": "/openapi.json", "dest": "/api/index.py" },
-    { "src": "/", "dest": "/Frontend/index.html" },
-    { "src": "/(.*)", "dest": "/Frontend/$1" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/docs",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/openapi.json",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/",
+      "dest": "/Frontend/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/Frontend/$1"
+    }
   ]
 }
