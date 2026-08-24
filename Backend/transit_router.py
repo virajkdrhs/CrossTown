@@ -208,11 +208,20 @@ def scan_backward(
         if same_stop > arrive_ok.get(dep_stop, NEG_INF):
             arrive_ok[dep_stop] = same_stop
         for neighbour, walk_time in feed.footpaths.get(dep_stop, ()):
+            # Arriving at `neighbour` by bus and walking across to catch this
+            # connection is a legitimate transfer, so `arrive_ok` may improve.
+            #
+            # `latest_dep` deliberately does NOT: it is the set of stops a
+            # traveller can start from, and writing to it here let the access walk
+            # chain - origin -> walk -> stop A -> walk -> stop B -> board. That
+            # quietly exceeds max_walk_m (one case walked 1,015 m against an
+            # 800 m limit) and promised a departure the forward search could not
+            # reproduce, so plan_arrive_by returned journeys arriving after the
+            # deadline it was given. Stops genuinely within walking range of the
+            # origin are already seeded by `stops_near`, so nothing real is lost.
             on_foot = connection.dep_time - walk_time
             if on_foot > arrive_ok.get(neighbour, NEG_INF):
                 arrive_ok[neighbour] = on_foot
-            if on_foot > latest_dep.get(neighbour, NEG_INF):
-                latest_dep[neighbour] = on_foot
 
     return BackwardScan(
         latest_dep=latest_dep,
@@ -501,7 +510,8 @@ def plan_arrive_by(
     )
     if latest_departure == NEG_INF:
         return None
-    return scan_forward(
+
+    journey = scan_forward(
         feed,
         origin,
         destination,
@@ -511,6 +521,21 @@ def plan_arrive_by(
         origin_name,
         destination_name,
     )
+
+    # The contract of this function is "arrive by arrive_by_s". If the forward
+    # search cannot meet it from the departure the backward scan derived, step
+    # back and try again rather than handing back a journey that misses the
+    # deadline. Bounded, and normally never entered.
+    attempts = 0
+    while journey is not None and journey.arrive_s > arrive_by_s and attempts < 6:
+        attempts += 1
+        earlier = int(latest_departure) - attempts * 300
+        journey = scan_forward(
+            feed, origin, destination, earlier, day, max_walk_m, origin_name, destination_name
+        )
+    if journey is not None and journey.arrive_s > arrive_by_s:
+        return None
+    return journey
 
 
 def plan_depart_after(

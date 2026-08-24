@@ -149,6 +149,58 @@ class TestRouter(unittest.TestCase):
         self.assertIsNotNone(journey)
         self.assertGreaterEqual(journey.depart_s, latest - 1)
 
+    def test_never_returns_a_journey_that_misses_the_deadline(self):
+        """plan_arrive_by promises "arrive by X". It must never break that.
+
+        Regression: the backward scan let the access walk chain (origin -> walk ->
+        stop A -> walk -> stop B -> board), which both exceeded max_walk_m and
+        promised a departure the forward search could not reproduce. Roughly 5% of
+        routable trips then came back arriving after the requested deadline.
+        """
+        import random  # noqa: PLC0415
+
+        rng = random.Random(4242)
+        stops = list(self.feed.stops.values())
+        days = [date(2026, 8, 5), date(2026, 8, 8), date(2026, 8, 9)]
+        checked = 0
+        for _ in range(120):
+            a, b = rng.choice(stops), rng.choice(stops)
+            if a.id == b.id:
+                continue
+            day = rng.choice(days)
+            deadline = rng.randint(6, 20) * 3600
+            journey = transit_router.plan_arrive_by(
+                self.feed, (a.lon, a.lat), (b.lon, b.lat), deadline, day
+            )
+            if journey is None:
+                continue
+            checked += 1
+            self.assertLessEqual(
+                journey.arrive_s,
+                deadline,
+                f"{a.name} -> {b.name} on {day} arrives "
+                f"{journey.arrive_s - deadline}s after the deadline",
+            )
+        self.assertGreater(checked, 50, "too few routable trips to be a meaningful check")
+
+    def test_access_walk_does_not_chain_between_stops(self):
+        """The first walk must be origin -> one stop, not a hop across several."""
+        scan = transit_router.scan_backward(
+            self.feed, DOWNTOWN[0], DOWNTOWN[1], 12 * 3600, date(2026, 8, 9)
+        )
+        # Every stop the scan offers as a starting point must be one a traveller
+        # could actually board at, reached by a single walk from their origin.
+        origin = (-77.4700, 37.5550)
+        max_walk = 800.0
+        reachable = {stop.id for stop, _ in self.feed.stops_near(*origin, max_walk)}
+        latest, best_stop = scan.latest_departure_from(self.feed, origin[0], origin[1], max_walk)
+        if best_stop is not None:
+            self.assertIn(
+                best_stop,
+                reachable,
+                "backward scan offered a boarding stop outside the walk radius",
+            )
+
     def test_sunday_service_differs_from_weekday(self):
         weekday = transit_router.plan_arrive_by(
             self.feed, HIGHLAND_SPRINGS, DOWNTOWN, 9 * 3600, WEEKDAY
