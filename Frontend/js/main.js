@@ -101,16 +101,21 @@ function showView(name) {
 
 /* ------------------------------------------------------------------ sidebar */
 
-function setSidebar(collapsed) {
+function setSidebar(collapsed, { remember = true } = {}) {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.toggle("ct-collapsed", collapsed);
   const button = document.getElementById("toggle-sidebar");
   button.textContent = collapsed ? "Show panel" : "Hide panel";
   button.setAttribute("aria-expanded", collapsed ? "false" : "true");
-  try {
-    localStorage.setItem(SIDEBAR_KEY, collapsed ? "1" : "0");
-  } catch (_) {
-    /* private browsing */
+  // Only a deliberate toggle is a preference. Collapsing automatically because
+  // the window is narrow used to be stored the same way, so opening the app once
+  // on a phone left the panel hidden on every later visit from a laptop.
+  if (remember) {
+    try {
+      localStorage.setItem(SIDEBAR_KEY, collapsed ? "1" : "0");
+    } catch (_) {
+      /* private browsing */
+    }
   }
   map.resize();
 }
@@ -219,7 +224,10 @@ async function start() {
   } catch (_) {
     collapsed = false;
   }
-  setSidebar(window.innerWidth <= 640 ? true : collapsed);
+  // A narrow window starts collapsed, but that is a layout decision, not a
+  // choice the visitor made — so it is not remembered.
+  if (window.innerWidth <= 640) setSidebar(true, { remember: false });
+  else setSidebar(collapsed);
 
   showView("access");
   started = true;
