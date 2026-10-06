@@ -2,22 +2,37 @@
 
 export const HENRICO_CENTER = [-77.48, 37.58];
 
+/** Chosen once at load: the basemap cannot be swapped without losing layers. */
+export const dark =
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+/** Colours that must contrast with the basemap rather than with the panel. */
+export const THEME = dark
+  ? { stroke: "#1c1c1e", halo: "#000000", label: "#f5f5f7", ink: "#1c1c1e" }
+  : { stroke: "#ffffff", halo: "#ffffff", label: "#1d1d1f", ink: "#ffffff" };
+
 export const map = new maplibregl.Map({
   container: "map",
-  style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+  style: dark
+    ? "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+    : "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
   center: HENRICO_CENTER,
   zoom: 10.5,
+  attributionControl: false,
 });
 
-map.addControl(new maplibregl.NavigationControl(), "top-right");
+map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }), "top-right");
+map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
 map.addControl(new maplibregl.ScaleControl({ unit: "imperial" }), "bottom-right");
 
-// Tailwind's CDN build injects its stylesheet asynchronously, so MapLibre often
-// measures the container before the flex layout has settled and the canvas ends
-// up a fraction of the viewport. Watching the container keeps them in sync,
-// including when the sidebar is toggled.
+// MapLibre can measure the container before the layout settles, leaving the
+// canvas a fraction of the viewport. Watching the container keeps them in sync.
 if (typeof ResizeObserver !== "undefined") {
-  new ResizeObserver(() => map.resize()).observe(document.getElementById("map"));
+  new ResizeObserver(() => {
+    map.resize();
+    syncPadding(false);
+  }).observe(document.getElementById("map"));
 } else {
   window.addEventListener("resize", () => map.resize());
 }
@@ -28,8 +43,7 @@ if (typeof ResizeObserver !== "undefined") {
  * tiles as well as its stylesheet, so a slow, rate-limited or blocked tile CDN
  * left every view uninitialised — with no console error, because the promise
  * simply never settled. Adding sources and layers only requires the style to be
- * parsed, which is what `style.load` signals. The county data then renders over
- * whatever the basemap manages to fetch.
+ * parsed, which is what `style.load` signals.
  */
 export const ready = new Promise((resolve, reject) => {
   if (map.style && map.style._loaded) {
@@ -54,6 +68,30 @@ export const ready = new Promise((resolve, reject) => {
 if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
   window.__crosstown = { map, ready };
 }
+
+/* ------------------------------------------------------------------ padding */
+
+/** The panel floats over the map, so camera moves must frame the visible part.
+ *
+ * Setting the map's own padding shifts the centre for every fitBounds/easeTo,
+ * which keeps each view's fitting code ignorant of the panel.
+ */
+export function syncPadding(animate = true) {
+  const panel = document.getElementById("sidebar");
+  const container = map.getContainer();
+  const padding = { top: 0, right: 0, bottom: 0, left: 0 };
+  if (panel && !panel.classList.contains("ct-collapsed")) {
+    const panelBox = panel.getBoundingClientRect();
+    const mapBox = container.getBoundingClientRect();
+    const narrow = panelBox.width > mapBox.width * 0.8;
+    if (narrow) padding.bottom = Math.max(0, mapBox.bottom - panelBox.top);
+    else padding.left = Math.max(0, panelBox.right - mapBox.left);
+  }
+  if (animate) map.easeTo({ padding, duration: 450 });
+  else map.setPadding(padding);
+}
+
+/* ------------------------------------------------------------------- helpers */
 
 /** Replace a GeoJSON source's data, creating the source and layers on first use. */
 export function setGeoJSON(sourceId, data, layerFactory) {
@@ -89,14 +127,22 @@ export function fitToPoints(points, options = {}) {
   }
   const bounds = new maplibregl.LngLatBounds();
   usable.forEach((point) => bounds.extend(point));
+  // The legend cards float in the bottom-right corner; keep fitted points
+  // clear of them as well as of the panel (handled by the map's own padding).
+  const base = options.padding ?? 60;
+  const legend = document.getElementById("legend-host");
+  const legendWidth =
+    legend && legend.offsetParent !== null ? legend.offsetWidth + 14 : 0;
   map.fitBounds(bounds, {
-    padding: options.padding ?? 70,
-    duration: options.duration ?? 600,
+    padding: { top: base, bottom: base, left: base, right: base + legendWidth },
+    duration: options.duration ?? 700,
     // Without a cap a 900 m trip zooms to individual buildings, which loses all
     // sense of where in the county you are.
     maxZoom: options.maxZoom ?? 14.5,
   });
 }
+
+/* ------------------------------------------------------------------- markers */
 
 const markers = new Map();
 
@@ -104,9 +150,9 @@ const markers = new Map();
 export function setMarker(key, lonLat, options = {}) {
   clearMarker(key);
   if (!lonLat) return null;
-  const marker = new maplibregl.Marker({ color: options.color ?? "#10b981" }).setLngLat(lonLat);
+  const marker = new maplibregl.Marker({ color: options.color ?? "#0071e3" }).setLngLat(lonLat);
   if (options.label) {
-    marker.setPopup(new maplibregl.Popup({ className: "ct-popup", offset: 18 }).setHTML(options.label));
+    marker.setPopup(new maplibregl.Popup({ className: "ct-popup", offset: 30 }).setHTML(options.label));
   }
   marker.addTo(map);
   markers.set(key, marker);
@@ -125,4 +171,18 @@ export function clearMarkersWithPrefix(prefix) {
   [...markers.keys()]
     .filter((key) => key.startsWith(prefix))
     .forEach((key) => clearMarker(key));
+}
+
+/** Hide or reveal a view's markers without discarding them.
+ *
+ * Views used to delete their markers on the way out, yet re-show their route
+ * layers on the way back in — so returning to a view showed a route line with
+ * no home or workplace pin at either end.
+ */
+export function showMarkersWithPrefix(prefix, visible) {
+  markers.forEach((marker, key) => {
+    if (!key.startsWith(prefix)) return;
+    if (!visible && marker.getPopup()?.isOpen()) marker.togglePopup();
+    marker.getElement().style.display = visible ? "" : "none";
+  });
 }

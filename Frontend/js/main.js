@@ -1,13 +1,13 @@
 /** App shell: view switching, keyboard control, API status, shared chrome. */
 
 import { getJSON } from "./api.js";
-import { map, ready, setVisibility } from "./map.js";
+import { ready, setVisibility, syncPadding } from "./map.js";
 import * as access from "./access.js";
 import * as commute from "./commute.js";
 import * as employer from "./employer.js";
 import * as carpoolView from "./carpool.js";
 import * as linkZones from "./linkzones.js";
-import { toast } from "./ui.js";
+import { hydrateIcons } from "./ui.js";
 
 const VIEWS = {
   access: {
@@ -46,22 +46,33 @@ const VIEW_ORDER = ["access", "commute", "employer", "carpool"];
 const SIDEBAR_KEY = "crosstown.sidebar.collapsed";
 
 let currentView = "access";
-let started = false;
+
+hydrateIcons();
 
 function setApiStatus(text, ok) {
   const el = document.getElementById("api-status");
-  el.textContent = text;
-  el.style.color = ok ? "var(--ct-ok)" : "var(--ct-bad)";
-  el.style.borderColor = ok
-    ? "color-mix(in srgb, var(--ct-ok) 45%, transparent)"
-    : "color-mix(in srgb, var(--ct-bad) 45%, transparent)";
+  el.dataset.state = ok ? "ok" : "bad";
+  el.querySelector(".status-text").textContent = text;
+  el.title = text;
+}
+
+function linkToggleChecked() {
+  return document.getElementById("toggle-link-zones")?.checked ?? false;
+}
+
+/** The LINK legend follows the zones themselves, not just the view. */
+function syncLinkLegend() {
+  const mode = VIEWS[currentView].linkZones;
+  const visible = mode === "on" || (mode === "toggle" && linkToggleChecked());
+  linkZones.show(visible);
+  document.getElementById("legend-link")?.classList.toggle("hidden", !visible);
 }
 
 function showView(name) {
   if (!VIEWS[name]) return;
 
-  // Leaving a view takes its markers with it, otherwise a commute pin lingers on
-  // the employer map.
+  // Leaving a view hides its markers, otherwise a commute pin lingers on the
+  // employer map. Each view restores its own when it is shown again.
   if (currentView !== name) {
     const leaving = VIEWS[currentView];
     if (leaving && typeof leaving.module.clear === "function") leaving.module.clear();
@@ -79,20 +90,14 @@ function showView(name) {
 
   document.querySelectorAll(".view-tab").forEach((tab) => {
     const active = tab.dataset.view === name;
-    tab.style.background = active ? "var(--ct-brand)" : "transparent";
-    tab.style.color = active ? "var(--ct-bg)" : "var(--ct-text-muted)";
     tab.setAttribute("aria-selected", active ? "true" : "false");
     tab.tabIndex = active ? 0 : -1;
   });
 
-  document.getElementById("view-subtitle").textContent = VIEWS[name].title;
+  document.title = `CrossTown — ${VIEWS[name].title}`;
+  document.querySelector(".panel-scroll")?.scrollTo({ top: 0 });
 
-  const linkMode = VIEWS[name].linkZones;
-  if (linkMode === "on") linkZones.show(true);
-  else if (linkMode === "off") linkZones.show(false);
-  else linkZones.show(document.getElementById("toggle-link-zones")?.checked ?? false);
-  const linkLegend = document.getElementById("legend-link");
-  if (linkLegend) linkLegend.classList.toggle("hidden", linkMode === "off");
+  syncLinkLegend();
 
   if (name === "access") access.restoreLayerVisibility();
   const view = VIEWS[name].module;
@@ -101,12 +106,13 @@ function showView(name) {
 
 /* ------------------------------------------------------------------ sidebar */
 
-function setSidebar(collapsed, { remember = true } = {}) {
+function setSidebar(collapsed, { remember = true, animate = true } = {}) {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.toggle("ct-collapsed", collapsed);
   const button = document.getElementById("toggle-sidebar");
-  button.textContent = collapsed ? "Show panel" : "Hide panel";
+  button.setAttribute("aria-label", collapsed ? "Show panel" : "Hide panel");
   button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+  button.setAttribute("aria-pressed", collapsed ? "false" : "true");
   // Only a deliberate toggle is a preference. Collapsing automatically because
   // the window is narrow used to be stored the same way, so opening the app once
   // on a phone left the panel hidden on every later visit from a laptop.
@@ -117,16 +123,30 @@ function setSidebar(collapsed, { remember = true } = {}) {
       /* private browsing */
     }
   }
-  map.resize();
+  syncPadding(animate);
+}
+
+function toggleSidebar() {
+  setSidebar(!document.getElementById("sidebar").classList.contains("ct-collapsed"));
 }
 
 /* ------------------------------------------------------------ keyboard help */
 
+let helpReturnFocus = null;
+
 function toggleHelp(force) {
   const dialog = document.getElementById("help-dialog");
   const open = force ?? dialog.classList.contains("hidden");
+  if (open === !dialog.classList.contains("hidden")) return;
   dialog.classList.toggle("hidden", !open);
-  if (open) dialog.querySelector("button").focus();
+  if (open) {
+    helpReturnFocus = document.activeElement;
+    document.getElementById("help-close").focus();
+  } else if (helpReturnFocus && typeof helpReturnFocus.focus === "function") {
+    // Hand focus back to whatever opened the sheet.
+    helpReturnFocus.focus();
+    helpReturnFocus = null;
+  }
 }
 
 function wireKeyboard() {
@@ -150,7 +170,7 @@ function wireKeyboard() {
       toggleHelp();
       event.preventDefault();
     } else if (event.key === "[") {
-      setSidebar(!document.getElementById("sidebar").classList.contains("ct-collapsed"));
+      toggleSidebar();
       event.preventDefault();
     }
   });
@@ -174,11 +194,11 @@ function wireKeyboard() {
 async function start() {
   try {
     const health = await getJSON("/api/v1/health");
-    setApiStatus(`API ok · ${health.data_source}`, true);
+    setApiStatus(`Live · ${health.data_source}`, true);
     const budget = document.getElementById("budget-label");
     if (budget) budget.textContent = health.travel_time_budget_minutes ?? 45;
   } catch (err) {
-    setApiStatus("API offline", false);
+    setApiStatus("Offline", false);
     document.getElementById("offline-banner").classList.remove("hidden");
     return;
   }
@@ -199,16 +219,10 @@ async function start() {
   window.addEventListener("crosstown:show-employer", () => showView("employer"));
   window.addEventListener("crosstown:show-carpool", () => showView("carpool"));
 
-  document.getElementById("toggle-sidebar").addEventListener("click", () => {
-    setSidebar(!document.getElementById("sidebar").classList.contains("ct-collapsed"));
-  });
+  document.getElementById("toggle-sidebar").addEventListener("click", toggleSidebar);
+  document.querySelector(".panel-grabber")?.addEventListener("click", () => setSidebar(true));
 
-  const linkToggle = document.getElementById("toggle-link-zones");
-  if (linkToggle) {
-    linkToggle.addEventListener("change", (event) => {
-      if (VIEWS[currentView].linkZones === "toggle") linkZones.show(event.target.checked);
-    });
-  }
+  document.getElementById("toggle-link-zones")?.addEventListener("change", syncLinkLegend);
 
   document.getElementById("help-btn").addEventListener("click", () => toggleHelp());
   document.getElementById("help-close").addEventListener("click", () => toggleHelp(false));
@@ -224,22 +238,21 @@ async function start() {
   } catch (_) {
     collapsed = false;
   }
-  // A narrow window starts collapsed, but that is a layout decision, not a
-  // choice the visitor made — so it is not remembered.
-  if (window.innerWidth <= 640) setSidebar(true, { remember: false });
-  else setSidebar(collapsed);
+  setSidebar(collapsed, { remember: false, animate: false });
 
   showView("access");
-  started = true;
 }
 
 // Without this, one view failing to initialise leaves the whole shell dead with
 // nothing in the console: the tab listeners above never get attached either.
 start().catch((err) => {
   console.error("CrossTown failed to start:", err);
-  setApiStatus("startup failed", false);
+  setApiStatus("Startup failed", false);
   const banner = document.getElementById("offline-banner");
-  banner.querySelector("p").textContent = "CrossTown failed to start";
-  banner.querySelectorAll("p")[1].textContent = err && err.message ? err.message : String(err);
+  banner.querySelector(".banner-title").textContent = "CrossTown failed to start";
+  banner.querySelector(".banner-body").textContent = err && err.message ? err.message : String(err);
   banner.classList.remove("hidden");
 });
+
+// Keep the map's framing honest when the window crosses the phone breakpoint.
+window.addEventListener("resize", () => syncPadding(false));

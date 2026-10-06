@@ -6,7 +6,7 @@
  */
 
 import { getJSON } from "./api.js";
-import { map, setVisibility, emptyCollection } from "./map.js";
+import { map, dark, THEME, setVisibility, emptyCollection } from "./map.js";
 import { escapeHTML } from "./ui.js";
 
 export const layers = ["link-zones-fill", "link-zones-outline", "link-zones-label"];
@@ -23,8 +23,8 @@ export async function init() {
     source: "link-zones-source",
     layout: { visibility: "none" },
     paint: {
-      "fill-color": ["case", ["get", "runs_today"], "#38bdf8", "#64748b"],
-      "fill-opacity": 0.13,
+      "fill-color": ["case", ["get", "runs_today"], "#32ade6", "#8e8e93"],
+      "fill-opacity": dark ? 0.14 : 0.07,
     },
   });
   map.addLayer({
@@ -33,7 +33,7 @@ export async function init() {
     source: "link-zones-source",
     layout: { visibility: "none" },
     paint: {
-      "line-color": ["case", ["get", "runs_today"], "#38bdf8", "#64748b"],
+      "line-color": ["case", ["get", "runs_today"], "#32ade6", "#8e8e93"],
       "line-width": 1.5,
       "line-dasharray": [3, 2],
       "line-opacity": 0.75,
@@ -51,8 +51,8 @@ export async function init() {
       "text-letter-spacing": 0.08,
     },
     paint: {
-      "text-color": "#7dd3fc",
-      "text-halo-color": "#0b1120",
+      "text-color": dark ? "#64d2ff" : "#0071a4",
+      "text-halo-color": THEME.halo,
       "text-halo-width": 1.5,
     },
   });

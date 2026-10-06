@@ -1,18 +1,23 @@
 /** County access map view: score grid, Census overlay, amenities, statistics. */
 
 import { getJSON, postJSON } from "./api.js";
-import { map, setVisibility, fitToPoints, setMarker, clearMarker } from "./map.js";
-import { escapeHTML, toast, skeleton, emptyState, withBusy, money } from "./ui.js";
+import { map, dark, THEME, setVisibility, fitToPoints, setMarker, showMarkersWithPrefix } from "./map.js";
+import { escapeHTML, toast, skeleton, emptyState, withBusy } from "./ui.js";
 
 const CATEGORY_COLORS = {
-  Food: "#34d399",
-  Health: "#fb7185",
-  Education: "#fbbf24",
-  Civic: "#a78bfa",
+  Food: "#34c759",
+  Health: "#ff3b30",
+  Education: "#ff9500",
+  Civic: "#af52de",
 };
+
+// Apple system red → orange → green, matching the panel's score ring.
+const SCORE_RAMP = ["#ff3b30", "#ff9500", "#34c759"];
+const RING_CIRCUMFERENCE = 257.6;
 
 let hoverPopup = null;
 let gridBounds = [];
+let framed = false;
 
 export async function init() {
   await Promise.all([loadAccessGrid(), loadCensusLayer(), loadDestinations()]);
@@ -21,7 +26,13 @@ export async function init() {
 }
 
 export function focus() {
-  if (gridBounds.length) fitToPoints(gridBounds, { padding: 60, duration: 0 });
+  showMarkersWithPrefix("access-", true);
+  // Frame the county once. Re-framing on every return threw away whatever the
+  // visitor had zoomed into, including a searched address.
+  if (!framed && gridBounds.length) {
+    fitToPoints(gridBounds, { padding: 40, duration: 0 });
+    framed = true;
+  }
 }
 
 async function loadAccessGrid() {
@@ -45,14 +56,14 @@ async function loadAccessGrid() {
         ],
         "circle-color": [
           "interpolate", ["linear"], ["get", "access_score_100"],
-          0, "#ef4444",
-          50, "#f59e0b",
-          100, "#10b981",
+          0, SCORE_RAMP[0],
+          50, SCORE_RAMP[1],
+          100, SCORE_RAMP[2],
         ],
-        "circle-opacity": 0.55,
+        "circle-opacity": dark ? 0.6 : 0.5,
         "circle-stroke-width": 1,
-        "circle-stroke-color": "#0f172a",
-        "circle-stroke-opacity": 0.7,
+        "circle-stroke-color": THEME.stroke,
+        "circle-stroke-opacity": 0.9,
       },
     });
 
@@ -71,7 +82,7 @@ async function loadAccessGrid() {
         ],
         "circle-color": "rgba(0,0,0,0)",
         "circle-stroke-width": 3,
-        "circle-stroke-color": "#ffffff",
+        "circle-stroke-color": "#0071e3",
       },
     });
 
@@ -106,6 +117,9 @@ async function loadCensusLayer() {
     );
     const legendMax = document.getElementById("legend-census-max");
     if (legendMax) legendMax.textContent = `${rampMax}%+`;
+    const ramp = dark ? ["#1c1c1e", "#5e5ce6", "#bf5af2"] : ["#f2f2f7", "#5856d6", "#af52de"];
+    const legendRamp = document.getElementById("legend-census-ramp");
+    if (legendRamp) legendRamp.style.background = `linear-gradient(90deg, ${ramp.join(", ")})`;
 
     map.addSource("census-carfree-source", { type: "geojson", data: censusData });
 
@@ -118,11 +132,11 @@ async function loadCensusLayer() {
         paint: {
           "fill-color": [
             "interpolate", ["linear"], ["get", "pct_carfree"],
-            0, "#1e293b",
-            rampMax / 2, "#6366f1",
-            rampMax, "#a855f7",
+            0, ramp[0],
+            rampMax / 2, ramp[1],
+            rampMax, ramp[2],
           ],
-          "fill-opacity": 0.55,
+          "fill-opacity": dark ? 0.55 : 0.5,
         },
       },
       "access-grid-layer"
@@ -134,7 +148,7 @@ async function loadCensusLayer() {
         type: "line",
         source: "census-carfree-source",
         layout: { visibility: "none" },
-        paint: { "line-color": "#6366f1", "line-width": 0.5, "line-opacity": 0.5 },
+        paint: { "line-color": ramp[1], "line-width": 0.5, "line-opacity": 0.4 },
       },
       "access-grid-layer"
     );
@@ -145,9 +159,10 @@ async function loadCensusLayer() {
       hoverPopup = new maplibregl.Popup({ closeButton: false, className: "ct-popup" })
         .setLngLat(event.lngLat)
         .setHTML(
-          `<strong>Block group ${props.GEOID}</strong><br>` +
-            `${Number(props.pct_carfree).toFixed(1)}% car-free<br>` +
-            `<span class="ct-muted">${props.carfree_units} of ${props.total_units} households</span>`
+          `<strong>${Number(props.pct_carfree).toFixed(1)}% car-free</strong><br>` +
+            `<span class="ct-muted">${escapeHTML(props.carfree_units)} of ${escapeHTML(
+              props.total_units
+            )} households · block group ${escapeHTML(props.GEOID)}</span>`
         )
         .addTo(map);
     });
@@ -182,7 +197,7 @@ async function loadDestinations() {
           "#94a3b8",
         ],
         "circle-stroke-width": 1,
-        "circle-stroke-color": "#0f172a",
+        "circle-stroke-color": THEME.stroke,
       },
     });
 
@@ -190,7 +205,11 @@ async function loadDestinations() {
       const props = event.features[0].properties;
       new maplibregl.Popup({ className: "ct-popup" })
         .setLngLat(event.features[0].geometry.coordinates)
-        .setHTML(`<strong>${props.name}</strong><br><span class="ct-muted">${props.category}</span>`)
+        .setHTML(
+          `<strong>${escapeHTML(props.name)}</strong><br><span class="ct-muted">${escapeHTML(
+            props.category
+          )}</span>`
+        )
         .addTo(map);
     });
     map.on("mouseenter", "destinations-layer", () => {
@@ -206,56 +225,45 @@ async function loadDestinations() {
 
 async function loadStats() {
   const panel = document.getElementById("stats-panel");
-  panel.innerHTML = skeleton(6);
+  panel.innerHTML = skeleton(5);
   try {
     const { summary, equity } = await getJSON("/api/v1/stats");
+    const nodes = summary.nodes;
 
-    const rows = [
-      ["Grid nodes analysed", summary.nodes],
-      ["Median access score", summary.median_score],
-      ["High access nodes", `${summary.bands.high} (${pct(summary.bands.high, summary.nodes)})`],
-      ["Low access nodes", `${summary.bands.low} (${pct(summary.bands.low, summary.nodes)})`],
-      [
-        "No clinic reachable",
-        `${summary.nodes_with_zero_access.health} (${pct(
-          summary.nodes_with_zero_access.health,
-          summary.nodes
-        )})`,
-      ],
-      [
-        "No library reachable",
-        `${summary.nodes_with_zero_access.civic} (${pct(
-          summary.nodes_with_zero_access.civic,
-          summary.nodes
-        )})`,
-      ],
-    ];
-
-    let html = rows.map(([label, value]) => statRow(label, value)).join("");
+    let html = `<div class="tile-grid">
+      ${statTile("Median score", summary.median_score, `across ${nodes} neighbourhoods`)}
+      ${statTile("Low access", pct(summary.bands.low, nodes), `${summary.bands.low} neighbourhoods`, "var(--red)")}
+      ${statTile("No clinic", pct(summary.nodes_with_zero_access.health, nodes), "reachable in time", "var(--orange)")}
+      ${statTile("No library", pct(summary.nodes_with_zero_access.civic, nodes), "reachable in time", "var(--orange)")}
+    </div>`;
 
     if (equity.available) {
-      html +=
-        `<div class="mt-3 pt-3 border-t border-gray-700">` +
-        `<p class="text-[11px] uppercase font-bold tracking-wider text-gray-500 mb-2">Car-free equity</p>` +
-        statRow("Car-free households", equity.carfree_households.toLocaleString()) +
-        statRow("Share of all households", `${equity.pct_carfree_countywide}%`) +
-        `<div class="flex justify-between gap-3 mt-1"><span class="text-amber-400">In low-access areas</span>` +
-        `<span class="text-amber-400 font-bold">${equity.pct_carfree_in_low_access}%</span></div>` +
-        `</div>`;
+      html += `<div class="group mt-2">
+        ${statRow("Car-free households", equity.carfree_households.toLocaleString())}
+        ${statRow("Share of all households", `${equity.pct_carfree_countywide}%`)}
+        ${statRow("Living in low-access areas", `<span class="strong" style="color:var(--orange)">${equity.pct_carfree_in_low_access}%</span>`)}
+        ${statRow("High-access neighbourhoods", `${summary.bands.high} (${pct(summary.bands.high, nodes)})`)}
+      </div>`;
     } else {
-      html += `<p class="mt-3 pt-3 border-t border-gray-700 text-amber-400/80 text-[11px]">${equity.reason}</p>`;
+      html += `<p class="group-note">${escapeHTML(equity.reason)}</p>`;
     }
     panel.innerHTML = html;
   } catch (err) {
-    panel.innerHTML = emptyState("📊", "Statistics unavailable", err.message);
+    panel.innerHTML = emptyState("chart", "Statistics unavailable", err.message);
   }
 }
 
+function statTile(label, value, sub, accent = "") {
+  return `<div class="ct-tile">
+    <p class="ct-tile-label">${escapeHTML(label)}</p>
+    <p class="ct-tile-value" ${accent ? `style="color:${accent}"` : ""}>${escapeHTML(value)}</p>
+    <p class="ct-tile-sub">${escapeHTML(sub)}</p>
+  </div>`;
+}
+
+/** `value` may be trusted markup built here from numbers. */
 function statRow(label, value) {
-  return (
-    `<div class="flex justify-between gap-3"><span>${label}</span>` +
-    `<span class="text-gray-200 font-semibold whitespace-nowrap">${value}</span></div>`
-  );
+  return `<div class="row"><span>${escapeHTML(label)}</span><span class="value">${value}</span></div>`;
 }
 
 function pct(part, whole) {
@@ -271,7 +279,7 @@ function selectNode(feature) {
   // cannot disagree.
   renderResults({
     overall: props.access_score_100,
-    subtitle: `Grid node ${props.id} · ${lat.toFixed(4)}, ${lon.toFixed(4)}`,
+    subtitle: `Neighbourhood ${props.id} · ${lat.toFixed(4)}, ${lon.toFixed(4)}`,
     scores: {
       food: props.food_100,
       health: props.health_100,
@@ -290,6 +298,7 @@ function selectNode(feature) {
     map.setFilter("access-grid-selected", ["==", ["get", "id"], props.id]);
   }
   setMarker("access-selection", [lon, lat]);
+  document.getElementById("search-error").classList.add("hidden");
 }
 
 function showSearchError(message) {
@@ -337,15 +346,20 @@ async function executeAddressLookup() {
   }
 }
 
-function renderResults({ overall, subtitle, scores, counts, warning }) {
-  const overallScore = Number(overall) || 0;
-  const overallEl = document.getElementById("score-overall");
-  overallEl.textContent = overallScore;
-  overallEl.className = `text-4xl font-extrabold my-1 ${
-    overallScore >= 70 ? "text-emerald-400" : overallScore >= 35 ? "text-amber-400" : "text-red-400"
-  }`;
+function scoreColor(value) {
+  return value >= 70 ? "var(--green-fill)" : value >= 35 ? "var(--orange-fill)" : "var(--red-fill)";
+}
 
-  document.getElementById("score-subtitle").textContent = subtitle || "Calculated Zone";
+function renderResults({ overall, subtitle, scores, counts, warning }) {
+  const overallScore = Math.round(Number(overall) || 0);
+  document.getElementById("score-overall").textContent = overallScore;
+  const ring = document.getElementById("score-ring");
+  ring.style.stroke = scoreColor(overallScore);
+  ring.style.strokeDashoffset = String(
+    RING_CIRCUMFERENCE * (1 - Math.min(100, Math.max(0, overallScore)) / 100)
+  );
+
+  document.getElementById("score-subtitle").textContent = subtitle || "Selected area";
 
   const warningEl = document.getElementById("score-warning");
   if (warning) {
@@ -363,13 +377,11 @@ function renderResults({ overall, subtitle, scores, counts, warning }) {
 
     row.querySelector(".score-value").textContent = value;
     row.querySelector(".count-value").textContent =
-      count === undefined || count === null ? "" : `(${count})`;
+      count === undefined || count === null ? "" : `${count} places`;
 
     const bar = row.querySelector(".score-bar");
     bar.style.width = `${Math.min(100, Math.max(0, value))}%`;
-    bar.className = `score-bar h-full rounded-full transition-all duration-500 ${
-      value >= 70 ? "bg-emerald-500" : value >= 35 ? "bg-amber-500" : "bg-red-500"
-    }`;
+    bar.style.background = scoreColor(value);
   });
 }
 
@@ -418,7 +430,7 @@ export const layers = [
 ];
 
 export function clear() {
-  clearMarker("access-selection");
+  showMarkersWithPrefix("access-", false);
 }
 
 export function restoreLayerVisibility() {

@@ -23,7 +23,7 @@ the gap's job is to justify the ride.
 
 - **Backend:** FastAPI + a pure-Python GTFS transit router (no JVM, no OSM extract)
 - **Spatial:** optional PostgreSQL/PostGIS, falls back to committed GeoJSON
-- **Frontend:** MapLibre GL JS + Tailwind CSS, ES modules
+- **Frontend:** MapLibre GL JS, ES modules, and a hand-written design system (`Frontend/style.css`) with light and dark mode
 - **Data:** live GRTC GTFS feed, ACS table B25044, 130 grid nodes, 437 destinations,
   243 Census block groups
 

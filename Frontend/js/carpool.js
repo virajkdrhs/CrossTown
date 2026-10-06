@@ -6,10 +6,11 @@
  */
 
 import { postJSON } from "./api.js";
-import { map, setMarker, clearMarker, clearMarkersWithPrefix, fitToPoints, setVisibility, emptyCollection } from "./map.js";
+import { map, THEME, setMarker, showMarkersWithPrefix, fitToPoints, setVisibility, emptyCollection } from "./map.js";
 import * as roster from "./roster.js";
 import {
-  escapeHTML, tile, money, toast, skeleton, emptyState, withBusy, toCSV, downloadCSV, plural,
+  escapeHTML, tile, icon, sectionTitle, toast, skeleton, emptyState, withBusy, toCSV, downloadCSV, plural,
+  syncRangeFill,
 } from "./ui.js";
 
 const WORKSITE_PRESETS = [
@@ -22,8 +23,8 @@ const WORKSITE_PRESETS = [
 
 // Distinct hues so adjacent pool routes stay legible on a dark basemap.
 const POOL_COLORS = [
-  "#34d399", "#60a5fa", "#f472b6", "#fbbf24", "#a78bfa",
-  "#22d3ee", "#fb923c", "#4ade80", "#f87171", "#c084fc",
+  "#0071e3", "#34c759", "#ff2d55", "#ff9500", "#af52de",
+  "#32ade6", "#ff6482", "#30b0c7", "#a2845e", "#5856d6",
 ];
 
 let lastPlan = null;
@@ -36,9 +37,22 @@ export async function init() {
     option.textContent = preset.label;
     select.appendChild(option);
   });
+  const input = document.getElementById("carpool-worksite");
   select.addEventListener("change", () => {
     const preset = WORKSITE_PRESETS[Number(select.value)];
-    if (preset) document.getElementById("carpool-worksite").value = preset.label;
+    delete input.dataset.lat;
+    delete input.dataset.lon;
+    if (preset) input.value = preset.label;
+    else {
+      input.value = "";
+      input.focus();
+    }
+  });
+  input.addEventListener("input", () => {
+    delete input.dataset.lat;
+    delete input.dataset.lon;
+    const match = WORKSITE_PRESETS.findIndex((preset) => preset.label === input.value.trim());
+    select.value = String(match);
   });
   select.value = "0";
   document.getElementById("carpool-worksite").value = WORKSITE_PRESETS[0].label;
@@ -48,18 +62,24 @@ export async function init() {
   document.getElementById("carpool-load-roster").addEventListener("click", loadRoster);
   document.getElementById("carpool-build").addEventListener("click", build);
 
-  ["carpool-seats", "carpool-detour"].forEach((id) => {
-    const input = document.getElementById(id);
-    input.addEventListener("input", () => {
-      document.getElementById(`${id}-value`).textContent = input.value;
-    });
+  [
+    ["carpool-seats", (value) => value],
+    ["carpool-detour", (value) => `${value} min`],
+  ].forEach(([id, format]) => {
+    const range = document.getElementById(id);
+    const update = () => {
+      document.getElementById(`${id}-value`).textContent = format(range.value);
+      syncRangeFill(range);
+    };
+    range.addEventListener("input", update);
+    update();
   });
 
   roster.onChange(reflectRoster);
   reflectRoster();
 
   document.getElementById("carpool-result").innerHTML = emptyState(
-    "🚗",
+    "car",
     "No carpools yet",
     "Load the roster and pick a worksite. Riders who cannot reach it on transit get matched to colleagues already driving there."
   );
@@ -68,9 +88,11 @@ export async function init() {
     const detail = event.detail || {};
     if (detail.worksite && detail.worksite.name) {
       const preset = WORKSITE_PRESETS.findIndex((item) => item.label === detail.worksite.name);
-      if (preset >= 0) {
-        document.getElementById("carpool-worksite-preset").value = String(preset);
-        document.getElementById("carpool-worksite").value = detail.worksite.name;
+      select.value = String(preset);
+      input.value = detail.worksite.name;
+      if (preset < 0 && detail.worksite.lat != null) {
+        input.dataset.lat = detail.worksite.lat;
+        input.dataset.lon = detail.worksite.lon;
       }
     }
   });
@@ -79,7 +101,9 @@ export async function init() {
 function reflectRoster() {
   const status = document.getElementById("carpool-roster-status");
   if (roster.isLoaded()) {
-    status.innerHTML = `<span style="color:var(--ct-ok)">${roster.describe()}</span> · <span style="color:var(--ct-warn)">synthetic demo data</span>`;
+    status.innerHTML =
+      `<span style="color:var(--text)">${escapeHTML(roster.describe())}</span><br>` +
+      `<span class="tiny text-3">Synthetic demo data</span>`;
     document.getElementById("carpool-build").disabled = false;
   } else {
     status.textContent = "No roster loaded.";
@@ -96,8 +120,8 @@ function addLayers() {
     layout: { visibility: "none", "line-cap": "round", "line-join": "round" },
     paint: {
       "line-color": ["get", "color"],
-      "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 6, 3.5],
-      "line-opacity": 0.85,
+      "line-width": 4.5,
+      "line-opacity": 0.9,
     },
   });
 
@@ -108,10 +132,10 @@ function addLayers() {
     source: "carpool-pickups-source",
     layout: { visibility: "none" },
     paint: {
-      "circle-radius": ["case", ["==", ["get", "role"], "driver"], 8, 6],
+      "circle-radius": ["case", ["==", ["get", "role"], "driver"], 10, 8],
       "circle-color": ["get", "color"],
-      "circle-stroke-width": ["case", ["==", ["get", "role"], "driver"], 3, 1.5],
-      "circle-stroke-color": "#0f172a",
+      "circle-stroke-width": ["case", ["==", ["get", "role"], "driver"], 3, 2],
+      "circle-stroke-color": THEME.stroke,
     },
   });
 
@@ -125,7 +149,7 @@ function addLayers() {
       "text-size": 10,
       "text-allow-overlap": true,
     },
-    paint: { "text-color": "#0f172a", "text-halo-color": "#f8fafc", "text-halo-width": 1 },
+    paint: { "text-color": "#ffffff" },
   });
 
   map.addSource("carpool-unmatched-source", { type: "geojson", data: emptyCollection() });
@@ -135,10 +159,10 @@ function addLayers() {
     source: "carpool-unmatched-source",
     layout: { visibility: "none" },
     paint: {
-      "circle-radius": 7,
-      "circle-color": "#7f1d1d",
-      "circle-stroke-width": 2,
-      "circle-stroke-color": "#ef4444",
+      "circle-radius": 6,
+      "circle-color": THEME.ink,
+      "circle-stroke-width": 2.5,
+      "circle-stroke-color": "#ff3b30",
     },
   });
 
@@ -148,10 +172,10 @@ function addLayers() {
       .setLngLat(event.features[0].geometry.coordinates)
       .setHTML(
         `<strong>${escapeHTML(props.employee_ref)}</strong><br>` +
-          `<span class="ct-muted">${props.role === "driver" ? "Driver" : `Pickup ${props.badge}`} · zone ${
-            props.origin_zone_id
+          `<span class="ct-muted">${props.role === "driver" ? "Driver" : `Pickup ${escapeHTML(props.badge)}`} · zone ${
+            escapeHTML(props.origin_zone_id)
           }</span>` +
-          (props.pickup_time ? `<br><span class="ct-muted">${props.pickup_time}</span>` : "")
+          (props.pickup_time ? `<br><span class="ct-muted">${escapeHTML(props.pickup_time)}</span>` : "")
       )
       .addTo(map);
   });
@@ -172,6 +196,7 @@ export const layers = [
 
 export function focus() {
   setVisibility(layers, true);
+  showMarkersWithPrefix("carpool-", true);
 }
 
 async function loadRoster() {
@@ -181,7 +206,7 @@ async function loadRoster() {
     await roster.load();
   } catch (err) {
     document.getElementById("carpool-roster-status").innerHTML =
-      `<span style="color:var(--ct-bad)">${escapeHTML(err.message)}</span>`;
+      `<span style="color:var(--red)">${escapeHTML(err.message)}</span>`;
     toast(err.message, "error");
   } finally {
     button.disabled = false;
@@ -199,12 +224,22 @@ async function build() {
     return;
   }
 
-  const text = document.getElementById("carpool-worksite").value.trim();
+  const input = document.getElementById("carpool-worksite");
+  const text = input.value.trim();
   const preset = WORKSITE_PRESETS[Number(document.getElementById("carpool-worksite-preset").value)];
-  const worksite =
-    preset && text === preset.label
-      ? { lat: preset.lat, lon: preset.lon, name: preset.label }
-      : { address: text };
+  let worksite;
+  if (preset && text === preset.label) {
+    worksite = { lat: preset.lat, lon: preset.lon, name: preset.label };
+  } else if (input.dataset.lat && input.dataset.lon) {
+    worksite = { lat: Number(input.dataset.lat), lon: Number(input.dataset.lon), name: text };
+  } else if (text.length >= 3) {
+    worksite = { address: text };
+  } else {
+    // An empty box used to reach the API and come back as a validation error.
+    errorEl.textContent = "Choose or enter a worksite.";
+    errorEl.classList.remove("hidden");
+    return;
+  }
 
   const payload = {
     worksite,
@@ -235,7 +270,7 @@ async function build() {
   } catch (err) {
     errorEl.textContent = err.message;
     errorEl.classList.remove("hidden");
-    panel.innerHTML = emptyState("⚠️", "Could not build carpools", err.message);
+    panel.innerHTML = emptyState("triangle", "Couldn't build carpools", err.message);
     toast(err.message, "error");
   }
 }
@@ -292,28 +327,24 @@ function render(data) {
   const panel = document.getElementById("carpool-result");
 
   const headline = `
-    <div class="rounded-xl border border-emerald-700/50 bg-emerald-950/30 p-3 mb-3 text-center">
-      <p class="text-[10px] uppercase tracking-wider text-gray-400">Stranded staff given a ride</p>
-      <p class="text-3xl font-extrabold text-emerald-400 my-0.5">${summary.riders_matched}
-        <span class="text-lg text-gray-500">/ ${summary.riders_needing_ride}</span></p>
-      <p class="text-[11px] text-gray-400">${summary.pct_matched}% matched into
-        ${summary.pools_formed} carpool${summary.pools_formed === 1 ? "" : "s"}</p>
+    <div class="hero">
+      <p class="hero-label">Stranded staff given a ride</p>
+      <p class="hero-number" style="color:var(--green)">${summary.riders_matched}<span class="of"> / ${summary.riders_needing_ride}</span></p>
+      <p class="hero-sub">${summary.pct_matched}% matched into ${plural(summary.pools_formed, "carpool")}</p>
     </div>`;
 
   const tiles = [
-    tile("Drivers used", `${summary.drivers_used}`, `of ${summary.drivers_available} available`),
-    tile("Mean detour", `${summary.mean_detour_minutes} min`, "per driver"),
+    tile("Drivers", `${summary.drivers_used}`, `of ${summary.drivers_available} available`),
+    tile("Average detour", `${summary.mean_detour_minutes} min`, "per driver"),
     tile("Total detour", `${summary.total_detour_minutes} min`, "across all drivers"),
-    tile("Still stranded", `${summary.riders_unmatched}`, "no feasible driver"),
+    tile("Still stranded", `${summary.riders_unmatched}`, "no feasible driver", summary.riders_unmatched ? "var(--red)" : ""),
   ].join("");
 
   const routing = summary.routed_on_real_roads
-    ? `<p class="text-[10px] mb-3 flex items-center gap-1.5" style="color:var(--ct-text-dim)">
-         <span style="color:var(--ct-ok)">●</span> Routed on real roads — detours account for bridges and one-way streets.
-       </p>`
-    : `<p class="text-[10px] mb-3 flex items-center gap-1.5" style="color:var(--ct-warn)">
-         <span>●</span> ${escapeHTML(summary.distance_note || "Straight-line estimate.")}
-       </p>`;
+    ? `<p class="group-note hstack gap-2" style="color:var(--green)">${icon("check", 14, 2.5)}Routed on real roads, so detours account for bridges and one-way streets.</p>`
+    : `<p class="group-note hstack gap-2" style="color:var(--orange)">${icon("alert-circle", 14)}${escapeHTML(
+        summary.distance_note || "Straight-line estimate."
+      )}</p>`;
 
   const pools = data.pools
     .map((pool, index) => {
@@ -321,74 +352,62 @@ function render(data) {
       const riders = pool.riders
         .map(
           (rider) =>
-            `<li class="flex items-center gap-2">
-               <span class="w-4 h-4 shrink-0 rounded-full text-[9px] font-bold flex items-center justify-center"
-                     style="background:${color};color:#0f172a">${rider.order}</span>
-               <span class="text-gray-300 flex-1 truncate">${escapeHTML(rider.employee_ref)}
-                 <span class="text-gray-600">zone ${rider.origin_zone_id}</span></span>
-               <span class="text-gray-500 text-[10px]">${rider.pickup_time}</span>
+            `<li>
+               <span class="order-dot" style="background:${color}">${escapeHTML(rider.order)}</span>
+               <span class="grow truncate">${escapeHTML(rider.employee_ref)} <span class="text-3">· zone ${escapeHTML(
+                 rider.origin_zone_id
+               )}</span></span>
+               <span class="text-2 small num">${escapeHTML(rider.pickup_time)}</span>
              </li>`
         )
         .join("");
 
-      return `<div class="rounded-lg border border-gray-700/60 bg-gray-900/50 p-2.5 mb-2">
-        <div class="flex items-center gap-2 mb-1.5">
-          <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${color}"></span>
-          <span class="text-xs font-bold text-gray-200 flex-1 truncate">${escapeHTML(
-            pool.driver.employee_ref
-          )} <span class="text-gray-500 font-normal">driving</span></span>
-          <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold shrink-0">+${
-            pool.detour_minutes
-          } min</span>
+      return `<div class="pool">
+        <div class="pool-head">
+          <span class="pool-swatch" style="background:${color}"></span>
+          <span class="grow truncate strong">${escapeHTML(pool.driver.employee_ref)} <span class="text-3" style="font-weight:400">driving</span></span>
+          <span class="pool-detour">+${escapeHTML(pool.detour_minutes)} min</span>
         </div>
-        <p class="text-[10px] text-gray-500 mb-1.5">
-          Leaves ${pool.depart_time} · arrives ${pool.arrive_time} · shift ${pool.shift_start}<br>
-          Alone ${pool.direct_km ?? "?"} km / ${pool.direct_minutes} min →
-          <span style="color:var(--ct-text-muted)">with pickups ${pool.route_km} km / ${pool.route_minutes} min</span>
+        <p class="pool-meta">
+          Leaves ${escapeHTML(pool.depart_time)} · arrives ${escapeHTML(pool.arrive_time)} · shift ${escapeHTML(pool.shift_start)}<br>
+          ${escapeHTML(pool.direct_km ?? "?")} km alone → ${escapeHTML(pool.route_km)} km with pickups
         </p>
-        <ul class="space-y-1 text-[11px]">${riders}</ul>
+        <ul class="pool-riders">${riders}</ul>
       </div>`;
     })
     .join("");
 
   const unmatched = data.unmatched.length
-    ? `<details class="mb-2">
-         <summary class="text-[11px] uppercase font-bold tracking-wider text-gray-500 cursor-pointer hover:text-gray-300">
-           Still stranded (${data.unmatched.length})
-         </summary>
-         <div class="mt-2 space-y-1.5">
-           ${data.unmatched
-             .map(
-               (person) =>
-                 `<div class="text-[10px] border-l-2 border-red-700 pl-2">
-                    <span class="text-gray-300">${escapeHTML(person.employee_ref)}</span>
-                    <span class="text-gray-600">zone ${person.origin_zone_id}</span>
-                    <p class="text-gray-500">${escapeHTML(person.reason)}</p>
-                  </div>`
-             )
-             .join("")}
-         </div>
+    ? `<details class="group">
+         <summary>Still stranded <span class="text-3 grow right" style="margin-right:10px">${data.unmatched.length}</span></summary>
+         ${data.unmatched
+           .map(
+             (person) =>
+               `<div class="row" style="align-items:flex-start;flex-direction:column;gap:2px">
+                  <span>${escapeHTML(person.employee_ref)} <span class="text-3">· zone ${escapeHTML(person.origin_zone_id)}</span></span>
+                  <span class="small text-2">${escapeHTML(person.reason)}</span>
+                </div>`
+           )
+           .join("")}
        </details>`
     : "";
 
   panel.innerHTML = `
     ${headline}
-    <div class="grid grid-cols-2 gap-2 mb-2">${tiles}</div>
-    ${routing}
-    <p class="text-[11px] uppercase font-bold tracking-wider mb-1.5" style="color:var(--ct-text-dim)">Proposed carpools</p>
-    ${pools || '<p class="text-[11px] text-gray-500 mb-2">No carpools could be formed.</p>'}
+    <div>
+      <div class="tile-grid">${tiles}</div>
+      ${routing}
+    </div>
+    <div>
+      ${sectionTitle("Proposed carpools", plural(data.pools.length, "car"))}
+      ${pools ? `<div class="group">${pools}</div>` : '<div class="group row small text-2">No carpools could be formed.</div>'}
+    </div>
     ${unmatched}
-    <button id="carpool-export" class="w-full text-xs font-semibold py-2 rounded-lg transition mb-2"
-            style="border:1px solid var(--ct-border);color:var(--ct-text-muted);background:var(--ct-raised)">
-      Export carpool plan (CSV)
-    </button>
-    <p class="text-[10px] leading-relaxed mt-1 pt-2" style="color:var(--ct-text-dim);border-top:1px solid var(--ct-border-soft)">
-      ${escapeHTML(data.note)}
-    </p>`;
+    <button id="carpool-export" class="btn btn-secondary btn-block">${icon("download", 16)}Export carpool plan (CSV)</button>
+    <p class="fineprint">${escapeHTML(data.note)}</p>`;
 
   document.getElementById("carpool-export").addEventListener("click", exportCSV);
 }
-
 
 function draw(data) {
   const routeFeatures = [];
@@ -459,7 +478,7 @@ function draw(data) {
   });
 
   setMarker("carpool-worksite", [data.worksite.lon, data.worksite.lat], {
-    color: "#f59e0b",
+    color: "#ff9500",
     label: `<strong>${escapeHTML(data.worksite.name)}</strong><br><span class="ct-muted">Worksite</span>`,
   });
   setVisibility(layers, true);
@@ -467,7 +486,6 @@ function draw(data) {
 }
 
 export function clear() {
-  clearMarker("carpool-worksite");
-  clearMarkersWithPrefix("carpool-");
+  showMarkersWithPrefix("carpool-", false);
 }
 

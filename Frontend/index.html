@@ -2,417 +2,415 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CrossTown | Transportation Access for Henrico County</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="CrossTown measures where transit fails workers in Henrico County, VA, and turns the gap into carpools.">
+  <title>CrossTown — Transportation access for Henrico County</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2334c759'/%3E%3Cstop offset='1' stop-color='%230071e3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M11 22h8a4 4 0 0 0 0-8h-6a4 4 0 0 1 0-8h8' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter stands in for SF Pro on platforms that do not ship it. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- MapLibre GL JS CSS & JS -->
-  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
   <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
 
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans h-screen overflow-hidden flex flex-col">
+<body>
 
-  <!-- Header -->
-  <header class="bg-gray-800 border-b border-gray-700 px-5 py-3 flex items-center justify-between gap-4 z-20 shadow-md shrink-0">
-    <div class="flex items-center space-x-3 min-w-0">
-      <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-gray-900 text-lg shrink-0">CT</div>
-      <div class="min-w-0 ct-wordmark">
-        <h1 class="text-lg font-bold tracking-wide text-white leading-tight">CrossTown</h1>
-        <p id="view-subtitle" class="text-xs text-gray-400 truncate">Transportation access for Henrico County, VA</p>
-      </div>
+  <header class="nav">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><span data-icon="route" data-size="16"></span></span>
+      <span class="brand-name">CrossTown</span>
     </div>
 
-    <nav id="view-tabs" class="flex items-center gap-1 rounded-lg p-1 shrink-0" style="background:var(--ct-raised)" role="tablist" aria-label="Views">
+    <nav id="view-tabs" class="segmented" role="tablist" aria-label="Views">
       <button class="view-tab" data-view="access" role="tab" aria-controls="access-view"><span class="ct-tab-label">Access </span>Map</button>
       <button class="view-tab" data-view="commute" role="tab" aria-controls="commute-view">Commute</button>
       <button class="view-tab" data-view="employer" role="tab" aria-controls="employer-view">Employer</button>
       <button class="view-tab" data-view="carpool" role="tab" aria-controls="carpool-view">Carpool</button>
     </nav>
 
-    <div class="flex items-center gap-3 shrink-0">
-      <span id="api-status" class="text-xs px-2 py-1 rounded-full border" style="border-color:var(--ct-border);color:var(--ct-text-muted)">connecting&hellip;</span>
-      <button id="help-btn" class="text-xs rounded px-2 py-1 transition" style="border:1px solid var(--ct-border);color:var(--ct-text-muted)" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">?</button>
-      <button id="toggle-sidebar" class="text-xs rounded px-2 py-1 transition" style="border:1px solid var(--ct-border);color:var(--ct-text-muted)" aria-controls="sidebar" aria-expanded="true">Hide panel</button>
+    <div class="nav-end">
+      <span id="api-status" class="status" role="status"><span class="status-dot"></span><span class="status-text">Connecting…</span></span>
+      <button id="help-btn" class="icon-btn" title="Help and shortcuts (?)" aria-label="Help and keyboard shortcuts"><span data-icon="help" data-size="19"></span></button>
+      <button id="toggle-sidebar" class="icon-btn" title="Show or hide the panel ([)" aria-label="Hide panel" aria-controls="sidebar" aria-expanded="true" aria-pressed="true"><span data-icon="sidebar" data-size="19"></span></button>
     </div>
   </header>
 
-  <div class="flex flex-1 min-h-0 relative overflow-hidden">
+  <div class="stage">
+    <div id="map" role="region" aria-label="Map"></div>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="w-96 shrink-0 bg-gray-800 border-r border-gray-700 p-5 overflow-y-auto z-10 shadow-2xl">
+    <aside id="sidebar" class="panel" aria-label="Controls and results">
+      <div class="panel-grabber" aria-hidden="true"></div>
+      <div class="panel-scroll">
 
-      <!-- ============================ ACCESS VIEW ============================ -->
-      <section id="access-view" class="flex flex-col gap-5">
-        <div>
-          <label for="address-input" class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">Location Query</label>
-          <input type="text" id="address-input" placeholder="e.g., 4301 E Parham Rd" autocomplete="off"
-                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
-          <button id="search-btn" class="mt-3 w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
-            Calculate Reachability
-          </button>
-          <p id="search-error" class="text-red-400 text-xs mt-2 hidden" role="alert"></p>
-          <p class="text-[11px] text-gray-500 mt-2">Or click any circle on the map.</p>
-        </div>
+        <!-- ============================ ACCESS VIEW ============================ -->
+        <section id="access-view" class="view" role="tabpanel">
+          <header>
+            <p class="eyebrow green">Access Map</p>
+            <h1 class="headline">Where transit reaches.</h1>
+            <p class="lede">Every circle is a neighbourhood, scored by what its residents can reach on the bus within <span id="budget-label">45</span> minutes.</p>
+          </header>
 
-        <hr class="border-gray-700">
-
-        <div aria-live="polite">
-          <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">
-            Reachable Amenities (<span id="budget-label">45</span>-Min Transit)
-          </h2>
-
-          <div class="bg-gray-900 border border-gray-700 rounded-xl p-4 mb-3 text-center">
-            <p class="text-xs text-gray-400">Composite Access Score</p>
-            <div id="score-overall" class="text-4xl font-extrabold text-emerald-400 my-1">--</div>
-            <p id="score-subtitle" class="text-xs text-gray-500">Select an address or map point</p>
-            <p id="score-warning" class="text-amber-400 text-[11px] mt-2 hidden"></p>
-          </div>
-
-          <div class="space-y-2.5">
-            <div class="category-row" data-cat="food">
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-gray-300">🍎 Food &amp; Groceries</span>
-                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-              </div>
-              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-            </div>
-            <div class="category-row" data-cat="health">
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-gray-300">🏥 Health &amp; Clinics</span>
-                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-              </div>
-              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-            </div>
-            <div class="category-row" data-cat="education">
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-gray-300">📚 Education</span>
-                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-              </div>
-              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-            </div>
-            <div class="category-row" data-cat="civic">
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-gray-300">🏛️ Civic &amp; Libraries</span>
-                <span><span class="score-value font-bold text-gray-100">--</span><span class="count-value text-gray-500 ml-1.5"></span></span>
-              </div>
-              <div class="h-1.5 bg-gray-900 rounded-full overflow-hidden"><div class="score-bar h-full bg-emerald-500 rounded-full transition-all duration-500" style="width:0%"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <hr class="border-gray-700">
-
-        <div>
-          <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">Map Layers</h2>
-          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
-            <span>Access score grid</span>
-            <input type="checkbox" id="toggle-grid" checked class="accent-emerald-500 w-4 h-4 cursor-pointer">
-          </label>
-          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
-            <span>Car-free households (Census)</span>
-            <input type="checkbox" id="toggle-census" class="accent-indigo-500 w-4 h-4 cursor-pointer">
-          </label>
-          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer mb-2.5">
-            <span>Amenity locations</span>
-            <input type="checkbox" id="toggle-destinations" class="accent-sky-500 w-4 h-4 cursor-pointer">
-          </label>
-          <label class="flex items-center justify-between text-sm text-gray-300 cursor-pointer">
-            <span>LINK on-demand zones</span>
-            <input type="checkbox" id="toggle-link-zones" class="accent-sky-500 w-4 h-4 cursor-pointer">
-          </label>
-          <p class="text-[10px] mt-1.5 leading-relaxed" style="color:var(--ct-text-dim)">
-            GRTC LINK is fare-free on-demand service that the GTFS feed omits entirely.
-            Boundaries approximate.
-          </p>
-          <div id="destination-filters" class="mt-3 hidden grid grid-cols-2 gap-1.5 text-[11px]">
-            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-emerald-500" value="Food" checked><span class="text-gray-400">Food</span></label>
-            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-rose-500" value="Health" checked><span class="text-gray-400">Health</span></label>
-            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-amber-500" value="Education" checked><span class="text-gray-400">Education</span></label>
-            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="dest-cat accent-violet-500" value="Civic" checked><span class="text-gray-400">Civic</span></label>
-          </div>
-        </div>
-
-        <hr class="border-gray-700">
-
-        <div>
-          <h2 class="text-xs uppercase font-bold tracking-wider text-gray-400 mb-3">County Summary</h2>
-          <div id="stats-panel" class="text-xs text-gray-400 space-y-2">
-            <p class="text-gray-500">Loading statistics&hellip;</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- =========================== COMMUTE VIEW ============================ -->
-      <section id="commute-view" class="hidden flex-col gap-4">
-        <div>
-          <h2 class="text-sm font-bold text-white mb-1">Can you get to work?</h2>
-          <p class="text-[11px] text-gray-400 leading-relaxed">
-            Routes a real trip on the live GRTC schedule. When transit cannot cover it,
-            the reason is the case for a carpool.
-          </p>
-          <p id="commute-feed-note" class="text-[10px] text-gray-500 mt-1.5"></p>
-        </div>
-
-        <div>
-          <label for="commute-origin" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Home</label>
-          <input type="text" id="commute-origin" value="Highland Springs, VA" autocomplete="off"
-                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
-        </div>
-
-        <div>
-          <label for="commute-worksite-preset" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Workplace</label>
-          <select id="commute-worksite-preset" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 mb-2 focus:outline-none focus:border-emerald-500">
-            <option value="-1">— pick a major employment site —</option>
-          </select>
-          <input type="text" id="commute-destination" value="Innsbrook office park" autocomplete="off"
-                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
-        </div>
-
-        <div>
-          <label class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Shift</label>
-          <div class="flex gap-2 mb-2">
-            <input type="time" id="commute-shift-start" value="09:00"
-                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-            <span class="text-gray-500 self-center text-xs">to</span>
-            <input type="time" id="commute-shift-end" value="17:00"
-                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-          </div>
-          <div class="flex flex-wrap gap-1.5">
-            <button class="commute-shift-preset shift-chip" data-start="09:00" data-end="17:00">Day 9–5</button>
-            <button class="commute-shift-preset shift-chip" data-start="06:00" data-end="14:00">Early 6–2</button>
-            <button class="commute-shift-preset shift-chip" data-start="15:00" data-end="23:00">Evening 3–11</button>
-            <button class="commute-shift-preset shift-chip" data-start="23:00" data-end="07:00">Night 11–7</button>
-          </div>
-        </div>
-
-        <div>
-          <label for="commute-day" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Service date</label>
-          <input type="date" id="commute-day"
-                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-        </div>
-
-        <button id="commute-check-btn" class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
-          Check this commute
-        </button>
-        <p id="commute-error" class="text-red-400 text-xs hidden" role="alert"></p>
-
-        <div id="commute-result" class="transition-opacity">
-          <p class="text-xs text-gray-500">Pick a home, a workplace and a shift, then check.</p>
-        </div>
-      </section>
-
-      <!-- ========================== EMPLOYER VIEW ============================ -->
-      <section id="employer-view" class="hidden flex-col gap-4">
-        <div>
-          <h2 class="text-sm font-bold text-white mb-1">Employer gap report</h2>
-          <p class="text-[11px] text-gray-400 leading-relaxed">
-            Evaluates a whole staff roster against one worksite and shift, then groups
-            the stranded staff into carpool seed zones.
-          </p>
-        </div>
-
-        <div>
-          <label for="employer-worksite-preset" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Worksite</label>
-          <select id="employer-worksite-preset" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 mb-2 focus:outline-none focus:border-emerald-500">
-            <option value="-1">— pick a major employment site —</option>
-          </select>
-          <input type="text" id="employer-worksite" value="Innsbrook office park" autocomplete="off"
-                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
-        </div>
-
-        <div>
-          <label class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Default shift</label>
-          <div class="flex gap-2">
-            <input type="time" id="employer-shift-start" value="09:00"
-                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-            <span class="text-gray-500 self-center text-xs">to</span>
-            <input type="time" id="employer-shift-end" value="17:00"
-                   class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-          </div>
-          <label class="flex items-center gap-2 mt-2 text-[11px] text-gray-400 cursor-pointer">
-            <input type="checkbox" id="employer-use-own-shifts" checked class="accent-emerald-500 w-3.5 h-3.5">
-            <span>Use each employee's own shift instead</span>
-          </label>
-        </div>
-
-        <div>
-          <button id="employer-load-roster" class="w-full bg-gray-700 hover:bg-gray-600 text-gray-100 font-semibold py-2 rounded-lg text-xs transition">
-            Load demo roster (60 staff)
-          </button>
-          <p id="employer-roster-status" class="text-[10px] text-gray-500 mt-1.5">No roster loaded.</p>
-        </div>
-
-        <button id="employer-analyse" disabled class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
-          Analyse roster
-        </button>
-        <p id="employer-error" class="text-red-400 text-xs hidden" role="alert"></p>
-
-        <div id="employer-result">
-          <p class="text-xs text-gray-500">Load the roster, choose a worksite, then analyse.</p>
-        </div>
-      </section>
-
-      <!-- =========================== CARPOOL VIEW ============================ -->
-      <section id="carpool-view" class="hidden flex-col gap-4">
-        <div>
-          <h2 class="text-sm font-bold text-white mb-1">Carpool planner</h2>
-          <p class="text-[11px] text-gray-400 leading-relaxed">
-            Matches staff who cannot reach the site on transit with colleagues who
-            already drive there on the same shift. Pickups happen at grid zone points,
-            never at a home address.
-          </p>
-        </div>
-
-        <div>
-          <label for="carpool-worksite-preset" class="block text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1.5">Worksite</label>
-          <select id="carpool-worksite-preset" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 mb-2 focus:outline-none focus:border-emerald-500"></select>
-          <input type="text" id="carpool-worksite" autocomplete="off"
-                 class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition">
-        </div>
-
-        <div class="space-y-3">
           <div>
-            <label for="carpool-seats" class="flex justify-between text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1">
-              <span>Spare seats per driver</span><span id="carpool-seats-value" class="text-emerald-400">3</span>
-            </label>
-            <input type="range" id="carpool-seats" min="1" max="6" value="3" class="w-full accent-emerald-500">
+            <label for="address-input" class="sr-only">Address</label>
+            <div class="search">
+              <span data-icon="search" data-size="16"></span>
+              <input type="search" id="address-input" placeholder="Search an address" autocomplete="off" enterkeyhint="search">
+            </div>
+            <button id="search-btn" class="btn btn-primary btn-block mt-3">Check reachability</button>
+            <p id="search-error" class="error-text hidden" role="alert"></p>
+            <p class="group-note">Or tap any circle on the map.</p>
           </div>
+
+          <div aria-live="polite">
+            <div class="score-card">
+              <div class="ring" aria-hidden="true">
+                <svg width="96" height="96" viewBox="0 0 96 96">
+                  <circle class="ring-track" cx="48" cy="48" r="41" fill="none" stroke-width="10"/>
+                  <circle id="score-ring" class="ring-value" cx="48" cy="48" r="41" fill="none" stroke-width="10" stroke-dasharray="257.6" stroke-dashoffset="257.6"/>
+                </svg>
+                <span id="score-overall" class="ring-label">–</span>
+              </div>
+              <div class="score-meta grow">
+                <p class="title">Access score</p>
+                <p id="score-subtitle" class="sub">Search an address or pick a point on the map.</p>
+                <p id="score-warning" class="warn hidden"></p>
+              </div>
+            </div>
+
+            <div class="group meter-list mt-2">
+              <div class="meter category-row" data-cat="food">
+                <div class="meter-head">
+                  <span class="label"><span class="glyph" style="background:var(--green-fill)"><span data-icon="cart" data-size="14"></span></span>Food &amp; groceries</span>
+                  <span><span class="score-value">–</span><span class="count-value"></span></span>
+                </div>
+                <div class="bar"><div class="score-bar"></div></div>
+              </div>
+              <div class="meter category-row" data-cat="health">
+                <div class="meter-head">
+                  <span class="label"><span class="glyph" style="background:var(--red-fill)"><span data-icon="health" data-size="14"></span></span>Health &amp; clinics</span>
+                  <span><span class="score-value">–</span><span class="count-value"></span></span>
+                </div>
+                <div class="bar"><div class="score-bar"></div></div>
+              </div>
+              <div class="meter category-row" data-cat="education">
+                <div class="meter-head">
+                  <span class="label"><span class="glyph" style="background:var(--orange-fill)"><span data-icon="book" data-size="14"></span></span>Education</span>
+                  <span><span class="score-value">–</span><span class="count-value"></span></span>
+                </div>
+                <div class="bar"><div class="score-bar"></div></div>
+              </div>
+              <div class="meter category-row" data-cat="civic">
+                <div class="meter-head">
+                  <span class="label"><span class="glyph" style="background:var(--purple-fill)"><span data-icon="civic" data-size="14"></span></span>Civic &amp; libraries</span>
+                  <span><span class="score-value">–</span><span class="count-value"></span></span>
+                </div>
+                <div class="bar"><div class="score-bar"></div></div>
+              </div>
+            </div>
+          </div>
+
           <div>
-            <label for="carpool-detour" class="flex justify-between text-[11px] uppercase font-bold tracking-wider text-gray-400 mb-1">
-              <span>Max detour a driver accepts</span><span id="carpool-detour-value" class="text-emerald-400">20</span>
-            </label>
-            <input type="range" id="carpool-detour" min="5" max="45" step="5" value="20" class="w-full accent-emerald-500">
+            <h2 class="section-title">Map layers</h2>
+            <div class="group">
+              <label class="row"><span>Access score</span><input type="checkbox" id="toggle-grid" class="switch" checked></label>
+              <label class="row"><span>Car-free households</span><input type="checkbox" id="toggle-census" class="switch"></label>
+              <label class="row"><span>Amenities</span><input type="checkbox" id="toggle-destinations" class="switch"></label>
+              <label class="row"><span>LINK on-demand zones</span><input type="checkbox" id="toggle-link-zones" class="switch"></label>
+            </div>
+            <div id="destination-filters" class="chips mt-2 hidden" role="group" aria-label="Amenity categories">
+              <label class="chip"><input type="checkbox" class="dest-cat" value="Food" checked><span class="dot" style="background:var(--green-fill)"></span>Food</label>
+              <label class="chip"><input type="checkbox" class="dest-cat" value="Health" checked><span class="dot" style="background:var(--red-fill)"></span>Health</label>
+              <label class="chip"><input type="checkbox" class="dest-cat" value="Education" checked><span class="dot" style="background:var(--orange-fill)"></span>Education</label>
+              <label class="chip"><input type="checkbox" class="dest-cat" value="Civic" checked><span class="dot" style="background:var(--purple-fill)"></span>Civic</label>
+            </div>
+            <p class="group-note">GRTC LINK is fare-free on-demand service that the published bus schedule leaves out entirely. Zone boundaries are approximate.</p>
           </div>
-        </div>
 
-        <div>
-          <button id="carpool-load-roster" class="w-full bg-gray-700 hover:bg-gray-600 text-gray-100 font-semibold py-2 rounded-lg text-xs transition">
-            Load demo roster (60 staff)
-          </button>
-          <p id="carpool-roster-status" class="text-[10px] text-gray-500 mt-1.5">No roster loaded.</p>
-        </div>
+          <div>
+            <h2 class="section-title">Henrico at a glance</h2>
+            <div id="stats-panel">
+              <p class="text-3 small">Loading statistics…</p>
+            </div>
+          </div>
+        </section>
 
-        <button id="carpool-build" disabled class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-gray-900 font-bold py-2.5 rounded-lg text-sm transition">
-          Build carpools
-        </button>
-        <p id="carpool-error" class="text-red-400 text-xs hidden" role="alert"></p>
+        <!-- =========================== COMMUTE VIEW ============================ -->
+        <section id="commute-view" class="view hidden" role="tabpanel">
+          <header>
+            <p class="eyebrow">Commute</p>
+            <h1 class="headline">Can you get to work?</h1>
+            <p class="lede">We route a real trip on the live GRTC schedule. When transit can't cover it, the reason becomes the case for a carpool.</p>
+            <p id="commute-feed-note" class="fineprint mt-2"></p>
+          </header>
 
-        <div id="carpool-result">
-          <p class="text-xs text-gray-500">Load the roster, pick a worksite, then build.</p>
-        </div>
-      </section>
+          <div>
+            <div class="group">
+              <div class="field-row">
+                <label for="commute-origin">Home</label>
+                <input type="text" id="commute-origin" value="Highland Springs, VA" autocomplete="off" placeholder="Address or place">
+              </div>
+              <div class="field-row">
+                <label for="commute-worksite-preset">Work</label>
+                <select id="commute-worksite-preset">
+                  <option value="-1">Custom address…</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label for="commute-destination" class="sr-only">Workplace address</label>
+                <span class="field-spacer" aria-hidden="true"></span>
+                <input type="text" id="commute-destination" value="Innsbrook office park" autocomplete="off" placeholder="Workplace address">
+              </div>
+            </div>
+          </div>
 
-      <div class="mt-6 pt-4 border-t border-gray-700 text-[11px] text-gray-500 leading-relaxed">
-        Live <span style="color:var(--ct-info)" class="font-semibold">GRTC GTFS</span> feed ·
-        LINK zones from <span style="color:var(--ct-info)" class="font-semibold">ridegrtc.com</span> ·
-        car-free data from <span style="color:var(--ct-accent)" class="font-semibold">ACS B25044</span> ·
-        grid via <span style="color:var(--ct-ok)" class="font-semibold">r5py</span>.
-        <span class="block mt-1">Press <kbd>?</kbd> for help.</span>
+          <div>
+            <p class="group-label">Shift</p>
+            <div class="group">
+              <div class="field-row">
+                <label for="commute-shift-start">Starts</label>
+                <input type="time" id="commute-shift-start" value="09:00">
+              </div>
+              <div class="field-row">
+                <label for="commute-shift-end">Ends</label>
+                <input type="time" id="commute-shift-end" value="17:00">
+              </div>
+              <div class="field-row">
+                <label for="commute-day">Date</label>
+                <input type="date" id="commute-day">
+              </div>
+            </div>
+            <div class="chips mt-2">
+              <button class="commute-shift-preset chip" data-start="09:00" data-end="17:00" aria-pressed="true">Day 9–5</button>
+              <button class="commute-shift-preset chip" data-start="06:00" data-end="14:00" aria-pressed="false">Early 6–2</button>
+              <button class="commute-shift-preset chip" data-start="15:00" data-end="23:00" aria-pressed="false">Evening 3–11</button>
+              <button class="commute-shift-preset chip" data-start="23:00" data-end="07:00" aria-pressed="false">Night 11–7</button>
+            </div>
+          </div>
+
+          <div>
+            <button id="commute-check-btn" class="btn btn-primary btn-block">Check this commute</button>
+            <p id="commute-error" class="error-text hidden" role="alert"></p>
+          </div>
+
+          <div id="commute-result" class="stack gap-3" aria-live="polite"></div>
+        </section>
+
+        <!-- ========================== EMPLOYER VIEW ============================ -->
+        <section id="employer-view" class="view hidden" role="tabpanel">
+          <header>
+            <p class="eyebrow orange">Employer</p>
+            <h1 class="headline">Who can't get here?</h1>
+            <p class="lede">Check an entire staff roster against one worksite, then group the people transit strands into carpool zones.</p>
+          </header>
+
+          <div>
+            <div class="group">
+              <div class="field-row">
+                <label for="employer-worksite-preset">Worksite</label>
+                <select id="employer-worksite-preset">
+                  <option value="-1">Custom address…</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label for="employer-worksite" class="sr-only">Worksite address</label>
+                <span class="field-spacer" aria-hidden="true"></span>
+                <input type="text" id="employer-worksite" value="Innsbrook office park" autocomplete="off" placeholder="Worksite address">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p class="group-label">Default shift</p>
+            <div class="group">
+              <div class="field-row">
+                <label for="employer-shift-start">Starts</label>
+                <input type="time" id="employer-shift-start" value="09:00">
+              </div>
+              <div class="field-row">
+                <label for="employer-shift-end">Ends</label>
+                <input type="time" id="employer-shift-end" value="17:00">
+              </div>
+              <label class="row"><span>Use each person's own shift</span><input type="checkbox" id="employer-use-own-shifts" class="switch" checked></label>
+            </div>
+          </div>
+
+          <div>
+            <p class="group-label">Roster</p>
+            <div class="group">
+              <div class="row">
+                <span id="employer-roster-status" class="small text-2 grow">No roster loaded.</span>
+                <button id="employer-load-roster" class="btn btn-secondary btn-sm">Load demo</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button id="employer-analyse" disabled class="btn btn-primary btn-block">Analyse roster</button>
+            <p id="employer-error" class="error-text hidden" role="alert"></p>
+          </div>
+
+          <div id="employer-result" class="stack gap-3" aria-live="polite"></div>
+        </section>
+
+        <!-- =========================== CARPOOL VIEW ============================ -->
+        <section id="carpool-view" class="view hidden" role="tabpanel">
+          <header>
+            <p class="eyebrow purple">Carpool</p>
+            <h1 class="headline">Share the ride in.</h1>
+            <p class="lede">Match staff who can't reach the site on transit with colleagues already driving there on the same shift. Pickups happen at zone points, never at a home address.</p>
+          </header>
+
+          <div>
+            <div class="group">
+              <div class="field-row">
+                <label for="carpool-worksite-preset">Worksite</label>
+                <select id="carpool-worksite-preset">
+                  <option value="-1">Custom address…</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label for="carpool-worksite" class="sr-only">Worksite address</label>
+                <span class="field-spacer" aria-hidden="true"></span>
+                <input type="text" id="carpool-worksite" autocomplete="off" placeholder="Worksite address">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p class="group-label">Drivers</p>
+            <div class="group">
+              <div class="slider-row">
+                <div class="hstack between">
+                  <label for="carpool-seats">Spare seats</label>
+                  <output id="carpool-seats-value" for="carpool-seats">3</output>
+                </div>
+                <input type="range" id="carpool-seats" min="1" max="6" value="3">
+              </div>
+              <div class="slider-row" style="box-shadow:inset 0 0.5px 0 var(--hairline)">
+                <div class="hstack between">
+                  <label for="carpool-detour">Longest detour</label>
+                  <output id="carpool-detour-value" for="carpool-detour">20 min</output>
+                </div>
+                <input type="range" id="carpool-detour" min="5" max="45" step="5" value="20">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p class="group-label">Roster</p>
+            <div class="group">
+              <div class="row">
+                <span id="carpool-roster-status" class="small text-2 grow">No roster loaded.</span>
+                <button id="carpool-load-roster" class="btn btn-secondary btn-sm">Load demo</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button id="carpool-build" disabled class="btn btn-primary btn-block">Build carpools</button>
+            <p id="carpool-error" class="error-text hidden" role="alert"></p>
+          </div>
+
+          <div id="carpool-result" class="stack gap-3" aria-live="polite"></div>
+        </section>
+
+        <footer class="panel-footer">
+          Live GRTC schedule (GTFS) · LINK zones from ridegrtc.com · car-free households from ACS table B25044 · access grid via r5py.
+          <span class="hidden-on-touch">Press <kbd>?</kbd> for shortcuts.</span>
+        </footer>
       </div>
     </aside>
 
-    <!-- Map -->
-    <main class="flex-1 relative bg-gray-950">
-      <div id="map" class="absolute inset-0"></div>
-
-      <!-- Legends -->
-      <div id="legend-host" class="absolute bottom-4 left-4 z-10 flex flex-col gap-2 max-h-[70vh] overflow-y-auto ct-scroll">
-        <div id="legend-access" class="bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl">
-          <p class="font-bold text-gray-200 mb-2">Composite access score</p>
-          <div class="h-2 w-32 rounded-full mb-1" style="background:linear-gradient(90deg,#ef4444 0%,#f59e0b 45%,#10b981 100%)"></div>
-          <div class="flex justify-between text-gray-500 w-32 mb-2"><span>0</span><span>50</span><span>100</span></div>
-          <div id="legend-census" class="pt-2 border-t border-gray-700 hidden">
-            <p class="font-bold text-gray-200 mb-1.5">Car-free households</p>
-            <div class="h-2 w-32 rounded-full" style="background:linear-gradient(90deg,#1e293b 0%,#6366f1 55%,#a855f7 100%)"></div>
-            <div class="flex justify-between text-gray-500 w-32"><span>0%</span><span id="legend-census-max">40%</span></div>
-          </div>
-          <div id="legend-destinations" class="pt-2 mt-2 border-t border-gray-700 hidden space-y-1">
-            <p class="font-bold text-gray-200 mb-1">Amenities</p>
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span><span class="text-gray-400">Food</span></div>
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span><span class="text-gray-400">Health</span></div>
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span><span class="text-gray-400">Education</span></div>
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-violet-400 inline-block"></span><span class="text-gray-400">Civic</span></div>
-          </div>
+    <!-- Legends -->
+    <div id="legend-host" class="legend-host">
+      <div id="legend-access" class="legend">
+        <p class="legend-title">Access score</p>
+        <div class="legend-ramp" style="background:linear-gradient(90deg,#ff3b30 0%,#ff9500 45%,#34c759 100%)"></div>
+        <div class="legend-scale"><span>0</span><span>50</span><span>100</span></div>
+        <div id="legend-census" class="legend-sub hidden">
+          <p class="legend-title">Car-free households</p>
+          <div id="legend-census-ramp" class="legend-ramp"></div>
+          <div class="legend-scale"><span>0%</span><span id="legend-census-max">40%</span></div>
         </div>
-
-        <div id="legend-link" class="hidden bg-gray-900/90 backdrop-blur border rounded-lg p-3 text-xs shadow-xl space-y-1.5" style="border-color:var(--ct-border)">
-          <p class="font-bold mb-1" style="color:var(--ct-text)">LINK on-demand zones</p>
-          <div class="flex items-center gap-2"><span class="inline-block w-5 h-3 rounded-sm" style="background:rgb(56 189 248 / 20%);border:1px dashed #38bdf8"></span><span style="color:var(--ct-text-muted)">Running today</span></div>
-          <div class="flex items-center gap-2"><span class="inline-block w-5 h-3 rounded-sm" style="background:rgb(100 116 139 / 20%);border:1px dashed #64748b"></span><span style="color:var(--ct-text-muted)">Closed today</span></div>
-          <p class="text-[10px] pt-1" style="color:var(--ct-text-dim)">Free · book in GRTC On the Go</p>
-        </div>
-
-        <div id="legend-commute" class="hidden bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl space-y-1.5">
-          <p class="font-bold text-gray-200 mb-1">Itinerary</p>
-          <div class="flex items-center gap-2"><span class="inline-block w-6 h-1 rounded" style="background:#38bdf8"></span><span class="text-gray-400">Bus leg</span></div>
-          <div class="flex items-center gap-2"><span class="inline-block w-6 border-t-2 border-dashed" style="border-color:#94a3b8"></span><span class="text-gray-400">Walking</span></div>
-          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block border-2 border-white" style="background:#0ea5e9"></span><span class="text-gray-400">Boarding stop</span></div>
-        </div>
-
-        <div id="legend-employer" class="hidden bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl space-y-1.5">
-          <p class="font-bold text-gray-200 mb-1">Staff by pickup zone</p>
-          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#10b981"></span><span class="text-gray-400">Transit works</span></div>
-          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#f59e0b"></span><span class="text-gray-400">Difficult</span></div>
-          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#ef4444"></span><span class="text-gray-400">Transit gap</span></div>
-          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#b91c1c"></span><span class="text-gray-400">No service</span></div>
-          <div class="flex items-center gap-2 pt-1 border-t border-gray-700"><span class="w-3 h-3 rounded-full inline-block border-2" style="border-color:#34d399"></span><span class="text-gray-400">Carpool seed zone</span></div>
-          <p class="text-[10px] text-gray-500 pt-1">Circle size = staff in that zone</p>
-        </div>
-
-        <div id="legend-carpool" class="hidden bg-gray-900/90 backdrop-blur border border-gray-700 rounded-lg p-3 text-xs shadow-xl space-y-1.5">
-          <p class="font-bold text-gray-200 mb-1">Carpool routes</p>
-          <div class="flex items-center gap-2"><span class="inline-block w-6 h-1 rounded" style="background:linear-gradient(90deg,#34d399,#60a5fa,#f472b6)"></span><span class="text-gray-400">One colour per pool</span></div>
-          <div class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full inline-block border-2 border-gray-900" style="background:#34d399"></span><span class="text-gray-400">Driver (D)</span></div>
-          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block" style="background:#34d399"></span><span class="text-gray-400">Pickup, numbered in order</span></div>
-          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full inline-block border-2" style="background:#7f1d1d;border-color:#ef4444"></span><span class="text-gray-400">Still stranded</span></div>
+        <div id="legend-destinations" class="legend-sub hidden">
+          <p class="legend-title">Amenities</p>
+          <div class="legend-item"><span class="swatch" style="background:var(--green-fill)"></span>Food</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--red-fill)"></span>Health</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--orange-fill)"></span>Education</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--purple-fill)"></span>Civic</div>
         </div>
       </div>
 
-      <div id="help-dialog" class="hidden fixed inset-0 z-[80] flex items-center justify-center p-4" style="background:rgb(3 7 18 / 70%)" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
-        <div class="w-full max-w-md rounded-xl p-5 shadow-2xl" style="background:var(--ct-surface);border:1px solid var(--ct-border)">
-          <div class="flex items-center justify-between mb-3">
-            <h2 class="text-sm font-bold" style="color:var(--ct-text)">Getting around CrossTown</h2>
-            <button id="help-close" class="text-xs px-2 py-1 rounded" style="border:1px solid var(--ct-border);color:var(--ct-text-muted)">Close</button>
-          </div>
-          <div class="space-y-3 text-[11px]" style="color:var(--ct-text-muted)">
-            <div>
-              <p class="font-bold mb-1.5" style="color:var(--ct-text)">The four views</p>
-              <p class="mb-1"><strong style="color:var(--ct-ok)">Access Map</strong> — where transit reaches across the county, and who lives without a car.</p>
-              <p class="mb-1"><strong style="color:var(--ct-info)">Commute</strong> — can one person reach one job for one shift? Routed live on the GRTC schedule.</p>
-              <p class="mb-1"><strong style="color:var(--ct-warn)">Employer</strong> — how many of a workforce cannot get there, and exactly why.</p>
-              <p><strong style="color:var(--ct-accent)">Carpool</strong> — match the stranded to colleagues already driving in.</p>
-            </div>
-            <div class="pt-2" style="border-top:1px solid var(--ct-border-soft)">
-              <p class="font-bold mb-1.5" style="color:var(--ct-text)">Keyboard</p>
-              <div class="grid grid-cols-2 gap-y-1.5">
-                <span><kbd>1</kbd>–<kbd>4</kbd></span><span>Switch view</span>
-                <span><kbd>←</kbd> <kbd>→</kbd></span><span>Move between tabs</span>
-                <span><kbd>[</kbd></span><span>Hide or show the panel</span>
-                <span><kbd>?</kbd></span><span>This dialog</span>
-                <span><kbd>Esc</kbd></span><span>Close / leave a field</span>
-              </div>
-            </div>
-            <p class="pt-2 text-[10px]" style="border-top:1px solid var(--ct-border-soft);color:var(--ct-text-dim)">
-              Transit routing uses the live GRTC GTFS feed. LINK on-demand zones are added
-              separately because GRTC does not publish them in that feed. Roster data is synthetic.
-            </p>
-          </div>
-        </div>
+      <div id="legend-link" class="legend hidden">
+        <p class="legend-title">LINK on-demand</p>
+        <div class="legend-item"><span class="swatch-area" style="background:rgb(50 173 230 / 22%);border:1.5px dashed #32ade6"></span>Running today</div>
+        <div class="legend-item"><span class="swatch-area" style="background:rgb(142 142 147 / 20%);border:1.5px dashed #8e8e93"></span>Closed today</div>
+        <p class="fineprint mt-2">Free · book in GRTC On the Go</p>
       </div>
 
-      <div id="offline-banner" class="hidden absolute top-4 left-1/2 -translate-x-1/2 bg-red-900/90 border border-red-600 text-red-100 text-sm rounded-lg px-4 py-3 z-20 shadow-xl max-w-lg">
-        <p class="font-bold mb-1">Cannot reach the CrossTown API</p>
-        <p class="text-xs leading-relaxed">
-          Start it from the repository root with
-          <code class="bg-black/40 px-1 rounded">uvicorn Backend.main:app --reload</code>,
-          then reload this page.
-        </p>
+      <div id="legend-commute" class="legend hidden">
+        <p class="legend-title">Itinerary</p>
+        <div class="legend-item"><span class="swatch-line" style="background:#0071e3"></span>Bus</div>
+        <div class="legend-item"><span class="swatch-line" style="background:repeating-linear-gradient(90deg,#8e8e93 0 4px,transparent 4px 7px)"></span>Walk</div>
+        <div class="legend-item"><span class="swatch" style="background:#fff;border:3px solid #0071e3"></span>Stop</div>
       </div>
-    </main>
+
+      <div id="legend-employer" class="legend hidden">
+        <p class="legend-title">Staff by pickup zone</p>
+        <div class="legend-item"><span class="swatch" style="background:var(--green-fill)"></span>Transit works</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--teal-fill)"></span>LINK on demand</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--orange-fill)"></span>Difficult</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--red-fill)"></span>Transit gap</div>
+        <div class="legend-item"><span class="swatch" style="background:#a50011"></span>No service</div>
+        <div class="legend-item"><span class="swatch" style="border:2px solid var(--purple-fill)"></span>Carpool seed zone</div>
+        <p class="fineprint mt-2">Circle size = staff in that zone</p>
+      </div>
+
+      <div id="legend-carpool" class="legend hidden">
+        <p class="legend-title">Carpools</p>
+        <div class="legend-item"><span class="swatch-line" style="background:linear-gradient(90deg,#34c759,#0071e3,#ff2d55)"></span>One colour per car</div>
+        <div class="legend-item"><span class="swatch" style="width:14px;height:14px;background:#0071e3;border:2.5px solid #fff;box-shadow:0 0 0 0.5px rgb(0 0 0 / 20%)"></span>Driver</div>
+        <div class="legend-item"><span class="swatch" style="background:#0071e3"></span>Pickup, in order</div>
+        <div class="legend-item"><span class="swatch" style="background:#fff;border:2.5px solid #ff3b30"></span>Still stranded</div>
+      </div>
+    </div>
+
+    <div id="offline-banner" class="banner hidden" role="alert">
+      <p class="banner-title">Can't reach the CrossTown API</p>
+      <p class="banner-body">Start it from the repository root with <code>uvicorn Backend.main:app --reload</code>, then reload this page.</p>
+    </div>
+  </div>
+
+  <div id="help-dialog" class="sheet-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <div class="sheet">
+      <div class="hstack between mb-3">
+        <h2 id="help-title" class="headline" style="font-size:22px">Getting around</h2>
+        <button id="help-close" class="btn btn-secondary btn-sm">Done</button>
+      </div>
+      <p class="group-label">The four views</p>
+      <div class="group mb-3">
+        <div class="row" style="align-items:flex-start"><span class="strong" style="color:var(--green);width:84px;flex-shrink:0">Access Map</span><span class="small text-2 grow">Where transit reaches across the county, and who lives without a car.</span></div>
+        <div class="row" style="align-items:flex-start"><span class="strong" style="color:var(--accent);width:84px;flex-shrink:0">Commute</span><span class="small text-2 grow">Can one person reach one job for one shift? Routed live on the GRTC schedule.</span></div>
+        <div class="row" style="align-items:flex-start"><span class="strong" style="color:var(--orange);width:84px;flex-shrink:0">Employer</span><span class="small text-2 grow">How many of a workforce can't get there, and exactly why.</span></div>
+        <div class="row" style="align-items:flex-start"><span class="strong" style="color:var(--purple);width:84px;flex-shrink:0">Carpool</span><span class="small text-2 grow">Match the stranded with colleagues already driving in.</span></div>
+      </div>
+      <p class="group-label">Keyboard</p>
+      <div class="group mb-3">
+        <div class="row"><span>Switch view</span><span><kbd>1</kbd> – <kbd>4</kbd></span></div>
+        <div class="row"><span>Previous / next tab</span><span><kbd>←</kbd> <kbd>→</kbd></span></div>
+        <div class="row"><span>Hide or show the panel</span><kbd>[</kbd></div>
+        <div class="row"><span>This sheet</span><kbd>?</kbd></div>
+        <div class="row"><span>Close, or leave a field</span><kbd>esc</kbd></div>
+      </div>
+      <p class="fineprint">Transit routing uses the live GRTC GTFS feed. LINK on-demand zones are added separately because GRTC doesn't publish them in that feed. Roster data is synthetic.</p>
+    </div>
   </div>
 
   <script type="module" src="js/main.js"></script>
