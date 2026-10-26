@@ -23,7 +23,7 @@ const WORKSITE_PRESETS = [
 
 // Distinct hues so adjacent pool routes stay legible on a dark basemap.
 const POOL_COLORS = [
-  "#0071e3", "#34c759", "#ff2d55", "#ff9500", "#af52de",
+  "#5A78E0", "#34c759", "#ff2d55", "#ff9500", "#af52de",
   "#32ade6", "#ff6482", "#30b0c7", "#a2845e", "#5856d6",
 ];
 

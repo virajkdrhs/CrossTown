@@ -2,14 +2,15 @@
 
 export const HENRICO_CENTER = [-77.48, 37.58];
 
-/** Chosen once at load: the basemap cannot be swapped without losing layers. */
-export const dark =
-  typeof window.matchMedia === "function" &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches;
+/**
+ * The interface is dark-only, in ShiftGraph's ground, so the basemap is too.
+ * Kept as an export because layer styling still branches on it.
+ */
+export const dark = true;
 
 /** Colours that must contrast with the basemap rather than with the panel. */
 export const THEME = dark
-  ? { stroke: "#1c1c1e", halo: "#000000", label: "#f5f5f7", ink: "#1c1c1e" }
+  ? { stroke: "#131313", halo: "#131313", label: "#FBFAF7", ink: "#131313" }
   : { stroke: "#ffffff", halo: "#ffffff", label: "#1d1d1f", ink: "#ffffff" };
 
 export const map = new maplibregl.Map({
@@ -150,7 +151,7 @@ const markers = new Map();
 export function setMarker(key, lonLat, options = {}) {
   clearMarker(key);
   if (!lonLat) return null;
-  const marker = new maplibregl.Marker({ color: options.color ?? "#0071e3" }).setLngLat(lonLat);
+  const marker = new maplibregl.Marker({ color: options.color ?? "#5A78E0" }).setLngLat(lonLat);
   if (options.label) {
     marker.setPopup(new maplibregl.Popup({ className: "ct-popup", offset: 30 }).setHTML(options.label));
   }

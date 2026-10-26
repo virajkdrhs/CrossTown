@@ -132,7 +132,7 @@ function addRouteLayers() {
     source: "commute-route-source",
     filter: ["==", ["get", "mode"], "bus"],
     layout: { visibility: "none", "line-cap": "round", "line-join": "round" },
-    paint: { "line-color": "#0071e3", "line-width": 6, "line-opacity": 0.95 },
+    paint: { "line-color": "#5A78E0", "line-width": 6, "line-opacity": 0.95 },
   });
 
   map.addSource("commute-stops-source", { type: "geojson", data: emptyCollection() });
@@ -145,7 +145,7 @@ function addRouteLayers() {
       "circle-radius": 5.5,
       "circle-color": THEME.ink,
       "circle-stroke-width": 3,
-      "circle-stroke-color": "#0071e3",
+      "circle-stroke-color": "#5A78E0",
     },
   });
 }
@@ -398,7 +398,7 @@ function itinerary(title, journey, hasLinkOption = false) {
 function drawJourney(data) {
   const journey = data.outbound;
   setMarker("commute-origin", [data.origin.lon, data.origin.lat], {
-    color: "#0071e3",
+    color: "#5A78E0",
     label: `<strong>Home</strong><br>${escapeHTML(data.origin.name)}`,
   });
   setMarker("commute-destination", [data.destination.lon, data.destination.lat], {

@@ -5,14 +5,14 @@ import { map, dark, THEME, setVisibility, fitToPoints, setMarker, showMarkersWit
 import { escapeHTML, toast, skeleton, emptyState, withBusy } from "./ui.js";
 
 const CATEGORY_COLORS = {
-  Food: "#34c759",
-  Health: "#ff3b30",
-  Education: "#ff9500",
-  Civic: "#af52de",
+  Food: "#4E9A63",
+  Health: "#B4453C",
+  Education: "#C7843F",
+  Civic: "#8A6CC0",
 };
 
-// Apple system red → orange → green, matching the panel's score ring.
-const SCORE_RAMP = ["#ff3b30", "#ff9500", "#34c759"];
+// Muted red → amber → green, matching the panel's score ring and legend.
+const SCORE_RAMP = ["#B4453C", "#C7843F", "#4E9A63"];
 const RING_CIRCUMFERENCE = 257.6;
 
 let hoverPopup = null;
@@ -82,7 +82,7 @@ async function loadAccessGrid() {
         ],
         "circle-color": "rgba(0,0,0,0)",
         "circle-stroke-width": 3,
-        "circle-stroke-color": "#0071e3",
+        "circle-stroke-color": "#5A78E0",
       },
     });
 
