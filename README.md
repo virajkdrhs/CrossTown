@@ -29,8 +29,8 @@ the gap's job is to justify the ride.
 
 ### What the data shows
 
-Measured with the code in this repository, against the GRTC schedule published
-2026-07-01:
+Measured with the code in this repository, and re-checked on 2026-10-25 against
+the GRTC schedule valid 2026-10-18 to 2027-01-23:
 
 - **Innsbrook office park** — one of the county's largest employment centres — has
   **no bus stop within 1.4 km**. No shift is reachable by transit, at any hour.
@@ -349,8 +349,8 @@ polygons — currently downloaded but unused — as a fifth category.
 python -m unittest discover -s tests -v
 ```
 
-73 tests. `tests/test_crosstown.py` covers the routing maths, service-calendar
-handling (including the Labor Day exception), gap classification, microtransit
+76 tests. `tests/test_crosstown.py` covers the routing maths, service-calendar
+handling (including weekday holidays that run Sunday service), gap classification, microtransit
 zones, road routing and carpool matching — all against the real GTFS feed, no
 mocks. Carpool matching is tested against an explicit straight-line matrix so the
 heuristic is verified deterministically and offline; live road routing has its

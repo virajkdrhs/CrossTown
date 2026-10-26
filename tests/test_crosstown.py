@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import sys
 import unittest
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -20,10 +20,34 @@ from Backend import (  # noqa: E402
     carpool, commute, gtfs, microtransit, roadnetwork, scoring, transit_router,
 )
 
-WEEKDAY = date(2026, 8, 5)
-SATURDAY = date(2026, 8, 8)
-SUNDAY = date(2026, 8, 9)
-LABOR_DAY = date(2026, 9, 7)
+def _sample_days(feed):
+    """Pick test dates inside whatever feed is installed.
+
+    GRTC republishes the feed every few months with new dates (and sometimes new
+    service ids), so hard-coded dates silently go stale. Take an ordinary week a
+    week into the feed's window, plus the first weekday holiday that runs a
+    different calendar.
+    """
+    start = date(int(feed.feed_start[:4]), int(feed.feed_start[4:6]), int(feed.feed_start[6:]))
+    exception_days = {stamp for (_, stamp) in feed.calendar_dates}
+    day = start + timedelta(days=7)
+    while day.weekday() != 2 or any(
+        (day + timedelta(days=offset)).strftime("%Y%m%d") in exception_days
+        for offset in range(5)
+    ):
+        day += timedelta(days=1)
+    holiday = next(
+        (
+            date(int(stamp[:4]), int(stamp[4:6]), int(stamp[6:]))
+            for stamp in sorted(exception_days)
+            if date(int(stamp[:4]), int(stamp[4:6]), int(stamp[6:])).weekday() < 5
+        ),
+        None,
+    )
+    return day, day + timedelta(days=3), day + timedelta(days=4), holiday
+
+
+WEEKDAY, SATURDAY, SUNDAY, HOLIDAY = _sample_days(gtfs.get_feed())
 
 DOWNTOWN = (-77.4360, 37.5407)
 SHORT_PUMP = (-77.6100, 37.6500)
@@ -50,13 +74,19 @@ class TestGTFS(unittest.TestCase):
         self.assertIsNone(gtfs.parse_gtfs_time("nonsense"))
 
     def test_service_calendars(self):
-        self.assertEqual(self.feed.services_on(WEEKDAY), {"1"})
-        self.assertEqual(self.feed.services_on(SATURDAY), {"2"})
-        self.assertEqual(self.feed.services_on(SUNDAY), {"3"})
+        # Service ids change between feed versions, so check that each day type
+        # resolves to its own non-empty calendar rather than to a literal id.
+        weekday = self.feed.services_on(WEEKDAY)
+        saturday = self.feed.services_on(SATURDAY)
+        sunday = self.feed.services_on(SUNDAY)
+        self.assertTrue(weekday and saturday and sunday)
+        self.assertEqual(len({frozenset(weekday), frozenset(saturday), frozenset(sunday)}), 3)
 
     def test_calendar_exception_applied(self):
-        """Labor Day is a Monday that runs Sunday service."""
-        self.assertEqual(self.feed.services_on(LABOR_DAY), {"3"})
+        """A weekday holiday (Labor Day, Thanksgiving...) runs Sunday service."""
+        if HOLIDAY is None:
+            self.skipTest("installed feed has no weekday holiday exceptions")
+        self.assertEqual(self.feed.services_on(HOLIDAY), self.feed.services_on(SUNDAY))
 
     def test_footpaths_generated(self):
         # transfers.txt is empty, so these must be synthesised or nothing connects.
@@ -161,7 +191,7 @@ class TestRouter(unittest.TestCase):
 
         rng = random.Random(4242)
         stops = list(self.feed.stops.values())
-        days = [date(2026, 8, 5), date(2026, 8, 8), date(2026, 8, 9)]
+        days = [WEEKDAY, SATURDAY, SUNDAY]
         checked = 0
         for _ in range(120):
             a, b = rng.choice(stops), rng.choice(stops)
@@ -186,7 +216,7 @@ class TestRouter(unittest.TestCase):
     def test_access_walk_does_not_chain_between_stops(self):
         """The first walk must be origin -> one stop, not a hop across several."""
         scan = transit_router.scan_backward(
-            self.feed, DOWNTOWN[0], DOWNTOWN[1], 12 * 3600, date(2026, 8, 9)
+            self.feed, DOWNTOWN[0], DOWNTOWN[1], 12 * 3600, SUNDAY
         )
         # Every stop the scan offers as a starting point must be one a traveller
         # could actually board at, reached by a single walk from their origin.
